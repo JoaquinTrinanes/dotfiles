@@ -1,6 +1,7 @@
 #!/bin/sh
 
 alias .="cd .."
+alias dots="yadm"
 
 # Android stuff
 export ANDROID_HOME="$HOME/Android/Sdk"
