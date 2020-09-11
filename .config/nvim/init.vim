@@ -4,7 +4,6 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 
-
 " Use system clipboard ?
 "set clipboard+=unnamedplus
 " Workaround for neovim wl-clipboard and netrw interaction hang 
@@ -22,6 +21,13 @@ let g:clipboard = {
       \   },
       \   'cache_enabled': 0,
       \ }
+
+" Autoinstall VimPlug if not present
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 " Plugins go here
 call plug#begin('~/.vim/plugged')
