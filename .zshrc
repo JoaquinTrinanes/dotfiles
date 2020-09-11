@@ -7,22 +7,29 @@ SPACESHIP_KUBECTL_SHOW=true
 SPACESHIP_KUBECTL_VERSION_SHOW=false
 SPACESHIP_KUBECONTEXT_NAMESPACE_SHOW=false
 SPACESHIP_KUBECTL_SYMBOL="☸️ "
+SPACESHIP_DIR_TRUNC=5
+
 
 ZSH_DOTENV_PROMPT=false
 
-antigen bundle git
-antigen bundle kubectl
-antigen bundle sudo
+# Antigen (plugin) stuff
+antigen bundle archlinux
+antigen bundle asdf
+antigen bundle autojump
+antigen bundle bundler
+antigen bundle copyfile
 antigen bundle docker
 antigen bundle docker-compose
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle bundler
 antigen bundle dotenv
-# antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle extract
+antigen bundle git
+antigen bundle golang
+antigen bundle kubectl
+antigen bundle sudo
+antigen bundle yarn
 antigen bundle zdharma/fast-syntax-highlighting
-antigen bundle asdf
+antigen bundle zsh-users/zsh-autosuggestions
 
-# Antigen (plugin) stuff
 antigen use oh-my-zsh
 
 antigen theme https://github.com/denysdovhan/spaceship-zsh-theme spaceship
