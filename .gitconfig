@@ -1,6 +1,5 @@
-[user]
-	email = quin.trinanes@gmail.com
-	name = Joaquin Trinanes
+[include]
+    path = .gitconfig.local
 [core]
 [alias]
     a = add
