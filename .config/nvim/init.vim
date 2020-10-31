@@ -4,6 +4,9 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 
+set ignorecase
+set smartcase
+
 syntax on
 
 " Use system clipboard ?
