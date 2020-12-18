@@ -14,7 +14,6 @@ ZSH_DOTENV_PROMPT=false
 
 # Antigen (plugin) stuff
 antigen bundle archlinux
-antigen bundle asdf
 antigen bundle autojump
 antigen bundle bundler
 antigen bundle copyfile
@@ -29,15 +28,18 @@ antigen bundle sudo
 antigen bundle yarn
 antigen bundle zdharma/fast-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle asdf
 
 antigen use oh-my-zsh
 
 antigen theme https://github.com/denysdovhan/spaceship-zsh-theme spaceship
 
 antigen bundle lukechilds/zsh-better-npm-completion
+antigen bundle softmoth/zsh-vim-mode
 
 antigen apply
 
 unsetopt share_history
 
 source ~/.profile
+
