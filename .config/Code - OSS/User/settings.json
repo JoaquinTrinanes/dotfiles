@@ -9,14 +9,12 @@
   "search.userPCRE2": true,
   "powermode.enabled": false,
 
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+
   // Restore git branch files options
   "restoreGitBranchTabs.newBranchPreserveTabs": true,
-  "ruby.rubocop.onSave": true,
-  "ruby.format": "rubocop",
-  "[ruby]": {
-    "editor.formatOnSaveTimeout": 5000,
-    "editor.defaultFormatter": "misogi.ruby-rubocop"
-  },
 
   // JavaScript
   "[javascript]": {
@@ -33,16 +31,6 @@
   "yaml.schemas": {
     "file:///home/situm/.vscode-oss/extensions/atlassian.atlascode-2.7.1/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
   },
-  "atlascode.jira.jqlList": [
-    {
-      "id": "ce14c9a2-0860-46c3-a1f0-1c6f8c690ae1",
-      "enabled": true,
-      "name": "My situm Issues",
-      "query": "assignee = currentUser() AND resolution = Unresolved ORDER BY lastViewed DESC",
-      "siteId": "2a91e594-7619-41d0-8be5-8cf354ff41b3",
-      "monitor": true
-    }
-  ],
   "window.zoomLevel": 0,
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -55,10 +43,6 @@
   },
   "window.titleBarStyle": "custom",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "atlascode.jira.lastCreateSiteAndProject": {
-    "siteId": "2a91e594-7619-41d0-8be5-8cf354ff41b3",
-    "projectKey": ""
-  },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -68,6 +52,10 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "ruby.rubocop.executePath": "/home/situm/.asdf/shims/",
   "editor.wordWrap": "on",
-  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim"
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+  "debug.javascript.autoAttachFilter": "disabled",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
   // "ruby.rubocop.executePath": "/home/situm/.asdf/shims/"
 }
