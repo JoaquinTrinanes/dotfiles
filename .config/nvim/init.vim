@@ -4,6 +4,9 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 
+" improve performance on large files
+set synmaxcol=2048
+
 set ignorecase
 set smartcase
 
