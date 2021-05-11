@@ -1,5 +1,3 @@
-[include]
-    path = .gitconfig.local
 [core]
 [alias]
     a = add
@@ -86,7 +84,7 @@
 [format]
     numbered = auto
 [include]
-    path = .gitconfig-additional
+    path = .gitconfig.local
 [log]
     decorate = short
 [merge]
