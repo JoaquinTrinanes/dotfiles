@@ -8,7 +8,8 @@ SPACESHIP_KUBECTL_VERSION_SHOW=false
 SPACESHIP_KUBECONTEXT_NAMESPACE_SHOW=false
 SPACESHIP_KUBECTL_SYMBOL="☸️ "
 SPACESHIP_DIR_TRUNC=5
-
+SPACESHIP_GCLOUD_SHOW=false
+SPACESHIP_PHP_SHOW=false
 
 ZSH_DOTENV_PROMPT=false
 
@@ -35,7 +36,7 @@ antigen use oh-my-zsh
 antigen theme https://github.com/denysdovhan/spaceship-zsh-theme spaceship
 
 antigen bundle lukechilds/zsh-better-npm-completion
-antigen bundle softmoth/zsh-vim-mode
+antigen bundle jeffreytse/zsh-vi-mode
 
 antigen apply
 

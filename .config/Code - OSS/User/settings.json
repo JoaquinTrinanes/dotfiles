@@ -21,15 +21,11 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "files.associations": {
-    "*.erb": "erb"
+    "*.erb": "erb",
+    ".env": "shellscript"
   },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-
-  // Jira stuff
-  "yaml.schemas": {
-    "file:///home/situm/.vscode-oss/extensions/atlassian.atlascode-2.7.1/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
   },
   "window.zoomLevel": 0,
   "[yaml]": {
@@ -56,6 +52,7 @@
   "debug.javascript.autoAttachFilter": "disabled",
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "sync.gist": "8d232bcb88042360ec1c1d6473eb344f"
   // "ruby.rubocop.executePath": "/home/situm/.asdf/shims/"
 }
