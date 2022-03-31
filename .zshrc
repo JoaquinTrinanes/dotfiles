@@ -1,6 +1,7 @@
-source /usr/share/zsh/share/antigen.zsh
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+[ -f $HOME/.zshrc_extra ] && source $HOME/.zshrc_extra
 
 SPACESHIP_PACKAGE_SHOW=false
 SPACESHIP_KUBECTL_SHOW=true

@@ -42,4 +42,6 @@ alias open="xdg-open"
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$HOME/.local/bin:$PATH"
 
-source /etc/profile.d/autojump.sh
+[ -f /etc/profile.d/autojump.sh ] && . /etc/profile.d/autojump.sh
+
+[ -f /usr/local/etc/profile.d/autojump.sh ] && source /usr/local/etc/profile.d/autojump.sh
