@@ -63,11 +63,17 @@ call plug#begin('~/.vim/plugged')
       Plug 'Xuyuanp/nerdtree-git-plugin'
 
 
-      Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+      if has('nvim')
+	  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+      else
+	Plug 'Shougo/deoplete.nvim'
+	Plug 'roxma/nvim-yarp'
+        Plug 'roxma/vim-hug-neovim-rpc'
+      endif
       let g:deoplete#enable_at_startup = 1
+
       " <TAB>: completion.
       inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
 
 call plug#end()
 
@@ -81,7 +87,6 @@ let g:LanguageClient_serverCommands = {
             \ 'cpp': ['clangd'],
             \ 'cuda': ['clangd'],
             \ }
-call deoplete#custom#option('camel_case', v:true)
 let g:LanguageClient_diagnosticsMaxSeverity = "Warning"
 set completeopt-=preview
 " autocmd InsertLeave * silent! pclose!
