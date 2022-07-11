@@ -71,7 +71,7 @@
     verbose=true
 [core]
     filemode = false
-    excludesfile = ~/.gitignore
+    excludesFile = ~/.gitignore
     whitespace = trailing-space,space-before-tab
 	editor = nvim
 [diff]
