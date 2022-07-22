@@ -24,6 +24,7 @@ function . () {
 
 alias dots="yadm"
 alias grep="egrep"
+alias vim="nvim"
 
 # what do you mean, command not found?
 alias gerp="grep"
