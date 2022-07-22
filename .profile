@@ -14,7 +14,14 @@ if commandExists bat; then
     alias cat="bat -p -p"
 fi
 
-alias .="cd .."
+function . () {
+    if [ $# -gt 0 ]; then
+        builtin . "$@"
+    else
+        cd ..
+    fi
+}
+
 alias dots="yadm"
 alias grep="egrep"
 
@@ -39,9 +46,13 @@ alias k9s="k9s --readonly"
 
 alias open="xdg-open"
 
+# Rust
+. "$HOME/.cargo/env"
+
+# GO
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$HOME/.local/bin:$PATH"
 
 [ -f /etc/profile.d/autojump.sh ] && . /etc/profile.d/autojump.sh
-
 [ -f /usr/local/etc/profile.d/autojump.sh ] && source /usr/local/etc/profile.d/autojump.sh
+
