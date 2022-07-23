@@ -23,6 +23,7 @@ function . () {
 }
 
 alias dots="yadm"
+alias c="yadm"
 alias grep="egrep"
 alias vim="nvim"
 
