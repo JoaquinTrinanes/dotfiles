@@ -22,6 +22,9 @@ function . () {
     fi
 }
 
+
+[ -f ~/.profile.local ] && . ~/.profile.local
+
 alias dots="yadm"
 alias c="yadm"
 alias grep="egrep"
