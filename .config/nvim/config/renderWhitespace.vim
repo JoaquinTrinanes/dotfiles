@@ -14,6 +14,6 @@ let space_match = matchadd('Conceal', '\v(^ *)@<= ', -1, -1, {'conceal': '·'})
 
 set list
 set listchars=""
-set listchars=tab:→\ ,trail:·,precedes:←,extends:→,nbsp:·
-set conceallevel=1
+set listchars=tab:→\ ,trail:·,precedes:←,extends:→
+set conceallevel=2
 

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# TODO: move to external config folder? Like .config/shell
+
 commandExists() {
     command -v $1 &> /dev/null
 }
@@ -34,6 +36,12 @@ alias vim="nvim"
 alias gerp="grep"
 alias k0s="k9s"
 
+# smartcase when searching
+export LESS="$LESS -i -R"
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export CONFIG_DIR=$XDG_CONFIG_HOME
+
 # Android stuff
 export ANDROID_HOME="$HOME/Android/Sdk"
 export PATH="$ANDROID_HOME/emulator:$PATH"
@@ -44,7 +52,7 @@ export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
 
 export EDITOR="nvim"
 
-export VIMCONFIG="$HOME/.config/nvim/init.vim"
+export VIMCONFIG="$CONFIG_DIR/nvim/init.vim"
 
 # just a little bit of extra security
 alias k9s="k9s --readonly"

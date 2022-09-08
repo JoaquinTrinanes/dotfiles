@@ -73,7 +73,7 @@
     filemode = false
     excludesFile = ~/.gitignore
     whitespace = trailing-space,space-before-tab
-	editor = nvim
+    editor = nvim
 [diff]
     mnemonicprefix = true
     tool = meld
@@ -99,6 +99,7 @@
 [pull]
     rebase = true
 [push]
+    autoSetupRemote = true
     default = current
     followTags = true
 [help]
@@ -110,4 +111,4 @@
 [credential]
     helper = cache --timeout=36000
 [init]
-	defaultBranch = main
+    defaultBranch = main

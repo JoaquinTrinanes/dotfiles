@@ -10,6 +10,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ervandew/supertab'
 Plug 'itchyny/lightline.vim'
+Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'junegunn/fzf'
 Plug 'junegunn/goyo.vim'
 Plug 'mrk21/yaml-vim'
@@ -35,8 +36,12 @@ call plug#end()
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
+" trigger InsertLeave when using Ctrl-C
+inoremap <C-c> <ESC>
+
 " NERDcommenter config
 filetype plugin on
+let g:NERDCreateDefaultMappings = 1
 let g:NERDCustomDelimiters = { 'c': { 'left': '//', } }
 let g:NERDSpaceDelims = 2
 let g:NERDCompactSexyComs = 1

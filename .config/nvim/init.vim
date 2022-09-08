@@ -1,4 +1,7 @@
+let $CONFIG_DIR=$CONFIG_DIR."/nvim"
+
 set number
+set relativenumber
 set expandtab
 set smarttab
 set shiftwidth=4
@@ -14,12 +17,13 @@ set cmdheight=2
 
 syntax on
 
-source ~/.config/nvim/installPlug.vim
-source ~/.config/nvim/plugins.vim
+source $CONFIG_DIR/installPlug.vim
+source $CONFIG_DIR/plugins.vim
 
-for rcfile in split(globpath("~/.config/nvim/config", "*.vim"), '\n')
+for rcfile in split(globpath("$CONFIG_DIR/config", "*.vim"), '\n')
       execute('source '.rcfile)
 endfor
+
 
 " Use system clipboard ?
 "set clipboard+=unnamedplus
