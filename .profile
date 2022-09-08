@@ -52,7 +52,7 @@ alias k9s="k9s --readonly"
 alias open="xdg-open"
 
 # Rust
-. "$HOME/.cargo/env"
+[ -f $HOME/.cargo/env ] && . "$HOME/.cargo/env"
 
 # GO
 export GOPATH="$HOME/go"
