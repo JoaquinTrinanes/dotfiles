@@ -1,4 +1,4 @@
-{% include ".gitignore##default,template" %}
+*.swp
 
 # Mac
 .DS_Store
