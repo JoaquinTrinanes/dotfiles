@@ -1,9 +1,10 @@
+. ~/.profile
+
 autoload -Uz compinit
 compinit
 
 # autocomplete with same color as ls
-system_type=$(uname -s)
-if [ "$system_type" = "Darwin" ]; then
+if [ $IS_MAC ]; then
     export CLICOLOR=1
 else
     eval "$(dircolors)"
@@ -18,6 +19,4 @@ zstyle ':completion:*' menu select
 . $ZDOTDIR/plugins/load.zsh
 
 unsetopt share_history
-
-. ~/.profile
 

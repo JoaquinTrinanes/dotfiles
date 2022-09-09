@@ -26,7 +26,7 @@ export PATH="$GOPATH/bin:$HOME/.local/bin:$PATH"
 [ -f /etc/profile.d/autojump.sh ] && . /etc/profile.d/autojump.sh
 [ -f /usr/local/etc/profile.d/autojump.sh ] && source /usr/local/etc/profile.d/autojump.sh
 
-if [ "$(uname -s)" = "Darwin" ]; then
+if [ $IS_MAC ]; then
     export PNPM_HOME="/Users/joaquin/Library/pnpm"
     export PATH="$PNPM_HOME:$PATH"
 else
