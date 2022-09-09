@@ -1,0 +1,30 @@
+#!/bin/sh
+
+alias dots="yadm"
+alias c="yadm"
+alias grep="egrep"
+alias vim="nvim"
+
+# what do you mean, command not found?
+alias gerp="grep"
+alias k0s="k9s"
+
+alias k9s="k9s --readonly"
+alias open="xdg-open"
+
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+
+commandExists() {
+    command -v $1 &> /dev/null
+}
+
+if commandExists exa; then
+    alias ls="exa"
+    alias la="exa -la"
+fi
+
+if commandExists bat; then
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    alias cat="bat -p"
+fi
+

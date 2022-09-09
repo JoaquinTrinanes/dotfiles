@@ -2,39 +2,14 @@
 
 # TODO: move to external config folder? Like .config/shell
 
-commandExists() {
-    command -v $1 &> /dev/null
-}
-
-if commandExists exa; then
-    alias ls="exa"
-    alias la="exa -la"
-fi
-
-if commandExists bat; then
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-    alias cat="bat -p -p"
-fi
-
-function . () {
-    if [ $# -gt 0 ]; then
-        builtin . "$@"
-    else
-        cd ..
-    fi
-}
+export CONFIG_DIR=~/.config
 
 
-[ -f ~/.profile.local ] && . ~/.profile.local
+. $CONFIG_DIR/shell/env
 
-alias dots="yadm"
-alias c="yadm"
-alias grep="egrep"
-alias vim="nvim"
-
-# what do you mean, command not found?
-alias gerp="grep"
-alias k0s="k9s"
+for f in $CONFIG_DIR/shell/config/*; do
+    . $f
+done
 
 # smartcase when searching
 export LESS="$LESS -i -R"
@@ -53,11 +28,6 @@ export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
 export EDITOR="nvim"
 
 export VIMCONFIG="$CONFIG_DIR/nvim/init.vim"
-
-# just a little bit of extra security
-alias k9s="k9s --readonly"
-
-alias open="xdg-open"
 
 # Rust
 [ -f $HOME/.cargo/env ] && . "$HOME/.cargo/env"

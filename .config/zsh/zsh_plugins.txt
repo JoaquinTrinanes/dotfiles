@@ -1,5 +1,5 @@
-# autojump
-# ohmyzsh/ohmyzsh
+# ohmyzsh/ohmyzsh path:plugins/autojump
+ohmyzsh/ohmyzsh
 ohmyzsh/ohmyzsh path:plugins/colorize
 ohmyzsh/ohmyzsh path:plugins/copyfile
 ohmyzsh/ohmyzsh path:plugins/docker

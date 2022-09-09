@@ -3,7 +3,6 @@ highlight Conceal ctermbg=NONE ctermfg=gray
 if exists('space_match')
       call matchdelete(space_match)
 endif
-
 let space_match = matchadd('Conceal', '\v(^ *)@<= ', -1, -1, {'conceal': '·'})
 " au BufEnter * :syn match Conceal '^ \+' conceal cchar=·
 " highlight ExtraWhitespace ctermbg=red guibg=red
