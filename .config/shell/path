@@ -29,5 +29,8 @@ export PATH="$GOPATH/bin:$HOME/.local/bin:$PATH"
 if [ "$(uname -s)" = "Darwin" ]; then
     export PNPM_HOME="/Users/joaquin/Library/pnpm"
     export PATH="$PNPM_HOME:$PATH"
+else
+    export PNPM_HOME="/home/joaquin/.local/share/pnpm" 
+    export PATH="$PNPM_HOME:$PATH"
 fi
 
