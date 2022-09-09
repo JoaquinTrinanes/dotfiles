@@ -28,3 +28,10 @@ if commandExists bat; then
     alias cat="bat -p"
 fi
 
+function . () {
+    if [ $# -gt 0 ]; then
+        builtin . "$@"
+    else
+        cd ..
+    fi
+}

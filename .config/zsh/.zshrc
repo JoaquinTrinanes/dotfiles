@@ -1,7 +1,11 @@
-. ~/.profile
-
 autoload -Uz compinit
 compinit
+
+# loading the plugins defines a lot of aliases, we do it beforehand
+# to override them in the common config
+. $ZDOTDIR/plugins/load.zsh
+
+. ~/.profile
 
 # autocomplete with same color as ls
 if [ $IS_MAC ]; then
@@ -13,10 +17,6 @@ fi
 
 # tab select autocomplete
 zstyle ':completion:*' menu select
-
-
-# source antidote
-. $ZDOTDIR/plugins/load.zsh
 
 unsetopt share_history
 
