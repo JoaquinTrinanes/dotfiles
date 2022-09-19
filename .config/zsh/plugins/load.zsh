@@ -1,3 +1,6 @@
+# Some plugin config must be set before they are loaded
+source "$(dirname "$0")/config.zsh"
+
 # You can change the names/locations of these if you prefer.
 antidote_dir=${ZDOTDIR:-~}/.antidote
 plugins_txt=${ZDOTDIR:-~}/zsh_plugins.txt
@@ -24,4 +27,3 @@ source $static_file
 # cleanup
 unset antidote_dir plugins_file static_file
 
-source "$(dirname "$0")/config.zsh"
