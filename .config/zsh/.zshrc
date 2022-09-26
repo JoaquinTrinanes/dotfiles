@@ -7,6 +7,10 @@ compinit
 
 . ~/.profile
 
+# CTRL+{left,right} to navigate whole words
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
 # autocomplete with same color as ls
 if [ $IS_MAC ]; then
     export CLICOLOR=1
