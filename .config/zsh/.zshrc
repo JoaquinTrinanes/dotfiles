@@ -22,5 +22,8 @@ fi
 # tab select autocomplete
 zstyle ':completion:*' menu select
 
+HISTFILE="$CONFIG_DIR/zsh/.history"
+SAVEHIST=1000
+
 unsetopt share_history
 
