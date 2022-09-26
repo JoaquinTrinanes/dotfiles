@@ -2,7 +2,7 @@
 
 alias dots="yadm"
 alias c="yadm"
-alias grep="egrep"
+alias grep="grep -E"
 alias vim="nvim"
 
 # what do you mean, command not found?
@@ -12,6 +12,13 @@ alias k0s="k9s"
 alias k9s="k9s --readonly"
 alias open="xdg-open"
 
+composer () {
+    if [ -f vendor/bin/sail ]; then
+        vendor/bin/sail composer "$@"
+    else
+        \composer "$@"
+    fi
+}
 alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 
 commandExists() {
