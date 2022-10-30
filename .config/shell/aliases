@@ -1,5 +1,3 @@
-#!/bin/sh
-
 alias dots="yadm"
 alias c="yadm"
 alias grep="grep -E"
@@ -12,17 +10,54 @@ alias k0s="k9s"
 alias k9s="k9s --readonly"
 alias open="xdg-open"
 
-composer () {
-    if [ -f vendor/bin/sail ]; then
-        vendor/bin/sail composer "$@"
-    else
-        \composer "$@"
-    fi
+function curry() {
+    exportfun=$1
+    shift
+    fun=$1
+    shift
+    params=$*
+    cmd=$"function $exportfun() {
+        more_params=\$*;
+        $fun $params \$more_params;
+    }"
+    eval $cmd
 }
-alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+
+# Creates a wrapper around a command
+# Arguments:
+#   $1: Path to the program to wrap. Can be relative.
+#   $2: Name of the command
+function createWrapper() {
+    local wrapperPath="$1"
+    shift
+    local command="$1"
+    [ ! -z "$command" ] && shift
+    local wrapperCommandName=${command:-$(basename $wrapperPath)}
+
+    # Calls $command with the given arguments.
+    # If $wrapperPath exists, calls the program at $wrapperPath with the command name as argument
+    cmd="
+        function $wrapperCommandName () {
+            if [ -f $wrapperPath ]; then
+                $wrapperPath $command "\$*"
+            else
+                command $wrapperCommandName "\$*"
+            fi
+        }
+    "
+    eval $cmd
+}
+
+curry createSailAlias createWrapper vendor/bin/sail
+
+createSailAlias
+createSailAlias composer
+createSailAlias artisan
+
+# alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 
 commandExists() {
-    command -v $1 &> /dev/null
+    command -v $1 &>/dev/null
 }
 
 if commandExists exa; then
@@ -35,7 +70,11 @@ if commandExists bat; then
     alias cat="bat -p"
 fi
 
-function . () {
+if commandExists helix; then
+    alias hx="helix"
+fi
+
+function .() {
     if [ $# -gt 0 ]; then
         builtin . "$@"
     else
