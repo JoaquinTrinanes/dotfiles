@@ -1,5 +1,6 @@
-autoload -Uz compinit
+autoload -Uz compinit bashcompinit
 compinit
+bashcompinit
 
 # loading the plugins defines a lot of aliases, we do it beforehand
 # to override them in the common config
@@ -7,23 +8,13 @@ compinit
 
 . ~/.profile
 
+. $ZDOTDIR/autocomplete.zsh
+
 # CTRL+{left,right} to navigate whole words
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
-# autocomplete with same color as ls
-if [ $IS_MAC ]; then
-    export CLICOLOR=1
-else
-    eval "$(dircolors)"
-    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-fi
-
-# tab select autocomplete
-zstyle ':completion:*' menu select
 
 HISTFILE="$CONFIG_DIR/zsh/.history"
 SAVEHIST=1000
-
-unsetopt share_history
 
