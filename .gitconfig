@@ -46,8 +46,6 @@
     unhideall= !git ls-files -v | grep '^h' | sed -e 's/h //g' | xargs git unhide
     up = pull --rebase
 [branch]
-    autosetupmerge = always
-    autosetuprebase = always
 [color]
     branch = auto
     diff = auto
@@ -100,7 +98,6 @@
     rebase = true
 [push]
     autoSetupRemote = true
-    default = current
     followTags = true
 [help]
     autocorrect = 1
