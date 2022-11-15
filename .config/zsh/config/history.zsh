@@ -1,0 +1,5 @@
+HISTFILE="$ZDOTDIR/.history"
+SAVEHIST=1000
+HISTSIZE=1000
+
+CUSTOM_ZSH_OPTIONS+=(appendhistory extended_glob)
