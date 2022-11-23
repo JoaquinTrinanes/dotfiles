@@ -1,4 +1,6 @@
 # Aloxaf/fzf-tab
+# jeffreytse/zsh-vi-mode
+lukechilds/zsh-nvm
 ohmyzsh/ohmyzsh path:plugins/colorize
 ohmyzsh/ohmyzsh path:plugins/copyfile
 ohmyzsh/ohmyzsh path:plugins/docker
@@ -7,12 +9,8 @@ ohmyzsh/ohmyzsh path:plugins/dotenv
 ohmyzsh/ohmyzsh path:plugins/extract
 ohmyzsh/ohmyzsh path:plugins/git
 ohmyzsh/ohmyzsh path:plugins/golang
-# jeffreytse/zsh-vi-mode
-lukechilds/zsh-nvm
 ohmyzsh/ohmyzsh path:plugins/sudo
 ohmyzsh/ohmyzsh path:plugins/yarn
+spaceship-prompt/spaceship-prompt
 zdharma-continuum/fast-syntax-highlighting
 zsh-users/zsh-autosuggestions
-
-denysdovhan/spaceship-zsh-theme
-
