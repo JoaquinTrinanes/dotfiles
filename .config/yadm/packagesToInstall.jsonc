@@ -1,14 +1,13 @@
 [
-  "neovim",
-  "zsh",
-  "bat",
-  "hex",
-  "antigen-git",
-  "ttf-fira-code",
   "autojump",
+  "bat",
   "fontconfig",
+  "hex",
   "httpie",
-  //   "fzf",
-  //   "sd",
-  "pipewire-pulse"
+  "jq",
+  "neovim",
+  "pipewire-pulse",
+  "python-pynvim",
+  "ttf-fira-code",
+  "zsh"
 ]
