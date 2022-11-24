@@ -112,6 +112,6 @@
 [include]
     path = .gitconfig.local
 [includeIf "gitdir:~/Documents/vizzuality/"]
-    path = ~/Documents/vizzuality/.gitconfig
+    path = ~/.gitconfig-work
 [includeIf "gitdir:~/Documents/veganhacktivists/"]
-    path = ~/Documents/veganhacktivists/.gitconfig
+    path = ~/.gitconfig-vh
