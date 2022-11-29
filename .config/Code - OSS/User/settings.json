@@ -1,0 +1,83 @@
+{
+  "breadcrumbs.enabled": true,
+  "debug.javascript.autoAttachFilter": "disabled",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  // Basic editor options
+  "editor.fontFamily": "'Fira Code', monospace, 'Droid Sans Mono', 'Droid Sans Fallback'",
+  "editor.fontLigatures": "'ss01', 'ss03' , 'ss05'",
+  "editor.fontSize": 16,
+  "editor.formatOnSave": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.wordWrap": "on",
+  "files.associations": {
+    "*.erb": "erb",
+    ".env": "shellscript"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+  "window.titleBarStyle": "custom",
+  "workbench.colorTheme": "Nord",
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+
+  // Disable red lines under formatting "errors"
+  "eslint.rules.customizations": [
+    { "rule": "prettier/prettier", "severity": "off" }
+  ],
+  "tailwindCSS.experimental.classRegex": [
+    // classnames regex: any letter, number, underscore, or dash
+    // ([ \\w\\d\\-_:]*)
+    // basic regex: classes between quotes
+    // ['\"]([ \w\d\\-_:]*)['\"][^}]*
+
+    // THEME_CLASSNAMES = { ... }
+    ["CLASSNAMES?[^=]*=\\s*\\{([\\s\\S]*?)\\};", "['\"]([ \\w\\d\\-_:]*)['\"]"],
+    // classNames(...)
+    ["classNames\\((\\s\\S)*?\\);", "([ \\w\\d\\-_:]*?)"],
+    ["CLASSES?\\s*=\\s*['\"]([ \\w\\d\\-_:]*)['\"];"],
+    ["CLASSNAMES?\\s*=\\s*['\"]([ \\w\\d\\-_:]*)['\"];"]
+  ],
+  "window.zoomLevel": 1,
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[postcss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "typescript.tsdk": "./node_modules/typescript/lib"
+}
