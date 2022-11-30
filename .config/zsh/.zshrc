@@ -1,16 +1,21 @@
 . ~/.profile
 
-for f in $ZDOTDIR/config/*.zsh; do
-    . $f
-done
+autoload -Uz compinit bashcompinit
+compinit
+bashcompinit
 
 # l: lowercase
 # a: array
 # U: unique
 typeset -laU CUSTOM_ZSH_OPTIONS
 
+for f in $ZDOTDIR/config/plugins/*.zsh; do
+    . $f
+done
 
-. $ZDOTDIR/plugins/load.zsh
+for f in $ZDOTDIR/config/*.zsh; do
+    . $f
+done
 
 # setopt all the options in CUSTOM_ZSH_OPTIONS
 . $ZDOTDIR/load_zsh_options.zsh

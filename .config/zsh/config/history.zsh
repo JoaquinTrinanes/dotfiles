@@ -8,7 +8,3 @@ CUSTOM_ZSH_OPTIONS+=(
     hist_expire_dups_first
     hist_ignore_space
 )
-
-autoload -Uz compinit bashcompinit
-compinit
-bashcompinit
