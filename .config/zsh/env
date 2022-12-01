@@ -1,2 +1,0 @@
-export SPACESHIP_CONFIG="$ZDOTDIR/config/plugins/spaceship.zsh"
-
