@@ -1,5 +1,7 @@
 # Some plugin config must be set before they are loaded
-source "$(dirname "$0")/config.zsh"
+for f in $(dirname "$0")/plugin_config/*.zsh; do
+    . $f
+done
 
 typeset -gU cdpath fpath mailpath path
 
