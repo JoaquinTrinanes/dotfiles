@@ -36,7 +36,12 @@ local plugins = {
     'mrk21/yaml-vim',
     'preservim/nerdtree',
     'rafi/awesome-vim-colorschemes',
-    'scrooloose/nerdcommenter',
+    { 'scrooloose/nerdcommenter', config = function()
+        vim.g.NERDCreateDefaultMappings = true
+        vim.g.NERDCustomDelimiters = { c = { left = '//', } }
+        vim.g.NERDSpaceDelims = 2
+        vim.g.NERDCompactSexyComs = 1
+    end },
     { 'sheerun/vim-polyglot', config = 'vim.g.did_load_filetypes = nil' },
     'Shougo/deoplete-clangx',
     'Shougo/echodoc.vim',
