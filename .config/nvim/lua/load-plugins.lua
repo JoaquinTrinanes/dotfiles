@@ -12,7 +12,6 @@ end
 local packer_bootstrap = ensure_packer()
 
 local plugins = {
-    'airblade/vim-gitgutter',
     { 'autozimu/LanguageClient-neovim', branch = 'next', run = 'bash install.sh' },
     'Chiel92/vim-autoformat',
     'chrisbra/Colorizer',
@@ -23,6 +22,17 @@ local plugins = {
     'jeffkreeftmeijer/vim-numbertoggle',
     'junegunn/fzf',
     'junegunn/goyo.vim',
+    {
+        'lewis6991/gitsigns.nvim',
+        config = function()
+            require('gitsigns').setup({
+                current_line_blame = true,
+                yadm = {
+                    enable = true
+                }
+            })
+        end
+    },
     'mrk21/yaml-vim',
     'preservim/nerdtree',
     'rafi/awesome-vim-colorschemes',
