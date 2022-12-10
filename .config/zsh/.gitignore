@@ -1,4 +1,5 @@
 *.zwc
 .*
+!.zsh_plugins.txt
 !.zshrc
 !.gitignore
