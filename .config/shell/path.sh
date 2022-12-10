@@ -34,3 +34,10 @@ else
     export PATH="$PNPM_HOME:$PATH"
 fi
 
+# asdf
+if [ $IS_MAC ];then
+    . $(brew --prefix asdf)/libexec/asdf.sh
+else
+    . /opt/asdf-vm/asdf.sh
+fi
+

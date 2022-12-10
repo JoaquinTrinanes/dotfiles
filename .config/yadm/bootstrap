@@ -6,3 +6,7 @@ git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antid
 # Install pnpm
 curl -fsSL https://get.pnpm.io/install.sh | sh -
 
+# install asdf's node plugin
+asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+asdf install nodejs latest
+

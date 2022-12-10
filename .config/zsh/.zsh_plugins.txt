@@ -1,6 +1,5 @@
 # Aloxaf/fzf-tab
 # jeffreytse/zsh-vi-mode
-lukechilds/zsh-nvm
 ohmyzsh/ohmyzsh path:plugins/colorize
 ohmyzsh/ohmyzsh path:plugins/copyfile
 ohmyzsh/ohmyzsh path:plugins/docker
