@@ -27,6 +27,8 @@ function curry() {
 # Arguments:
 #   $1: Path to the program to wrap. Can be relative.
 #   $2: Name of the command
+# Example:
+#   createWrapper vendor/bin/sail composer
 function createWrapper() {
     local wrapperPath="$1"
     shift
@@ -47,14 +49,6 @@ function createWrapper() {
     "
     eval $cmd
 }
-
-curry createSailAlias createWrapper vendor/bin/sail
-
-createSailAlias
-createSailAlias composer
-createSailAlias artisan
-
-# alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 
 commandExists() {
     command -v $1 &>/dev/null

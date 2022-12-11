@@ -10,3 +10,5 @@ PS1='[\u@\h \W]\$ '
 
 . $HOME/.profile
 
+eval "$(direnv hook bash)"
+
