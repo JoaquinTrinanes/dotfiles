@@ -1,17 +1,21 @@
 #!/bin/bash
 
-DIRENV_TMP_DIR="${PWD}/.direnv"
-DIRENV_BIN_DIR="${DIRENV_TMP_DIR}/bin"
-
-[ ! -e "${DIRENV_BIN_DIR}" ] && mkdir -p "${DIRENV_BIN_DIR}"
-PATH_add $DIRENV_BIN_DIR
-
 layout_laravel_sail() {
     layout php
-    local scripts=(composer artisan php)
+
+    lib_dir="$(direnv_layout_dir)/laravel_sail"
+    bin_dir="$lib_dir/bin"
+    mkdir -p "$bin_dir"
+    local scripts=(
+        composer
+        artisan
+        php
+        tinker
+    )
     for script in ${scripts[@]}; do
-        echo "sail $script \$@" > $DIRENV_BIN_DIR/$script
+        echo "sail $script \$@" > $bin_dir/$script
     done
-    chmod -R u+x $DIRENV_BIN_DIR
+    chmod -R u+x $bin_dir
+    PATH_add "$bin_dir"
 }
 
