@@ -1,4 +1,6 @@
-require('config')
-require('render-whitespace')
-require('load-plugins')
-require('keymap')
+require('joaquin.config')
+require('joaquin.render-whitespace')
+require('joaquin.load-plugins')
+require('joaquin.keymap')
+require('joaquin.commands')
+
