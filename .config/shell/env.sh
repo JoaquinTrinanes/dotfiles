@@ -11,4 +11,3 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export CONFIG_DIR=$XDG_CONFIG_HOME
 
-export VIMCONFIG="$CONFIG_DIR/nvim/init.vim"
