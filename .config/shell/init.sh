@@ -4,8 +4,10 @@ if [ "$(uname -s)" = "Darwin" ]; then
     export IS_MAC=1
 fi
 
-for f in $(dirname $0)/*.sh; do
-    if [ $f = $0 ]; then continue; fi
-    . $f
-done
+local config_dir="$(dirname $0)"
+
+. $config_dir/env.sh
+. $config_dir/path.sh
+. $config_dir/aliases.sh
+. $config_dir/bootstrap.sh
 
