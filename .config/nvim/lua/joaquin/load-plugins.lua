@@ -1,3 +1,5 @@
+local C = require("joaquin.constants")
+
 local ensure_packer = function()
 	local fn = vim.fn
 	local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
@@ -9,17 +11,27 @@ local ensure_packer = function()
 	return false
 end
 
+local config_path = vim.fn.stdpath("config") .. "/lua/" .. C.CONFIG_PATH
+
 local packer_bootstrap = ensure_packer()
+
+local augroup = vim.api.nvim_create_augroup("SyncOnPackerSave", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+	group = augroup,
+	pattern = config_path .. "/load-plugins.lua",
+	command = "PackerSync",
+})
 
 local plugins = {
 	{
-		'ms-jpq/coq_nvim', run = ":COQdeps",
+		"ms-jpq/coq_nvim",
+		run = ":COQdeps",
 		requires = {
-			{ 'ms-jpq/coq.artifacts', branch = 'artifacts' }
+			{ "ms-jpq/coq.artifacts", branch = "artifacts" },
 		},
 		config = function()
-			vim.g.coq_settings = { ['auto_start'] = 'shut-up' }
-		end
+			vim.g.coq_settings = { ["auto_start"] = "shut-up", ["keymap.jump_to_mark"] = nil }
+		end,
 	},
 	{
 		"williamboman/mason.nvim",
