@@ -9,6 +9,19 @@ end
 -- Leader key: Space
 vim.g.mapleader = " "
 
+-- Exit insert mode pressing jk
+map("i", [[jk]], [[<ESC>]])
+
+-- window management
+map("n", "<leader>sv", "<C-w>v") -- split window vertically
+map("n", "<leader>sh", "<C-w>s") -- split window horizontally
+map("n", "<leader>se", "<C-w>=") -- make split windows equal width & height
+map("n", "<leader>sx", ":close<CR>") -- close current split window
+
+-- Don't copy deleted content with x
+map("n", "x", '"_x')
+map("n", "X", '"_X')
+
 -- Center screen on scroll
 map("n", [[<C-f>]], [[<C-f>zz]])
 map("n", [[<C-u>]], [[<C-u>zz]])

@@ -3,8 +3,8 @@ local C = require("joaquin.constants")
 local files = {
 	"config",
 	"load-plugins",
-	"keymap",
 	"commands",
+	"keymap",
 	"theme",
 	"render-whitespace",
 }
