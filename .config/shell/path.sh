@@ -27,10 +27,12 @@ else
     export PATH="$PNPM_HOME:$PATH"
 fi
 
-# asdf
+# asdf: why is it not in a normal path?
 if [ $IS_MAC ];then
-    . $(brew --prefix asdf)/libexec/asdf.sh
+    PATH="$(brew --prefix asdf)/bin:$PATH"
 else
-    . /opt/asdf-vm/asdf.sh
+    PATH="/opt/asdf-vm/bin:$PATH"
 fi
+# asdf: detect global versions outside projects without using the shims
+export PATH="$HOME/.asdf/shims:$PATH"
 
