@@ -151,6 +151,7 @@ local plugins = {
 			vim.g.NERDCompactSexyComs = 1
 		end,
 	},
+	"shaunsingh/nord.nvim",
 	"tpope/vim-eunuch",
 	"tpope/vim-surround",
 }

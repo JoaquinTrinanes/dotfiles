@@ -1,4 +1,4 @@
-local C = require("constants")
+local C = require("joaquin.constants")
 
 local files = {
 	"config",
