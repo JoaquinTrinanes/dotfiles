@@ -19,7 +19,6 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
   "window.titleBarStyle": "custom",
-  "workbench.colorTheme": "Nord",
   "typescript.tsserver.experimental.enableProjectDiagnostics": true,
 
   // Disable red lines under formatting "errors"
@@ -79,5 +78,14 @@
   "[postcss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "typescript.tsdk": "./node_modules/typescript/lib"
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "telemetry.telemetryLevel": "off",
+  "editor.lineNumbers": "relative",
+  "workbench.preferredLightColorTheme": "Nord Light",
+  "window.autoDetectColorScheme": true,
+  "workbench.preferredDarkColorTheme": "Nord",
+  "workbench.colorTheme": "Nord"
 }
