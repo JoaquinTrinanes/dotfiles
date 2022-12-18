@@ -17,18 +17,18 @@ opt.number = true
 opt.relativenumber = true
 
 -- Use system clipboard
-opt.clipboard:append('unnamedplus')
+opt.clipboard:append("unnamedplus")
 
 -- Split!
 opt.splitright = true
 opt.splitbelow = true
 
-opt.iskeyword:append('-')
+opt.iskeyword:append("-")
 
 opt.cursorline = true
 opt.termguicolors = true
-opt.background = 'dark'
-opt.signcolumn = 'yes'
-opt.backspace = { 'indent', 'eol', 'start' }
+opt.background = "dark"
+opt.signcolumn = "yes"
+opt.backspace = { "indent", "eol", "start" }
 
-vim.cmd [[colorscheme nord]]
+vim.cmd("colorscheme nord")

@@ -1,5 +1,3 @@
-local C = require("joaquin.constants")
-
 local files = {
 	"config",
 	"load-plugins",
@@ -13,7 +11,7 @@ local errors = {}
 
 -- load all config, throw possible errors later
 for _, file in ipairs(files) do
-	local ok, error = pcall(require, C.CONFIG_PATH .. "." .. file)
+	local ok, error = pcall(require, "my." .. file)
 	if not ok then
 		table.insert(errors, error)
 	end

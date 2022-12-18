@@ -1,4 +1,4 @@
-local C = require("joaquin.constants")
+local C = require("my.constants")
 
 local ensure_packer = function()
 	local fn = vim.fn
@@ -36,7 +36,7 @@ local plugins = {
 				branch = "3p",
 				config = function()
 					require("coq_3p")({
-						{ src = "nvimlua", conf_only = true },
+						{ src = "nvimlua", conf_only = true, short_name = "nLUA" },
 						{
 							src = "repl",
 							sh = "zsh",
