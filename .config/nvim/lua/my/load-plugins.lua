@@ -165,11 +165,9 @@ local plugins = {
 		end,
 	},
 	{
-		"scrooloose/nerdcommenter",
+		"numToStr/Comment.nvim",
 		config = function()
-			vim.g.NERDCreateDefaultMappings = true
-			vim.g.NERDSpaceDelims = 2
-			vim.g.NERDCompactSexyComs = 1
+			require("Comment").setup()
 		end,
 	},
 	"shaunsingh/nord.nvim",
