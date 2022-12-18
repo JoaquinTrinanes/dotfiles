@@ -19,18 +19,42 @@ local augroup = vim.api.nvim_create_augroup("SyncOnPackerSave", { clear = true }
 vim.api.nvim_create_autocmd("BufWritePre", {
 	group = augroup,
 	pattern = config_path .. "/load-plugins.lua",
-	command = "PackerSync",
+	command = "PackerCompile",
 })
 
 local plugins = {
+	"kyazdani42/nvim-web-devicons",
 	{
 		"ms-jpq/coq_nvim",
+		as = "coq",
+		branch = "coq",
 		run = ":COQdeps",
 		requires = {
 			{ "ms-jpq/coq.artifacts", branch = "artifacts" },
+			{
+				"ms-jpq/coq.thirdparty",
+				branch = "3p",
+				config = function()
+					require("coq_3p")({
+						{ src = "nvimlua", conf_only = true },
+						{
+							src = "repl",
+							sh = "zsh",
+							shell = { p = "perl", n = "node" },
+							max_lines = 99,
+							deadline = 500,
+							unsafe = { "rm", "poweroff", "mv" },
+						},
+					})
+				end,
+			},
 		},
-		config = function()
-			vim.g.coq_settings = { ["auto_start"] = "shut-up", ["keymap.jump_to_mark"] = nil }
+		setup = function()
+			vim.g.coq_settings = {
+				auto_start = "shut-up",
+				["keymap.recommended"] = true,
+				["keymap.jump_to_mark"] = "",
+			}
 		end,
 	},
 	{
@@ -56,7 +80,7 @@ local plugins = {
 								diagnostics = { globals = { "vim" } },
 								workspace = {
 									library = {
-										[vim.fn.expand("$VIM_RUNTIME/lua")] = true,
+										[vim.fn.expand("$VIMRUNTIME/lua")] = true,
 										[vim.fn.stdpath("config") .. "/lua"] = true,
 									},
 								},
@@ -73,14 +97,16 @@ local plugins = {
 		after = { "mason" },
 		config = function()
 			local null_ls = require("null-ls")
+
 			null_ls.setup({
-				null_ls.builtins.formatting.beautysh,
-				null_ls.builtins.formatting.stylua,
-				null_ls.builtins.diagnostics.eslint,
-				null_ls.builtins.completion.spell,
-				null_ls.builtins.completion.tags,
-				null_ls.builtins.completion.luasnip,
-				null_ls.builtins.formatting.prettierd,
+				sources = {
+					null_ls.builtins.formatting.beautysh,
+					null_ls.builtins.formatting.stylua,
+					null_ls.builtins.diagnostics.eslint,
+					null_ls.builtins.completion.spell,
+					null_ls.builtins.completion.tags,
+					null_ls.builtins.formatting.prettierd,
+				},
 			})
 		end,
 	},
@@ -98,7 +124,6 @@ local plugins = {
 	},
 	{
 		"folke/trouble.nvim",
-		requires = "kyazdani42/nvim-web-devicons",
 		config = function()
 			require("trouble").setup({
 				-- your configuration comes here
@@ -126,13 +151,6 @@ local plugins = {
 		branch = "0.1.x",
 		requires = {
 			{ "nvim-lua/plenary.nvim" },
-			{
-				"nvim-treesitter/nvim-treesitter",
-				run = function()
-					local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
-					ts_update()
-				end,
-			},
 			{ "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
 		},
 		run = function()

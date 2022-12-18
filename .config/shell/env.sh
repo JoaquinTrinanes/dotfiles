@@ -8,6 +8,6 @@ export VISUAL="code"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
-export CONFIG_DIR=$XDG_CONFIG_HOME
+export XDG_CACHE_HOME="$HOME/.cache" export CONFIG_DIR=$XDG_CONFIG_HOME
 
+export NVIM_HOME="$XDG_CONFIG_HOME/nvim"
