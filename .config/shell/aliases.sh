@@ -60,6 +60,7 @@ if commandExists exa; then
 fi
 
 if commandExists bat; then
+    export BAT_THEME="$THEME"
     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
     alias cat="bat -p"
 fi

@@ -1,7 +1,14 @@
 #!/bin/sh
 
+local CONFIG_DIR=${XDG_CONFIG_HOME:-$HOME/.config}
+
 # Install antidote
 git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
 
 # Install pnpm
 curl -fsSL https://get.pnpm.io/install.sh | sh -
+
+# Set kitty's theme based on the $THEME var
+if [ ! -z $THEME ]; then
+    ln -s $CONFIG_DIR/kitty/themes/${THEME}.conf $CONFIG_DIR/kitty/theme.conf
+fi
