@@ -34,6 +34,11 @@ map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
 map("n", "<leader>ft", "<cmd>Telescope treesitter<cr>")
 
+-- Code actions
+map("n", "<C-.>", function()
+	vim.lsp.buf.code_action()
+end)
+
 -- Trouble
 map("n", "<leader>xx", "<cmd>TroubleToggle<cr>")
 

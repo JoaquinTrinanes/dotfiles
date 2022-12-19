@@ -23,6 +23,23 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 local plugins = {
+	{
+		"stevearc/dressing.nvim",
+		after = { "telescope" },
+		config = function()
+			require("dressing").setup({
+				input = { relative = "cursor" },
+				select = {
+					get_config = function(opts)
+						if opts.kind == "codeaction" then
+							return { telescope = require("telescope.themes").get_cursor() }
+						end
+					end,
+					telescope = require("telescope.themes").get_dropdown(),
+				},
+			})
+		end,
+	},
 	"kyazdani42/nvim-web-devicons",
 	{
 		"ms-jpq/coq_nvim",
@@ -102,10 +119,12 @@ local plugins = {
 				sources = {
 					null_ls.builtins.formatting.beautysh,
 					null_ls.builtins.formatting.stylua,
-					null_ls.builtins.diagnostics.eslint,
+					null_ls.builtins.diagnostics.eslint_d,
+					null_ls.builtins.code_actions.eslint_d,
 					null_ls.builtins.completion.spell,
 					null_ls.builtins.completion.tags,
 					null_ls.builtins.formatting.prettierd,
+					null_ls.builtins.diagnostics.tsc,
 				},
 			})
 		end,
@@ -148,6 +167,7 @@ local plugins = {
 	"knubie/vim-kitty-navigator",
 	{
 		"nvim-telescope/telescope.nvim",
+		as = "telescope",
 		branch = "0.1.x",
 		requires = {
 			{ "nvim-lua/plenary.nvim" },
@@ -160,8 +180,18 @@ local plugins = {
 				return
 			end
 			error("fd or ripGrep are not installed")
-			require("telescope").setup()
-			require("telescope").load_extension("fzf")
+			local telescope = require("telescope")
+			telescope.setup({
+				-- extensions = {
+				-- 	["ui-select"] = {
+				-- 		require("telescope.themes").get_dropdown({
+				-- 			-- even more opts
+				-- 		}),
+				-- 	},
+				-- },
+			})
+			telescope.load_extension("fzf")
+			-- telescope.load_extension("ui-select")
 		end,
 	},
 	{
