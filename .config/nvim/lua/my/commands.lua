@@ -24,6 +24,14 @@ vim.api.nvim_create_autocmd("CursorHold", {
 	end,
 })
 
+local highlight_yank_group = vim.api.nvim_create_augroup("OnHover", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+	group = highlight_yank_group,
+	callback = function()
+		vim.highlight.on_yank()
+	end,
+})
+
 vim.api.nvim_create_user_command("Autoformat", function()
 	lsp_formatting(0)
 end, {})

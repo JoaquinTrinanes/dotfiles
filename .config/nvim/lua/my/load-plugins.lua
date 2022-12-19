@@ -85,7 +85,11 @@ local plugins = {
 		config = function()
 			require("mason").setup()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "sumneko_lua", "typescript-language-server" },
+				ensure_installed = {
+					"sumneko_lua",
+					"tsserver",
+					"tailwindcss",
+				},
 			})
 			require("mason-lspconfig").setup_handlers({
 				function(server_name) -- default handler (optional)
