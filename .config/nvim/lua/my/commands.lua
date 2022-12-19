@@ -12,11 +12,8 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
 	group = augroup,
-	-- buffer = bufnr,
 	callback = function(ev)
-		-- if client.supports_method("textDocument/formatting") then
 		lsp_formatting(ev.buf)
-		-- end
 	end,
 })
 

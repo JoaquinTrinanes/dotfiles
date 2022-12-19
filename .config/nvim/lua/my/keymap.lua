@@ -27,7 +27,7 @@ map("n", [[<C-f>]], [[<C-f>zz]])
 map("n", [[<C-u>]], [[<C-u>zz]])
 
 -- Telescope
-map("n", "<C-p>", "<cmd>Telescope find_files<cr>")
+map("n", "<C-p>", "<cmd>Telescope find_files hidden=true no_ignore=false<cr>")
 -- map('n', '<leader>ff', '<cmd>Telescope find_files<cr>')
 map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")

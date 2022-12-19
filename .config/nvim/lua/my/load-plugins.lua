@@ -27,15 +27,16 @@ local plugins = {
 		"stevearc/dressing.nvim",
 		after = { "telescope" },
 		config = function()
+			local telescope_themes = require("telescope.themes")
 			require("dressing").setup({
 				input = { relative = "cursor" },
 				select = {
 					get_config = function(opts)
 						if opts.kind == "codeaction" then
-							return { telescope = require("telescope.themes").get_cursor() }
+							return { telescope = telescope_themes.get_cursor() }
 						end
 					end,
-					telescope = require("telescope.themes").get_dropdown(),
+					telescope = telescope_themes.get_dropdown(),
 				},
 			})
 		end,
@@ -84,7 +85,7 @@ local plugins = {
 		config = function()
 			require("mason").setup()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "sumneko_lua" },
+				ensure_installed = { "sumneko_lua", "typescript-language-server" },
 			})
 			require("mason-lspconfig").setup_handlers({
 				function(server_name) -- default handler (optional)
@@ -117,14 +118,18 @@ local plugins = {
 
 			null_ls.setup({
 				sources = {
-					null_ls.builtins.formatting.beautysh,
-					null_ls.builtins.formatting.stylua,
-					null_ls.builtins.diagnostics.eslint_d,
-					null_ls.builtins.code_actions.eslint_d,
 					null_ls.builtins.completion.spell,
 					null_ls.builtins.completion.tags,
 					null_ls.builtins.formatting.prettierd,
+
+					-- lua
+					null_ls.builtins.formatting.beautysh,
+					null_ls.builtins.formatting.stylua,
+
+					-- js
 					null_ls.builtins.diagnostics.tsc,
+					null_ls.builtins.code_actions.eslint,
+					null_ls.builtins.diagnostics.eslint,
 				},
 			})
 		end,
