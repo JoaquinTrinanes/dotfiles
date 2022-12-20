@@ -181,9 +181,20 @@ local plugins = {
 
 			null_ls.setup({
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "node_modules", "Makefile", ".git"),
+				on_attach = function(client)
+					local setup = require("my.commands").setup_lsp_commands
+					setup(client)
+				end,
 				sources = {
 					diagnostics.todo_comments,
 					formatting.prettierd,
+
+					-- xml
+					formatting.xmllint,
+
+					-- markdown
+					diagnostics.markdownlint,
+					formatting.markdownlint,
 
 					-- git
 					code_actions.gitsigns.with({
@@ -224,9 +235,10 @@ local plugins = {
 	{
 		"nvim-tree/nvim-tree.lua",
 		tag = "nightly",
+		as = "nvim-tree",
 		config = function()
 			require("nvim-tree").setup({
-				-- open_on_setup = true,
+				open_on_setup = false,
 				live_filter = {
 					always_show_folders = false,
 				},
