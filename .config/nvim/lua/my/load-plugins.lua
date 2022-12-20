@@ -49,6 +49,17 @@ local plugins = {
 		},
 	},
 	{
+		"mfussenegger/nvim-dap-python",
+		after = "nvim-dap",
+		config = function()
+			require("dap-python").setup()
+		end,
+	},
+
+	{
+		"mfussenegger/nvim-dap",
+	},
+	{
 		"stevearc/dressing.nvim",
 		after = { "telescope" },
 		config = function()

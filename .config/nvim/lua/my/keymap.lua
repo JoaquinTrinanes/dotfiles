@@ -46,6 +46,23 @@ end)
 -- Trouble
 map("n", "<leader>xx", "<cmd>TroubleToggle<cr>")
 
+local debug_leader = vim.g.mapleader .. "d"
+
+-- Debugger
+map("n", debug_leader .. "b", function()
+	require("dap").toggle_breakpoint()
+end, { desc = "Toggle breakpoint" })
+
+map("n", debug_leader .. "d", function()
+	local dap = require("dap")
+	dap.continue()
+	dap.repl.open()
+end, { desc = "Next breakpoint" })
+
+map("n", debug_leader .. "n", function()
+	require("dap").step_over()
+end, { desc = "Step over" })
+
 -- trigger InsertLeave when using Ctrl-C
 -- map("i", "<C-c>", "<ESC>")
 
