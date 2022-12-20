@@ -70,8 +70,20 @@ local plugins = {
 		setup = function()
 			vim.g.coq_settings = {
 				auto_start = "shut-up",
-				["keymap.recommended"] = true,
-				["keymap.jump_to_mark"] = "",
+				clients = {
+					lsp = {
+						-- Show LSP results first
+						always_on_top = {},
+						resolve_timeout = 10,
+					},
+				},
+				keymap = {
+					recommended = true,
+					jump_to_mark = "",
+				},
+				display = {
+					pum = { fast_close = false },
+				},
 			}
 		end,
 	},
@@ -122,8 +134,6 @@ local plugins = {
 
 			null_ls.setup({
 				sources = {
-					null_ls.builtins.completion.spell,
-					null_ls.builtins.completion.tags,
 					null_ls.builtins.formatting.prettierd,
 
 					-- lua
@@ -132,8 +142,9 @@ local plugins = {
 
 					-- js
 					null_ls.builtins.diagnostics.tsc,
-					null_ls.builtins.code_actions.eslint,
-					null_ls.builtins.diagnostics.eslint,
+					null_ls.builtins.diagnostics.eslint_d,
+					null_ls.builtins.formatting.eslint_d,
+					null_ls.builtins.code_actions.eslint_d,
 				},
 			})
 		end,

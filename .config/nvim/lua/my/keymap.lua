@@ -32,11 +32,15 @@ map("n", "<C-p>", "<cmd>Telescope find_files hidden=true no_ignore=false<cr>")
 map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
-map("n", "<leader>ft", "<cmd>Telescope treesitter<cr>")
 
 -- Code actions
 map("n", "<C-.>", function()
 	vim.lsp.buf.code_action()
+end)
+
+-- Go to definition
+map("n", "gd", function()
+	vim.lsp.buf.definition()
 end)
 
 -- Trouble

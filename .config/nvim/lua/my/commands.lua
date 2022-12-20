@@ -8,25 +8,21 @@ local lsp_formatting = function(bufnr)
 	})
 end
 
-local formatting_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
+local my_augroup = vim.api.nvim_create_augroup("MyAugroup", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
-	group = formatting_group,
+	group = my_augroup,
 	callback = function(ev)
 		lsp_formatting(ev.buf)
 	end,
 })
 
-local hover_group = vim.api.nvim_create_augroup("OnHover", { clear = true })
 vim.api.nvim_create_autocmd("CursorHold", {
-	group = hover_group,
-	callback = function(ev)
-		vim.lsp.buf.hover()
-	end,
+	group = my_augroup,
+	command = "silent! lua vim.lsp.buf.hover()",
 })
 
-local highlight_yank_group = vim.api.nvim_create_augroup("OnHover", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-	group = highlight_yank_group,
+	group = my_augroup,
 	callback = function()
 		vim.highlight.on_yank()
 	end,
