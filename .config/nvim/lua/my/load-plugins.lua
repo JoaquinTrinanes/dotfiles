@@ -24,6 +24,31 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 local plugins = {
 	{
+		"JoosepAlviste/nvim-ts-context-commentstring",
+		requires = {
+			{
+				"nvim-treesitter/nvim-treesitter",
+				run = function()
+					local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
+					ts_update()
+				end,
+				config = function()
+					require("nvim-treesitter.configs").setup({
+						auto_install = true,
+						sync_install = true,
+						ensure_installed = { "typescript", "javascript" },
+						highlight = {
+							enable = false,
+						},
+						context_commentstring = {
+							enable = true,
+						},
+					})
+				end,
+			},
+		},
+	},
+	{
 		"stevearc/dressing.nvim",
 		after = { "telescope" },
 		config = function()
@@ -32,7 +57,7 @@ local plugins = {
 				input = { relative = "cursor" },
 				select = {
 					get_config = function(opts)
-						if opts.kind == "codeaction" then
+						if opts.kind == "codeaction" or opts.kind == "hover" then
 							return { telescope = telescope_themes.get_cursor() }
 						end
 					end,
@@ -46,7 +71,9 @@ local plugins = {
 		"ms-jpq/coq_nvim",
 		as = "coq",
 		branch = "coq",
-		run = ":COQdeps",
+		run = function()
+			require("coq").deps()
+		end,
 		requires = {
 			{ "ms-jpq/coq.artifacts", branch = "artifacts" },
 			{
@@ -205,25 +232,11 @@ local plugins = {
 			end
 			error("fd or ripGrep are not installed")
 			local telescope = require("telescope")
-			telescope.setup({
-				-- extensions = {
-				-- 	["ui-select"] = {
-				-- 		require("telescope.themes").get_dropdown({
-				-- 			-- even more opts
-				-- 		}),
-				-- 	},
-				-- },
-			})
+			telescope.setup({})
 			telescope.load_extension("fzf")
-			-- telescope.load_extension("ui-select")
 		end,
 	},
-	{
-		"numToStr/Comment.nvim",
-		config = function()
-			require("Comment").setup()
-		end,
-	},
+	{ "tpope/vim-commentary" },
 	"shaunsingh/nord.nvim",
 	"tpope/vim-eunuch",
 	"tpope/vim-surround",
