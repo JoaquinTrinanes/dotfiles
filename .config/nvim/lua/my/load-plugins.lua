@@ -170,23 +170,48 @@ local plugins = {
 		after = { "mason" },
 		config = function()
 			local null_ls = require("null-ls")
+			local builtins = null_ls.builtins
+			local code_actions = builtins.code_actions
+			local formatting = builtins.formatting
+			local diagnostics = builtins.diagnostics
+			-- local completion = builtins.completion
+			local hover = builtins.hover
 
 			null_ls.setup({
 				sources = {
-					null_ls.builtins.formatting.prettierd,
+					formatting.prettierd,
+
+					-- git
+					code_actions.gitsigns.with({
+						config = {
+							filter_actions = function(title)
+								return title:lower():match("blame") == nil -- filter out blame actions
+							end,
+						},
+					}),
+
+					-- shell
+					formatting.beautysh,
+					hover.printenv,
 
 					-- lua
-					null_ls.builtins.formatting.beautysh,
-					null_ls.builtins.formatting.stylua,
+					formatting.stylua,
 
 					-- js
-					null_ls.builtins.diagnostics.tsc,
-					null_ls.builtins.diagnostics.eslint_d,
-					null_ls.builtins.formatting.eslint_d,
-					null_ls.builtins.code_actions.eslint_d,
+					diagnostics.tsc,
+					code_actions.eslint_d,
+					diagnostics.eslint_d.with({
+						filter = function(diagnostic)
+							return diagnostic.code ~= "prettier/prettier"
+						end,
+						extra_args = {
+							"--report-unused-disable-directives",
+						},
+					}),
+					formatting.eslint_d,
 
 					-- python
-					null_ls.builtins.formatting.black,
+					formatting.black,
 				},
 			})
 		end,
