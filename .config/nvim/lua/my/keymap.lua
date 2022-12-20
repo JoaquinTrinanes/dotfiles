@@ -9,14 +9,16 @@ end
 -- Leader key: Space
 vim.g.mapleader = " "
 
--- Exit insert mode pressing jk
+-- Exit insert mode pressing jk or jj
 map("i", [[jk]], [[<ESC>]])
+map("i", [[jj]], [[<ESC>]])
 
 -- window management
 map("n", "<leader>sv", "<C-w>v") -- split window vertically
 map("n", "<leader>sh", "<C-w>s") -- split window horizontally
 map("n", "<leader>se", "<C-w>=") -- make split windows equal width & height
 map("n", "<leader>sx", "<cmd>close<CR>") -- close current split window
+map("n", "<leader>st", "<cmd>tabnew<CR>") -- open new tab
 
 -- Don't copy deleted content with x
 map("n", "x", '"_x')
@@ -27,11 +29,17 @@ map("n", [[<C-f>]], [[<C-f>zz]])
 map("n", [[<C-u>]], [[<C-u>zz]])
 
 -- Telescope
+-- map("n", "<C-p>", "<cmd>Telescope find_files hidden=true no_ignore=false<cr>")
 map("n", "<C-p>", "<cmd>Telescope find_files hidden=true no_ignore=false<cr>")
--- map('n', '<leader>ff', '<cmd>Telescope find_files<cr>')
 map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
+
+-- Dir tree
+local dirtree_ok = pcall(require, "nvim-tree")
+if dirtree_ok then
+	map("n", "<C-b>", "<cmd>NvimTreeToggle<cr>")
+end
 
 -- Code actions
 map("n", "<C-.>", function()
@@ -62,14 +70,3 @@ end, { desc = "Next breakpoint" })
 map("n", debug_leader .. "n", function()
 	require("dap").step_over()
 end, { desc = "Step over" })
-
--- trigger InsertLeave when using Ctrl-C
--- map("i", "<C-c>", "<ESC>")
-
--- <TAB>: completion.
--- 'pumvisible() ? "\\<C-n>" : "\\<TAB>"'
--- map("n", "<expr><TAB>", function()
--- local x = vim.fn.pumvisible() and [[\<C-n>]] or [[\<TAB>]]
--- print(x)
--- return x
--- end)

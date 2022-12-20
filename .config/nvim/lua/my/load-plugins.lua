@@ -77,7 +77,7 @@ local plugins = {
 			})
 		end,
 	},
-	"kyazdani42/nvim-web-devicons",
+	{ "kyazdani42/nvim-web-devicons" },
 	{
 		"ms-jpq/coq_nvim",
 		as = "coq",
@@ -177,15 +177,20 @@ local plugins = {
 			-- local completion = builtins.completion
 			local hover = builtins.hover
 
+			local prefer_local_node_modules = { prefer_local = "node_modules/.bin" }
+
 			null_ls.setup({
+				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "node_modules", "Makefile", ".git"),
 				sources = {
+					diagnostics.todo_comments,
 					formatting.prettierd,
 
 					-- git
 					code_actions.gitsigns.with({
 						config = {
+							-- filter out blame actions
 							filter_actions = function(title)
-								return title:lower():match("blame") == nil -- filter out blame actions
+								return title:lower():match("blame") == nil
 							end,
 						},
 					}),
@@ -198,20 +203,40 @@ local plugins = {
 					formatting.stylua,
 
 					-- js
-					diagnostics.tsc,
-					code_actions.eslint_d,
-					diagnostics.eslint_d.with({
+					diagnostics.tsc.with(prefer_local_node_modules),
+					code_actions.eslint_d.with(prefer_local_node_modules),
+					diagnostics.eslint_d.with(vim.tbl_extend("force", prefer_local_node_modules, {
 						filter = function(diagnostic)
 							return diagnostic.code ~= "prettier/prettier"
 						end,
 						extra_args = {
 							"--report-unused-disable-directives",
 						},
-					}),
-					formatting.eslint_d,
+					})),
+					formatting.eslint_d.with(prefer_local_node_modules),
 
 					-- python
 					formatting.black,
+				},
+			})
+		end,
+	},
+	{
+		"nvim-tree/nvim-tree.lua",
+		tag = "nightly",
+		config = function()
+			require("nvim-tree").setup({
+				-- open_on_setup = true,
+				live_filter = {
+					always_show_folders = false,
+				},
+				view = {
+					mappings = {
+						list = {
+							{ key = "<space>", action = "edit" },
+							{ key = "u", action = "dir_up" },
+						},
+					},
 				},
 			})
 		end,
@@ -267,9 +292,18 @@ local plugins = {
 				return
 			end
 			error("fd or ripGrep are not installed")
+		end,
+		config = function()
 			local telescope = require("telescope")
 			telescope.setup({})
 			telescope.load_extension("fzf")
+		end,
+	},
+	{
+		"nvim-telescope/telescope-file-browser.nvim",
+		after = { "telescope" },
+		config = function()
+			require("telescope").load_extension("file_browser")
 		end,
 	},
 	{ "tpope/vim-commentary" },
@@ -292,21 +326,3 @@ return require("packer").startup({
 	end,
 	config = {},
 })
-
--- Missing config
--- let g:LanguageClient_serverCommands = {
---     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
---     \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
---     \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
---     \ 'python': ['~/.local/bin/pyls'],
---     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
---     \ 'c': ['clangd'],
---     \ 'cpp': ['clangd'],
---     \ 'cuda': ['clangd'],
---     \ }
--- let g:LanguageClient_diagnosticsMaxSeverity = "Warning"
--- set completeopt-=preview
--- " autocmd InsertLeave * silent! pclose!
-
--- let g:echodoc#enable_at_startup = 1
--- let g:echodoc#type = "floating"

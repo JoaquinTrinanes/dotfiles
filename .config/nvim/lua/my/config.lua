@@ -34,4 +34,6 @@ opt.background = "dark"
 opt.signcolumn = "yes"
 opt.backspace = { "indent", "eol", "start" }
 
-vim.cmd("colorscheme nord")
+-- disable netrw
+vim.g.loaded = 1
+vim.g.loaded_netrwPlugin = 1
