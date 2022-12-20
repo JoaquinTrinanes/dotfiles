@@ -39,13 +39,13 @@ function createWrapper() {
     # Calls $command with the given arguments.
     # If $wrapperPath exists, calls the program at $wrapperPath with the command name as argument
     cmd="
-        function $wrapperCommandName () {
-            if [ -f $wrapperPath ]; then
-                $wrapperPath $command "\$*"
-            else
-                command $wrapperCommandName "\$*"
-            fi
-        }
+    function $wrapperCommandName () {
+        if [ -f $wrapperPath ]; then
+            $wrapperPath $command "\$*"
+        else
+            command $wrapperCommandName "\$*"
+        fi
+    }
     "
     eval $cmd
 }
@@ -55,8 +55,8 @@ commandExists() {
 }
 
 if commandExists exa; then
-    alias ls="exa"
-    alias la="exa -la"
+    alias ls="exa --icons"
+    alias la="ls -la"
 fi
 
 if commandExists bat; then
