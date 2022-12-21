@@ -322,6 +322,7 @@ local plugins = {
 	{ "shaunsingh/nord.nvim" },
 	{ "tpope/vim-eunuch" },
 	{ "tpope/vim-surround" },
+	{ "ggandor/lightspeed.nvim" },
 }
 
 return require("packer").startup({
