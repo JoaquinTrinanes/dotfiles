@@ -17,7 +17,7 @@ opt.number = true
 opt.relativenumber = true
 
 -- Time to show hover info
-opt.updatetime = 2000
+opt.updatetime = 300
 
 -- Use system clipboard
 opt.clipboard:append("unnamedplus")

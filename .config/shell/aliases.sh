@@ -8,7 +8,6 @@ alias gerp="grep"
 alias k0s="k9s"
 
 alias k9s="k9s --readonly"
-alias open="xdg-open"
 
 function curry() {
     exportfun=$1
@@ -53,6 +52,10 @@ function createWrapper() {
 commandExists() {
     command -v $1 &>/dev/null
 }
+
+if commandExists xdg-open; then
+    alias open="xdg-open"
+fi
 
 if commandExists exa; then
     alias ls="exa --icons"

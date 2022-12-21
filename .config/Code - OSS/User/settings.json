@@ -5,7 +5,7 @@
     "source.fixAll": true
   },
   // Basic editor options
-  "editor.fontFamily": "'Fira Code', monospace, 'Droid Sans Mono', 'Droid Sans Fallback'",
+  "editor.fontFamily": "monospace, 'Fira Code', 'Droid Sans Mono', 'Droid Sans Fallback'",
   "editor.fontLigatures": "'ss01', 'ss03' , 'ss05'",
   "editor.fontSize": 16,
   "editor.formatOnSave": true,

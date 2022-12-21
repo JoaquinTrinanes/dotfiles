@@ -6,8 +6,10 @@
   "httpie",
   "jq",
   "neovim",
+  "noto-fonts-cjk",
   "pipewire-pulse",
   "python-pynvim",
-  "ttf-firacode-nerd",
+  "ttf-fira-code",
+  "ttf-nerd-fonts-symbols-common",
   "zsh"
 ]
