@@ -275,8 +275,8 @@ local plugins = {
 			})
 		end,
 	},
-	"folke/lsp-colors.nvim",
-	"gpanders/editorconfig.nvim",
+	{ "folke/lsp-colors.nvim" },
+	{ "gpanders/editorconfig.nvim" },
 	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
@@ -288,7 +288,7 @@ local plugins = {
 			})
 		end,
 	},
-	"knubie/vim-kitty-navigator",
+	{ "knubie/vim-kitty-navigator" },
 	{
 		"nvim-telescope/telescope.nvim",
 		as = "telescope",
@@ -319,9 +319,9 @@ local plugins = {
 		end,
 	},
 	{ "tpope/vim-commentary" },
-	"shaunsingh/nord.nvim",
-	"tpope/vim-eunuch",
-	"tpope/vim-surround",
+	{ "shaunsingh/nord.nvim" },
+	{ "tpope/vim-eunuch" },
+	{ "tpope/vim-surround" },
 }
 
 return require("packer").startup({
