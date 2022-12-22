@@ -1,3 +1,17 @@
+-- Prints the current highlight groups in the cursor position
+vim.api.nvim_create_user_command("WhatHl", function()
+	local line = vim.fn.line(".")
+	local col = vim.fn.col(".")
+	local result = vim.fn.synstack(line, col)
+
+	local highlight_names = {}
+	for _, item in ipairs(result) do
+		local name = vim.fn.synIDattr(item, "name")
+		table.insert(highlight_names, 1, name)
+	end
+	print(vim.inspect(highlight_names))
+end, {})
+
 local lsp_formatting = function(bufnr)
 	vim.lsp.buf.format({
 		filter = function(client)
