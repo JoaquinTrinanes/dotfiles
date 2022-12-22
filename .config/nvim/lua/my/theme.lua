@@ -9,3 +9,4 @@ g.nord_contrast = true
 g.nord_disable_background = true
 
 nord.set()
+vim.cmd([[colorscheme nord]])

@@ -64,7 +64,7 @@ local function setup_lsp(client)
 	end
 	-- Show info on hover
 	if client.server_capabilities.hoverProvider then
-		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { focusable = false })
+		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { focus = false })
 
 		vim.api.nvim_create_autocmd("CursorHold", {
 			group = lsp_augroup,
@@ -72,14 +72,14 @@ local function setup_lsp(client)
 		})
 	end
 
-	if client.server_capabilities.completionProvider then
-		-- vim.api.nvim_create_autocmd("CursorMovedI", {
-		-- 	group = lsp_augroup,
-		-- 	callback = function()
-		-- 		vim.lsp.buf.completion()
-		-- 	end,
-		-- })
-	end
+	-- if client.server_capabilities.completionProvider then
+	-- vim.api.nvim_create_autocmd("CursorMovedI", {
+	-- 	group = lsp_augroup,
+	-- 	callback = function()
+	-- 		vim.lsp.buf.completion()
+	-- 	end,
+	-- })
+	-- end
 end
 
 local SETUP = { setup_lsp_commands = setup_lsp }
