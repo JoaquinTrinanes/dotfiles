@@ -298,14 +298,19 @@ local plugins = {
 		"hrsh7th/nvim-cmp",
 		requires = {
 			{ "L3MON4D3/LuaSnip", tag = "v1.*" },
+			{ "onsails/lspkind.nvim" },
 		},
 		config = function()
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
+			local lspkind = require("lspkind")
 
 			local select_config = { behavior = cmp.SelectBehavior.Select }
 
 			cmp.setup({
+				formatting = {
+					format = lspkind.cmp_format(),
+				},
 				preselect = cmp.PreselectMode.None,
 				snippet = {
 					expand = function(args)
