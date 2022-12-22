@@ -33,6 +33,7 @@ opt.termguicolors = true
 opt.background = "dark"
 opt.signcolumn = "yes"
 opt.backspace = { "indent", "eol", "start" }
+opt.completeopt = { "menu", "preview", "noinsert" }
 
 -- disable netrw
 vim.g.loaded = 1

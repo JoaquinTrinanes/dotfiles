@@ -55,7 +55,6 @@ local plugins = {
 			require("dap-python").setup()
 		end,
 	},
-
 	{
 		"mfussenegger/nvim-dap",
 	},
@@ -79,59 +78,13 @@ local plugins = {
 	},
 	{ "kyazdani42/nvim-web-devicons" },
 	{
-		"ms-jpq/coq_nvim",
-		as = "coq",
-		branch = "coq",
-		run = function()
-			require("coq").deps()
-		end,
-		requires = {
-			{ "ms-jpq/coq.artifacts", branch = "artifacts" },
-			{
-				"ms-jpq/coq.thirdparty",
-				branch = "3p",
-				config = function()
-					require("coq_3p")({
-						{ src = "nvimlua", conf_only = true, short_name = "nLUA" },
-						{
-							src = "repl",
-							sh = "zsh",
-							shell = { p = "perl", n = "node" },
-							max_lines = 99,
-							deadline = 500,
-							unsafe = { "rm", "poweroff", "mv" },
-						},
-					})
-				end,
-			},
-		},
-		setup = function()
-			vim.g.coq_settings = {
-				auto_start = "shut-up",
-				clients = {
-					lsp = {
-						-- Show LSP results first
-						always_on_top = {},
-						resolve_timeout = 10,
-					},
-				},
-				keymap = {
-					recommended = true,
-					jump_to_mark = "",
-				},
-				display = {
-					pum = { fast_close = false },
-				},
-			}
-		end,
-	},
-	{
 		"williamboman/mason.nvim",
 		as = "mason",
 		requires = {
 			"williamboman/mason-lspconfig.nvim",
 			"neovim/nvim-lspconfig",
 		},
+		after = { "cmp-nvim-lsp" },
 		config = function()
 			require("mason").setup()
 			require("mason-lspconfig").setup({
@@ -142,12 +95,15 @@ local plugins = {
 					"pyright",
 				},
 			})
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
 			require("mason-lspconfig").setup_handlers({
-				function(server_name) -- default handler (optional)
-					require("lspconfig")[server_name].setup({})
+				function(server_name)
+					require("lspconfig")[server_name].setup({ capabilities = capabilities })
 				end,
 				["sumneko_lua"] = function()
 					require("lspconfig").sumneko_lua.setup({
+						capabilities = capabilities,
 						settings = {
 							Lua = {
 								diagnostics = { globals = { "vim" } },
@@ -188,6 +144,7 @@ local plugins = {
 				sources = {
 					diagnostics.todo_comments,
 					formatting.prettierd,
+					null_ls.builtins.completion.luasnip,
 
 					-- xml
 					formatting.xmllint,
@@ -250,6 +207,19 @@ local plugins = {
 						},
 					},
 				},
+			})
+		end,
+	},
+	{
+		"jayp0521/mason-nvim-dap.nvim",
+		after = { "mason" },
+		config = function()
+			local mason_dap = require("mason-nvim-dap")
+			mason_dap.setup({ automatic_setup = true })
+			mason_dap.setup_handlers({
+				function(source_name)
+					require("mason-nvim-dap.automatic_setup")(source_name)
+				end,
 			})
 		end,
 	},
@@ -323,6 +293,61 @@ local plugins = {
 	{ "tpope/vim-eunuch" },
 	{ "tpope/vim-surround" },
 	{ "ggandor/lightspeed.nvim" },
+	{ "hrsh7th/cmp-nvim-lsp" },
+	{
+		"hrsh7th/nvim-cmp",
+		requires = {
+			{ "L3MON4D3/LuaSnip", tag = "v1.*" },
+		},
+		config = function()
+			local cmp = require("cmp")
+			local luasnip = require("luasnip")
+
+			local select_config = { behavior = cmp.SelectBehavior.Select }
+
+			cmp.setup({
+				preselect = cmp.PreselectMode.None,
+				snippet = {
+					expand = function(args)
+						luasnip.lsp_expand(args.body)
+					end,
+				},
+				window = {
+					-- completion = cmp.config.window.bordered(),
+					-- documentation = cmp.config.window.bordered(),
+				},
+				mapping = {
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_next_item(select_config)
+						elseif luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<S-Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.select_prev_item(select_config)
+						elseif luasnip.jumpable(-1) then
+							luasnip.jump(-1)
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
+					["<CR>"] = cmp.mapping.confirm({
+						behavior = cmp.ConfirmBehavior.Replace,
+					}),
+				},
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" },
+				}, {
+					{ name = "buffer" },
+				}),
+			})
+		end,
+	},
 }
 
 return require("packer").startup({
@@ -331,8 +356,6 @@ return require("packer").startup({
 		for _, plugin in ipairs(plugins) do
 			use(plugin)
 		end
-		-- Automatically set up your configuration after cloning packer.nvim
-		-- Put this at the end after all plugins
 		if packer_bootstrap then
 			require("packer").sync()
 		end
