@@ -299,6 +299,13 @@ local plugins = {
 			{ "hrsh7th/cmp-cmdline" },
 			{ "hrsh7th/cmp-buffer" },
 			{ "hrsh7th/cmp-emoji" },
+			{
+				"github/copilot.vim",
+				setup = function()
+					vim.g.copilot_no_tab_map = true
+				end,
+			},
+			{ "hrsh7th/cmp-copilot" },
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -353,6 +360,7 @@ local plugins = {
 					}),
 				},
 				sources = cmp.config.sources({
+					{ name = "copilot" },
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 				}, {
