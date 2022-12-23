@@ -88,6 +88,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	group = my_augroup,
 	callback = function(ev)
 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		if client.name == "rust_analyzer" then
+			local rt = require("rust-tools")
+			vim.keymap.set("n", "<C-.>", rt.hover_actions.hover_actions, { remap = true })
+			return
+		end
 		if client.name ~= CLIENT_NAME then
 			return
 		end

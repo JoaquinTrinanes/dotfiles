@@ -111,6 +111,7 @@ local plugins = {
 		requires = {
 			"williamboman/mason-lspconfig.nvim",
 			"neovim/nvim-lspconfig",
+			"simrat39/rust-tools.nvim",
 		},
 		after = { "cmp-nvim-lsp" },
 		config = function()
@@ -128,6 +129,13 @@ local plugins = {
 			require("mason-lspconfig").setup_handlers({
 				function(server_name)
 					require("lspconfig")[server_name].setup({ capabilities = capabilities })
+				end,
+				["rust_analyzer"] = function()
+					local rt = require("rust-tools")
+					rt.setup({
+						capabilities = capabilities,
+						tools = { hover_actions = { auto_hover = true } },
+					})
 				end,
 				["sumneko_lua"] = function()
 					require("lspconfig").sumneko_lua.setup({
