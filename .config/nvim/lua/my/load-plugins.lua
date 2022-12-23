@@ -390,6 +390,65 @@ local plugins = {
 			})
 		end,
 	},
+	{
+		"nvim-lualine/lualine.nvim",
+		requires = { "arkav/lualine-lsp-progress" },
+		config = function()
+			local function diff_source()
+				local gitsigns = vim.b.gitsigns_status_dict
+				if gitsigns then
+					return {
+						added = gitsigns.added,
+						modified = gitsigns.changed,
+						removed = gitsigns.removed,
+					}
+				end
+			end
+
+			require("lualine").setup({
+				extensions = { "nvim-tree" },
+				options = {
+					globalstatus = true,
+					ignore_focus = {
+						"Trouble",
+						"NvimTree",
+						"Help",
+						"TelescopePrompt",
+						"",
+					},
+				},
+				sections = {
+					lualine_a = { "mode" },
+					lualine_b = {
+						{ "b:gitsigns_head", icon = "" },
+						{ "diff", source = diff_source },
+						{
+							"diagnostics",
+							on_click = function()
+								local ok, trouble = pcall(require, "trouble")
+								if not ok then
+									return
+								end
+								trouble.toggle()
+							end,
+						},
+					},
+					lualine_c = { "filename", "lsp_progress" },
+					lualine_x = { "encoding", "fileformat", "filetype" },
+					lualine_y = { "progress" },
+					lualine_z = { "location" },
+				},
+				inactive_sections = {
+					lualine_a = {},
+					lualine_b = {},
+					lualine_c = { "filename" },
+					lualine_x = { "location" },
+					lualine_y = {},
+					lualine_z = {},
+				},
+			})
+		end,
+	},
 }
 
 return require("packer").startup({
