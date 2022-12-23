@@ -127,30 +127,30 @@ local plugins = {
 		config = function()
 			local null_ls = require("null-ls")
 			local builtins = null_ls.builtins
-			local code_actions = builtins.code_actions
-			local formatting = builtins.formatting
-			local diagnostics = builtins.diagnostics
-			-- local completion = builtins.completion
-			local hover = builtins.hover
+			local ca = builtins.code_actions
+			local f = builtins.formatting
+			local d = builtins.diagnostics
+			local c = builtins.completion
+			local h = builtins.hover
 
 			local prefer_local_node_modules = { prefer_local = "node_modules/.bin" }
 
 			null_ls.setup({
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "node_modules", "Makefile", ".git"),
 				sources = {
-					diagnostics.todo_comments,
-					formatting.prettierd,
-					null_ls.builtins.completion.luasnip,
+					d.todo_comments,
+					f.prettierd,
+					c.luasnip,
 
 					-- xml
-					formatting.xmllint,
+					f.xmllint,
 
 					-- markdown
-					diagnostics.markdownlint,
-					formatting.markdownlint,
+					d.markdownlint,
+					f.markdownlint,
 
 					-- git
-					code_actions.gitsigns.with({
+					ca.gitsigns.with({
 						config = {
 							-- filter out blame actions
 							filter_actions = function(title)
@@ -160,16 +160,16 @@ local plugins = {
 					}),
 
 					-- shell
-					formatting.beautysh,
-					hover.printenv,
+					f.beautysh,
+					h.printenv,
 
 					-- lua
-					formatting.stylua,
+					f.stylua,
 
 					-- js
-					diagnostics.tsc.with(prefer_local_node_modules),
-					code_actions.eslint_d.with(prefer_local_node_modules),
-					diagnostics.eslint_d.with(vim.tbl_extend("force", prefer_local_node_modules, {
+					d.tsc.with(prefer_local_node_modules),
+					ca.eslint_d.with(prefer_local_node_modules),
+					d.eslint_d.with(vim.tbl_extend("force", prefer_local_node_modules, {
 						filter = function(diagnostic)
 							return diagnostic.code ~= "prettier/prettier"
 						end,
@@ -177,10 +177,10 @@ local plugins = {
 							"--report-unused-disable-directives",
 						},
 					})),
-					formatting.eslint_d.with(prefer_local_node_modules),
+					f.eslint_d.with(prefer_local_node_modules),
 
 					-- python
-					formatting.black,
+					f.black,
 				},
 			})
 		end,

@@ -28,6 +28,10 @@ map("n", "X", '"_X')
 map("n", [[<C-f>]], [[<C-f>zz]])
 map("n", [[<C-u>]], [[<C-u>zz]])
 
+map("n", "K", function()
+	vim.lsp.buf.hover()
+end)
+
 -- Telescope
 -- map("n", "<C-p>", "<cmd>Telescope find_files hidden=true no_ignore=false<cr>")
 map("n", "<C-p>", "<cmd>Telescope find_files hidden=true no_ignore=false<cr>")
