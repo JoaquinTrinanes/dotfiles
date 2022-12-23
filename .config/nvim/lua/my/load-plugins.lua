@@ -28,6 +28,7 @@ local plugins = {
 		requires = {
 			{
 				"nvim-treesitter/nvim-treesitter",
+				as = "treesitter",
 				run = function()
 					local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
 					ts_update()
@@ -57,6 +58,33 @@ local plugins = {
 	},
 	{
 		"mfussenegger/nvim-dap",
+		requires = {
+			{
+				"rcarriga/nvim-dap-ui",
+				config = function()
+					require("dapui").setup()
+				end,
+			},
+			{
+				"theHamsta/nvim-dap-virtual-text",
+				after = { "treesitter" },
+				config = function()
+					require("nvim-dap-virtual-text").setup()
+				end,
+			},
+		},
+		config = function()
+			local dap, dapui = require("dap"), require("dapui")
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				dapui.close()
+			end
+			dap.listeners.before.event_exited["dapui_config"] = function()
+				dapui.close()
+			end
+		end,
 	},
 	{
 		"stevearc/dressing.nvim",
@@ -306,6 +334,7 @@ local plugins = {
 				end,
 			},
 			{ "hrsh7th/cmp-copilot" },
+			{ "rcarriga/cmp-dap" },
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -315,6 +344,9 @@ local plugins = {
 			local select_config = { behavior = cmp.SelectBehavior.Select }
 
 			cmp.setup({
+				enabled = function()
+					return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
+				end,
 				experimental = {
 					ghost_text = true,
 				},
@@ -387,6 +419,11 @@ local plugins = {
 						name = "cmdline",
 					},
 				}),
+			})
+			cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+				sources = {
+					{ name = "dap" },
+				},
 			})
 		end,
 	},

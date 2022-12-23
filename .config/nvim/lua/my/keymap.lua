@@ -68,7 +68,6 @@ end, { desc = "Toggle breakpoint" })
 map("n", debug_leader .. "d", function()
 	local dap = require("dap")
 	dap.continue()
-	dap.repl.open()
 end, { desc = "Next breakpoint" })
 
 map("n", debug_leader .. "n", function()
