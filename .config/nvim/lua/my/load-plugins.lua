@@ -284,9 +284,10 @@ local plugins = {
 			require("telescope").load_extension("file_browser")
 		end,
 	},
-	{ "tpope/vim-commentary" },
 	{ "shaunsingh/nord.nvim" },
+	{ "tpope/vim-commentary" },
 	{ "tpope/vim-eunuch" },
+	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-surround" },
 	{ "ggandor/lightspeed.nvim" },
 	{ "hrsh7th/cmp-nvim-lsp" },

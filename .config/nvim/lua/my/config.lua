@@ -3,10 +3,8 @@ local opt = vim.opt
 -- improve performance on large files
 opt.synmaxcol = 2048
 
--- 4 spaces wide tabs
+-- 4 spaces wide tabs, the rest is handled by vim-sleuth
 opt.tabstop = 4
-opt.shiftwidth = 4
-opt.expandtab = true
 
 -- Ignore case by default, don't if there are uppercase characters in search
 opt.ignorecase = true
