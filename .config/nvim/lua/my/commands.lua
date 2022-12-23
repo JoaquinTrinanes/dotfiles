@@ -1,3 +1,5 @@
+local CLIENT_NAME = "null-ls"
+
 -- Prints the current highlight groups in the cursor position
 vim.api.nvim_create_user_command("WhatHl", function()
 	local line = vim.fn.line(".")
@@ -16,7 +18,7 @@ local lsp_formatting = function(bufnr)
 	vim.lsp.buf.format({
 		filter = function(client)
 			-- apply whatever logic you want (in this example, we'll only use null-ls)
-			return client.name == "null-ls"
+			return client.name == CLIENT_NAME
 		end,
 		bufnr = bufnr,
 	})
@@ -82,6 +84,13 @@ local function setup_lsp(client)
 	-- end
 end
 
-local SETUP = { setup_lsp_commands = setup_lsp }
-
-return SETUP
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = my_augroup,
+	callback = function(ev)
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+		if client.name ~= CLIENT_NAME then
+			return
+		end
+		setup_lsp(client)
+	end,
+})

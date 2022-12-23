@@ -137,10 +137,6 @@ local plugins = {
 
 			null_ls.setup({
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "node_modules", "Makefile", ".git"),
-				on_attach = function(client)
-					local setup = require("my.commands").setup_lsp_commands
-					setup(client)
-				end,
 				sources = {
 					diagnostics.todo_comments,
 					formatting.prettierd,
@@ -299,6 +295,9 @@ local plugins = {
 		requires = {
 			{ "L3MON4D3/LuaSnip", tag = "v1.*" },
 			{ "onsails/lspkind.nvim" },
+			{ "hrsh7th/cmp-cmdline" },
+			{ "hrsh7th/cmp-buffer" },
+			{ "hrsh7th/cmp-emoji" },
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -308,8 +307,16 @@ local plugins = {
 			local select_config = { behavior = cmp.SelectBehavior.Select }
 
 			cmp.setup({
+				experimental = {
+					ghost_text = true,
+				},
+				view = {
+					entries = { name = "custom", selection_order = "near_cursor" },
+					-- 	entries = "native", -- can be "custom", "wildmenu" or "native"
+				},
 				formatting = {
-					format = lspkind.cmp_format(),
+					fields = { "kind", "abbr", "menu" },
+					format = lspkind.cmp_format({ mode = "symbol" }),
 				},
 				preselect = cmp.PreselectMode.None,
 				snippet = {
@@ -318,8 +325,8 @@ local plugins = {
 					end,
 				},
 				window = {
-					-- completion = cmp.config.window.bordered(),
-					-- documentation = cmp.config.window.bordered(),
+					completion = cmp.config.window.bordered(),
+					documentation = cmp.config.window.bordered(),
 				},
 				mapping = {
 					["<Tab>"] = cmp.mapping(function(fallback)
@@ -349,6 +356,27 @@ local plugins = {
 					{ name = "luasnip" },
 				}, {
 					{ name = "buffer" },
+				}, {
+					{ name = "emoji" },
+				}),
+			})
+			cmp.setup.cmdline("/", {
+				mapping = cmp.mapping.preset.cmdline(),
+				sources = {
+					{ name = "buffer" },
+				},
+			})
+			cmp.setup.cmdline(":", {
+				mapping = cmp.mapping.preset.cmdline(),
+				view = {
+					entries = { name = "wildmenu", separator = "|" },
+				},
+				sources = cmp.config.sources({
+					{ name = "path" },
+				}, {
+					{
+						name = "cmdline",
+					},
 				}),
 			})
 		end,
