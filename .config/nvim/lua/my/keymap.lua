@@ -29,7 +29,9 @@ map("n", [[<C-f>]], [[<C-f>zz]])
 map("n", [[<C-u>]], [[<C-u>zz]])
 
 map("n", "K", function()
-	vim.lsp.buf.hover()
+	vim.lsp.buf.hover({
+		focus = false,
+	})
 end)
 
 -- Telescope

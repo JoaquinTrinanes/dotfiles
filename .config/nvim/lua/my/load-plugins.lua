@@ -494,6 +494,24 @@ local plugins = {
 			})
 		end,
 	},
+	{
+		"rcarriga/nvim-notify",
+		after = "telescope",
+		config = function()
+			local notify = require("notify")
+			local original_notify = vim.notify
+			notify.setup()
+			vim.notify = function(message)
+				-- Hack: if one LSP doesn't return data an error shows up alongside the results
+				if message == "No information available" then
+					original_notify(message)
+					return
+				end
+				notify(message)
+			end
+			require("telescope").load_extension("notify")
+		end,
+	},
 }
 
 return require("packer").startup({
