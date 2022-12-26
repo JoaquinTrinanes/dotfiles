@@ -2,6 +2,7 @@ local files = {
 	"config",
 	"load-plugins",
 	"commands",
+	"lsp",
 	"keymap",
 	"theme",
 	"render-whitespace",

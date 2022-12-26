@@ -24,30 +24,35 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 local plugins = {
 	{
-		"JoosepAlviste/nvim-ts-context-commentstring",
-		requires = {
-			{
-				"nvim-treesitter/nvim-treesitter",
-				as = "treesitter",
-				run = function()
-					local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
-					ts_update()
-				end,
-				config = function()
-					require("nvim-treesitter.configs").setup({
-						auto_install = true,
-						sync_install = true,
-						ensure_installed = { "typescript", "javascript" },
-						highlight = {
-							enable = false,
-						},
-						context_commentstring = {
-							enable = true,
-						},
-					})
-				end,
-			},
-		},
+		"nvim-treesitter/nvim-treesitter",
+		as = "treesitter",
+		require = { "JoosepAlviste/nvim-ts-context-commentstring" },
+		run = function()
+			local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
+			ts_update()
+		end,
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				auto_install = true,
+				sync_install = true,
+				ensure_installed = {
+					"bash",
+					"javascript",
+					"lua",
+					"markdown",
+					"markdown_inline",
+					"regex",
+					"typescript",
+					"vim",
+				},
+				highlight = {
+					enable = false,
+				},
+				context_commentstring = {
+					enable = true,
+				},
+			})
+		end,
 	},
 	{
 		"mfussenegger/nvim-dap-python",
@@ -111,17 +116,17 @@ local plugins = {
 		requires = {
 			"williamboman/mason-lspconfig.nvim",
 			"neovim/nvim-lspconfig",
-			"simrat39/rust-tools.nvim",
+			{ "simrat39/rust-tools.nvim", filetype = { "rust" } },
 		},
 		after = { "cmp-nvim-lsp" },
 		config = function()
 			require("mason").setup()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
-					"sumneko_lua",
-					"tsserver",
-					"tailwindcss",
 					"pyright",
+					"sumneko_lua",
+					"tailwindcss",
+					"tsserver",
 				},
 			})
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -175,7 +180,7 @@ local plugins = {
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "node_modules", "Makefile", ".git"),
 				sources = {
 					d.todo_comments,
-					f.prettierd,
+					f.prettierd.with(prefer_local_node_modules),
 					c.luasnip,
 
 					-- xml
@@ -417,9 +422,9 @@ local plugins = {
 			})
 			cmp.setup.cmdline(":", {
 				mapping = cmp.mapping.preset.cmdline(),
-				view = {
-					entries = { name = "wildmenu", separator = "|" },
-				},
+				-- view = {
+				-- 	entries = { name = "wildmenu", separator = "|" },
+				-- },
 				sources = cmp.config.sources({
 					{ name = "path" },
 				}, {
@@ -437,6 +442,7 @@ local plugins = {
 	},
 	{
 		"nvim-lualine/lualine.nvim",
+		after = "noice",
 		requires = { "arkav/lualine-lsp-progress" },
 		config = function()
 			local function diff_source()
@@ -478,7 +484,14 @@ local plugins = {
 							end,
 						},
 					},
-					lualine_c = { "filename", "lsp_progress" },
+					lualine_c = {
+						"filename",
+						{
+							require("noice").api.status.search.get,
+							cond = require("noice").api.status.search.has,
+						},
+						"lsp_progress",
+					},
 					lualine_x = { "encoding", "fileformat", "filetype" },
 					lualine_y = { "progress" },
 					lualine_z = { "location" },
@@ -495,22 +508,43 @@ local plugins = {
 		end,
 	},
 	{
-		"rcarriga/nvim-notify",
-		after = "telescope",
+		"folke/noice.nvim",
+		as = "noice",
+		after = { "telescope" },
 		config = function()
-			local notify = require("notify")
-			local original_notify = vim.notify
-			notify.setup()
-			vim.notify = function(message)
-				-- Hack: if one LSP doesn't return data an error shows up alongside the results
-				if message == "No information available" then
-					original_notify(message)
-					return
-				end
-				notify(message)
-			end
-			require("telescope").load_extension("notify")
+			require("noice").setup({
+				routes = {
+					{
+						filter = {
+							event = "notify",
+							find = "No .- available",
+						},
+						view = "mini",
+					},
+				},
+				lsp = {
+					override = {
+						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+						["vim.lsp.util.stylize_markdown"] = true,
+						["cmp.entry.get_documentation"] = true,
+					},
+				},
+				popupmenu = {
+					backend = "cmp",
+				},
+				presets = {
+					command_palette = true, -- position the cmdline and popupmenu together
+					-- long_message_to_split = true, -- long messages will be sent to a split
+					-- inc_rename = false, -- enables an input dialog for inc-rename.nvim
+					-- lsp_doc_border = false, -- add a border to hover docs and signature help
+				},
+			})
+			require("telescope").load_extension("noice")
 		end,
+		requires = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
 	},
 }
 

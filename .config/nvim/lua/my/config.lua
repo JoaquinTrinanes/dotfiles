@@ -29,6 +29,7 @@ opt.iskeyword:append("-")
 opt.cursorline = true
 opt.termguicolors = true
 opt.background = "dark"
+-- opt.background = "light"
 opt.signcolumn = "yes"
 opt.backspace = { "indent", "eol", "start" }
 opt.completeopt = { "menu", "preview", "noinsert" }
