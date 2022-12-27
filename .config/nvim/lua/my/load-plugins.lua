@@ -328,9 +328,16 @@ local plugins = {
 	{ "shaunsingh/nord.nvim" },
 	{ "tpope/vim-commentary" },
 	{ "tpope/vim-eunuch" },
+	{ "tpope/vim-repeat" },
 	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-surround" },
-	{ "ggandor/lightspeed.nvim" },
+	{
+		"ggandor/leap.nvim",
+		after = "vim-repeat",
+		config = function()
+			require("leap").add_default_mappings()
+		end,
+	},
 	{ "hrsh7th/cmp-nvim-lsp" },
 	{
 		"hrsh7th/nvim-cmp",
