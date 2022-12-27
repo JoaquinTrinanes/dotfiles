@@ -342,6 +342,7 @@ local plugins = {
 	{ "hrsh7th/cmp-nvim-lsp" },
 	{
 		"hrsh7th/nvim-cmp",
+		as = "cmp",
 		requires = {
 			{ "L3MON4D3/LuaSnip", tag = "v1.*" },
 			{ "onsails/lspkind.nvim" },
@@ -350,12 +351,16 @@ local plugins = {
 			{ "hrsh7th/cmp-buffer" },
 			{ "hrsh7th/cmp-emoji" },
 			{
-				"github/copilot.vim",
-				setup = function()
-					vim.g.copilot_no_tab_map = true
-				end,
+				"hrsh7th/cmp-copilot",
+				requires = {
+					{
+						"github/copilot.vim",
+						setup = function()
+							vim.g.copilot_no_tab_map = true
+						end,
+					},
+				},
 			},
-			{ "hrsh7th/cmp-copilot" },
 			{ "rcarriga/cmp-dap" },
 		},
 		config = function()
@@ -370,22 +375,21 @@ local plugins = {
 					return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
 				end,
 				sources = cmp.config.sources({
-					{ name = "copilot" },
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 					{ name = "path" },
-					-- { name = "nvim_lsp_signature_help" },
 				}, {
 					{ name = "buffer" },
 				}, {
 					{ name = "emoji" },
+				}, {
+					{ name = "copilot" },
 				}),
 				experimental = {
 					ghost_text = true,
 				},
 				view = {
 					entries = { name = "custom", selection_order = "near_cursor" },
-					-- 	entries = "native", -- can be "custom", "wildmenu" or "native"
 				},
 				formatting = {
 					fields = { "kind", "abbr", "menu" },
@@ -422,6 +426,7 @@ local plugins = {
 					end, { "i", "s" }),
 					["<CR>"] = cmp.mapping.confirm({
 						behavior = cmp.ConfirmBehavior.Replace,
+						select = true,
 					}),
 				},
 			})
@@ -454,7 +459,6 @@ local plugins = {
 	{
 		"nvim-lualine/lualine.nvim",
 		after = "noice",
-		requires = { "arkav/lualine-lsp-progress" },
 		config = function()
 			local function diff_source()
 				local gitsigns = vim.b.gitsigns_status_dict
@@ -501,7 +505,6 @@ local plugins = {
 							require("noice").api.status.search.get,
 							cond = require("noice").api.status.search.has,
 						},
-						"lsp_progress",
 					},
 					lualine_x = { "encoding", "fileformat", "filetype" },
 					lualine_y = { "progress" },
@@ -528,18 +531,24 @@ local plugins = {
 					{
 						filter = {
 							event = "notify",
-							find = "No .- available",
+							any = { { error = true }, { warning = true } },
 						},
-						view = "mini",
+						view = "notify",
 					},
 				},
 				lsp = {
+					signature = {
+
+						enabled = false,
+					},
 					override = {
 						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
 						["vim.lsp.util.stylize_markdown"] = true,
 						["cmp.entry.get_documentation"] = true,
 					},
 				},
+				notify = { view = "mini" },
+				messages = { view = "mini" },
 				popupmenu = {
 					backend = "cmp",
 				},
@@ -556,6 +565,28 @@ local plugins = {
 			"MunifTanjim/nui.nvim",
 			"rcarriga/nvim-notify",
 		},
+	},
+	{
+		"windwp/nvim-autopairs",
+		after = { "cmp" },
+		config = function()
+			require("nvim-autopairs").setup({})
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			local cmp = require("cmp")
+			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
+		end,
+	},
+	{
+		"ray-x/lsp_signature.nvim",
+		config = function()
+			require("lsp_signature").setup({
+				-- bind = true,
+				-- floating_window_above_cur_line = false,
+				hint_enable = false,
+				hint_prefix = "",
+				always_trigger = false,
+			})
+		end,
 	},
 }
 
