@@ -58,7 +58,11 @@ if commandExists xdg-open; then
 fi
 
 if commandExists exa; then
-    alias ls="exa --icons"
+    local args=""
+    if fc-list | grep "Nerd Font" &> /dev/null; then
+        args=" --icons"
+    fi
+    alias ls="exa${args}"
     alias la="ls -la"
 fi
 
