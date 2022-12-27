@@ -24,6 +24,10 @@ map("n", "<leader>st", "<cmd>tabnew<CR>") -- open new tab
 map("n", "x", '"_x')
 map("n", "X", '"_X')
 
+-- Remap for dealing with word wrap
+map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
 -- Center screen on scroll
 map("n", [[<C-f>]], [[<C-f>zz]])
 map("n", [[<C-u>]], [[<C-u>zz]])
