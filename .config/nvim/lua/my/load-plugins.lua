@@ -178,6 +178,7 @@ local plugins = {
 
 			null_ls.setup({
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "node_modules", "Makefile", ".git"),
+				disabled_filetypes = { "NvimTree", "Trouble" },
 				sources = {
 					d.todo_comments,
 					f.prettierd.with(prefer_local_node_modules),
@@ -345,6 +346,7 @@ local plugins = {
 			{ "L3MON4D3/LuaSnip", tag = "v1.*" },
 			{ "onsails/lspkind.nvim" },
 			{ "hrsh7th/cmp-cmdline" },
+			{ "hrsh7th/cmp-path" },
 			{ "hrsh7th/cmp-buffer" },
 			{ "hrsh7th/cmp-emoji" },
 			{
@@ -367,6 +369,17 @@ local plugins = {
 				enabled = function()
 					return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
 				end,
+				sources = cmp.config.sources({
+					{ name = "copilot" },
+					{ name = "nvim_lsp" },
+					{ name = "luasnip" },
+					{ name = "path" },
+					-- { name = "nvim_lsp_signature_help" },
+				}, {
+					{ name = "buffer" },
+				}, {
+					{ name = "emoji" },
+				}),
 				experimental = {
 					ghost_text = true,
 				},
@@ -411,15 +424,6 @@ local plugins = {
 						behavior = cmp.ConfirmBehavior.Replace,
 					}),
 				},
-				sources = cmp.config.sources({
-					{ name = "copilot" },
-					{ name = "nvim_lsp" },
-					{ name = "luasnip" },
-				}, {
-					{ name = "buffer" },
-				}, {
-					{ name = "emoji" },
-				}),
 			})
 			cmp.setup.cmdline("/", {
 				mapping = cmp.mapping.preset.cmdline(),
