@@ -37,3 +37,13 @@ opt.completeopt = { "menu", "preview", "noinsert" }
 -- disable netrw
 vim.g.loaded = 1
 vim.g.loaded_netrwPlugin = 1
+
+-- show lines before the window border
+vim.g.scrolloff = 5
+vim.g.sidescrolloff = 5
+
+-- reload file on change
+opt.autoread = true
+
+-- disable compatible mode
+opt.compatible = false

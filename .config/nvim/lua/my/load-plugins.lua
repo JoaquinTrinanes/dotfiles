@@ -11,17 +11,19 @@ local ensure_packer = function()
 	return false
 end
 
-local config_path = vim.fn.stdpath("config") .. "/lua/" .. C.CONFIG_PATH
+local config_path = vim.fn.stdpath("config")
+local custom_path = config_path .. "/lua/" .. C.CONFIG_PATH
 
 local packer_bootstrap = ensure_packer()
 
 local augroup = vim.api.nvim_create_augroup("SyncOnPackerSave", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
 	group = augroup,
-	pattern = config_path .. "/load-plugins.lua",
+	pattern = custom_path .. "/load-plugins.lua",
 	callback = function(args)
 		vim.cmd.source(args.file)
 		vim.cmd.PackerCompile()
+		vim.cmd.source(config_path .. "/plugin/packer_compiled.lua")
 	end,
 	desc = "Compile Packer plugins source",
 })
@@ -191,6 +193,7 @@ local plugins = {
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "node_modules", "Makefile", ".git"),
 				disabled_filetypes = {
 					"Trouble",
+					"noice",
 					"NvimTree",
 					"Help",
 					"TelescopePrompt",
@@ -480,6 +483,7 @@ local plugins = {
 					globalstatus = true,
 					ignore_focus = {
 						"Trouble",
+						"noice",
 						"NvimTree",
 						"Help",
 						"TelescopePrompt",
@@ -509,7 +513,7 @@ local plugins = {
 							cond = require("noice").api.status.search.has,
 						},
 					},
-					lualine_x = { "encoding", "fileformat", "filetype" },
+					lualine_x = { "encoding", "filesize", "filetype" },
 					lualine_y = { "progress" },
 					lualine_z = { "location" },
 				},
@@ -532,12 +536,21 @@ local plugins = {
 			require("noice").setup({
 				routes = {
 					{
+						filter = { event = "msg_show", kind = "", find = "L, .-B written" },
+						opts = { skip = true },
+					},
+					{
 						filter = {
 							event = "notify",
 							any = { { error = true }, { warning = true } },
 						},
 						view = "notify",
 					},
+					-- {
+					-- 	filter = { event = "msg_show", kind = "" },
+					-- 	-- view = "split",
+					-- 	view = "popup",
+					-- },
 				},
 				lsp = {
 					signature = {
@@ -551,13 +564,13 @@ local plugins = {
 					},
 				},
 				notify = { view = "mini" },
-				messages = { view = "mini" },
+				messages = { view = "notify" },
 				popupmenu = {
 					backend = "cmp",
 				},
 				presets = {
 					command_palette = true, -- position the cmdline and popupmenu together
-					-- long_message_to_split = true, -- long messages will be sent to a split
+					long_message_to_split = true, -- long messages will be sent to a split
 					-- inc_rename = false, -- enables an input dialog for inc-rename.nvim
 					-- lsp_doc_border = false, -- add a border to hover docs and signature help
 				},
@@ -588,6 +601,23 @@ local plugins = {
 				hint_enable = false,
 				hint_prefix = "",
 				always_trigger = false,
+			})
+		end,
+	},
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		config = function()
+			local setup = function()
+				require("indent_blankline").setup({
+					show_current_context = true,
+					show_current_context_start = true,
+				})
+			end
+			setup()
+			local group = vim.api.nvim_create_augroup("IndentGuide", { clear = true })
+			vim.api.nvim_create_autocmd("ColorScheme", {
+				group = group,
+				callback = setup,
 			})
 		end,
 	},
