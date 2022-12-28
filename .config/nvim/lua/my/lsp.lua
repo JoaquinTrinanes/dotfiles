@@ -1,14 +1,12 @@
-local CLIENT_NAME = "null-ls"
+local lsp_augroup = vim.api.nvim_create_augroup("LspGroup", {
+	clear = true,
+})
 
-local lsp_augroup = vim.api.nvim_create_augroup("LspGroup", { clear = true })
-
-local lsp_formatting = function(bufnr)
+local lsp_formatting = function(bufnr, async)
 	vim.lsp.buf.format({
-		filter = function(client)
-			-- apply whatever logic you want (in this example, we'll only use null-ls)
-			return client.name == CLIENT_NAME
-		end,
 		bufnr = bufnr,
+		async = async,
+		timeout_ms = 2000,
 	})
 end
 
@@ -29,7 +27,7 @@ end, {})
 local function setup_lsp(client)
 	if client.server_capabilities.documentFormattingProvider then
 		vim.api.nvim_create_user_command("Autoformat", function()
-			lsp_formatting(0)
+			lsp_formatting(0, true)
 		end, {})
 
 		-- Format on save
@@ -61,15 +59,11 @@ local function setup_lsp(client)
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {
-	group = my_augroup,
 	callback = function(ev)
 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
 		if client.name == "rust_analyzer" then
 			local rt = require("rust-tools")
 			vim.keymap.set("n", "<C-.>", rt.hover_actions.hover_actions, { remap = true })
-			return
-		end
-		if client.name ~= CLIENT_NAME then
 			return
 		end
 		setup_lsp(client)

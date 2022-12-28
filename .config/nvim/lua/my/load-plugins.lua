@@ -19,7 +19,11 @@ local augroup = vim.api.nvim_create_augroup("SyncOnPackerSave", { clear = true }
 vim.api.nvim_create_autocmd("BufWritePre", {
 	group = augroup,
 	pattern = config_path .. "/load-plugins.lua",
-	command = "PackerCompile",
+	callback = function(args)
+		vim.cmd.source(args.file)
+		vim.cmd.PackerCompile()
+	end,
+	desc = "Compile Packer plugins source",
 })
 
 local plugins = {
@@ -127,6 +131,7 @@ local plugins = {
 					"sumneko_lua",
 					"tailwindcss",
 					"tsserver",
+					"eslint",
 				},
 			})
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -158,6 +163,14 @@ local plugins = {
 						},
 					})
 				end,
+				["eslint"] = function()
+					require("lspconfig").eslint.setup({
+						capabilities = capabilities,
+						settings = {
+							rulesCustomizations = { { rule = "prettier/prettier", severity = "off" } },
+						},
+					})
+				end,
 			})
 		end,
 	},
@@ -174,14 +187,18 @@ local plugins = {
 			local c = builtins.completion
 			local h = builtins.hover
 
-			local prefer_local_node_modules = { prefer_local = "node_modules/.bin" }
-
 			null_ls.setup({
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", "node_modules", "Makefile", ".git"),
-				disabled_filetypes = { "NvimTree", "Trouble" },
+				disabled_filetypes = {
+					"Trouble",
+					"NvimTree",
+					"Help",
+					"TelescopePrompt",
+					"",
+				},
 				sources = {
 					d.todo_comments,
-					f.prettierd.with(prefer_local_node_modules),
+					f.prettier,
 					c.luasnip,
 
 					-- xml
@@ -207,19 +224,6 @@ local plugins = {
 
 					-- lua
 					f.stylua,
-
-					-- js
-					d.tsc.with(prefer_local_node_modules),
-					ca.eslint_d.with(prefer_local_node_modules),
-					d.eslint_d.with(vim.tbl_extend("force", prefer_local_node_modules, {
-						filter = function(diagnostic)
-							return diagnostic.code ~= "prettier/prettier"
-						end,
-						extra_args = {
-							"--report-unused-disable-directives",
-						},
-					})),
-					f.eslint_d.with(prefer_local_node_modules),
 
 					-- python
 					f.black,
@@ -268,9 +272,8 @@ local plugins = {
 			require("mason-null-ls").setup({
 				ensure_installed = nil,
 				automatic_installation = true,
-				automatic_setup = true,
+				automatic_setup = false,
 			})
-			require("mason-null-ls").setup_handlers()
 		end,
 	},
 	{
