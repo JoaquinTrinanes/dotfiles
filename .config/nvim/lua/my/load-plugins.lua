@@ -621,6 +621,7 @@ local plugins = {
 			})
 		end,
 	},
+	{ "direnv/direnv.vim" },
 }
 
 return require("packer").startup({
