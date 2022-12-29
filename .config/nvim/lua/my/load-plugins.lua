@@ -204,6 +204,9 @@ local plugins = {
 					f.prettier,
 					c.luasnip,
 
+					-- TOML
+					f.taplo,
+
 					-- xml
 					f.xmllint,
 
@@ -434,6 +437,10 @@ local plugins = {
 						behavior = cmp.ConfirmBehavior.Replace,
 						select = true,
 					}),
+					["<C-Space>"] = cmp.mapping.complete(),
+					["<C-e>"] = cmp.mapping.close(),
+					["<C-f>"] = cmp.mapping.scroll_docs(4),
+					["<C-d>"] = cmp.mapping.scroll_docs(-4),
 				},
 			})
 			cmp.setup.cmdline("/", {
@@ -607,17 +614,9 @@ local plugins = {
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		config = function()
-			local setup = function()
-				require("indent_blankline").setup({
-					show_current_context = true,
-					show_current_context_start = true,
-				})
-			end
-			setup()
-			local group = vim.api.nvim_create_augroup("IndentGuide", { clear = true })
-			vim.api.nvim_create_autocmd("ColorScheme", {
-				group = group,
-				callback = setup,
+			require("indent_blankline").setup({
+				show_current_context = true,
+				show_current_context_start = false,
 			})
 		end,
 	},
