@@ -58,7 +58,7 @@ if commandExists xdg-open; then
 fi
 
 if commandExists exa; then
-    local args=""
+    args=""
     if fc-list | grep "Nerd Font" &> /dev/null; then
         args=" --icons"
     fi

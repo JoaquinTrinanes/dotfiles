@@ -4,9 +4,9 @@ if [ "$(uname -s)" = "Darwin" ]; then
     export IS_MAC=0
 fi
 
-local config_dir="$(dirname $0)"
+shell_config_dir="$(dirname $0)"
 
-. $config_dir/env.sh
-. $config_dir/path.sh
-. $config_dir/aliases.sh
-. $config_dir/bootstrap.sh
+. $shell_config_dir/env.sh
+. $shell_config_dir/path.sh
+. $shell_config_dir/aliases.sh
+. $shell_config_dir/bootstrap.sh
