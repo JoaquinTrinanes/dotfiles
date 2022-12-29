@@ -79,3 +79,5 @@ end, { desc = "Next breakpoint" })
 map("n", debug_leader .. "n", function()
 	require("dap").step_over()
 end, { desc = "Step over" })
+
+map("i", "<C-c>", "<ESC>", { silent = true })

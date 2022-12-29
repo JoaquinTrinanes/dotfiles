@@ -600,6 +600,12 @@ local plugins = {
 		end,
 	},
 	{
+		"windwp/nvim-ts-autotag",
+		config = function()
+			require("nvim-ts-autotag").setup({ update_in_insert = true })
+		end,
+	},
+	{
 		"ray-x/lsp_signature.nvim",
 		config = function()
 			require("lsp_signature").setup({
