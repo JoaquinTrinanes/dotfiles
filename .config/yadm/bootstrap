@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -eu
 
@@ -15,16 +15,20 @@ is_installed () {
 BOOTSTRAP_D="$0.d"
 
 if [[ ! -d "$BOOTSTRAP_D" ]]; then
-    echo "Error: bootstrap directory '$BOOTSTRAP_D' not found" >&2
+    err "Error: bootstrap directory '$BOOTSTRAP_D' not found" >&2
     exit 1
 fi
 
-find -L "$BOOTSTRAP_D" -type f | sort  -n | while IFS= read -r bootstrap; do
+. $BOOTSTRAP_D/shell_utils.sh
+
+find -L "$BOOTSTRAP_D" -type f -name '[[:digit:]]*' | sort  -n | while IFS= read -r bootstrap; do
     if [[ -x "$bootstrap" && ! "$bootstrap" =~ "##" && ! "$bootstrap" =~ "~$" ]]; then
-        echo "Executing $bootstrap"
+        inf "Executing $bootstrap"
+        increase_indent
         . $bootstrap
+        decrease_indent
         if ! [ "$?" ]; then
-            echo "Error: bootstrap '$bootstrap' failed" >&2
+            err "Bootstraping '$bootstrap' failed" >&2
             exit 1
         fi
     fi

@@ -12,13 +12,23 @@ current_package_manager() {
     done
 }
 
+get_is_installed_command() {
+    local package_manager="$(current_package_manager)"
+    case $package_manager in
+        yay) echo "yay -Q" ;;
+        pacman) echo "pacman -Q" ;;
+        apt-get) echo "sudo apt-get -qq list --installed" ;;
+        brew) echo "brew list --quiet" ;;
+    esac
+}
+
 get_install_command(){
     local package_manager="$(current_package_manager)"
     case $package_manager in
         yay) echo "yay --noprogressbar --noconfirm -S" ;;
         pacman) echo "sudo pacman --noprogressbar --noconfirm -S" ;;
-        apt-get) echo "sudo apt-get -q --yes install" ;;
-        brew) echo "brew install" ;;
+        apt-get) echo "sudo apt-get -qq --yes install" ;;
+        brew) echo "brew install --quiet" ;;
     esac
 }
 
@@ -35,7 +45,7 @@ install_yay() {
 
 install_package_manager_if_missing() {
     if ! command -v yay brew > /dev/null; then
-        echo "Installing package manager"
+        inf "Installing package manager"
         case  $(uname -s) in
             Darwin)
                 install_brew
@@ -49,11 +59,16 @@ install_package_manager_if_missing() {
 
 install_package() {
     local package_manager=$(current_package_manager)
-    echo "Installing $1 with $package_manager"
+    inf "Installing $1 with $package_manager"
     local install_command="$(get_install_command)"
     $install_command "$@"
 }
 
+is_package_installed() {
+    local is_installed_command="$(get_is_installed_command)"
+    $is_installed_command "$@" &> /dev/null
+}
+
 install_package_manager_if_missing
 
-export -f install_package
+export -f install_package is_package_installed

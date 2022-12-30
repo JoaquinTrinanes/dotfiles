@@ -14,13 +14,18 @@ install_package_if_missing() {
     local package=$1
     local bin=${2:-$package}
 
-    if command_exists $bin; then
-        echo "$package already installed, skipping"
+    if command_exists $bin || is_package_installed $package; then
+        inf "$package already installed, skipping"
         return
     fi
 
-    echo "Installing $package"
+    inf "Installing $package"
     install_package "$package"
+    if [ "$?" ]; then
+        ok "Installed $package"
+    else
+        err  "Error installing $package"
+    fi
 }
 
 
@@ -40,7 +45,7 @@ if [ -z "$THEME" ] && ! [ -f $CONFIG_DIR/kitty/theme.conf ]; then
 fi
 
 if [ -z "$(ls -A $XDG_DATA_HOME/nvim/site/pack/packer/start/packer.nvim)" ]; then
-    echo "Bootstraping Vim"
+    inf  "Bootstraping NeoVim"
     nvim '+PackerInstall' '+qall'
 fi
 
