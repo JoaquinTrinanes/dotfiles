@@ -1,66 +1,31 @@
 #!/bin/sh
 
-CONFIG_DIR=${XDG_CONFIG_HOME:-$HOME/.config}
+set -eu
 
-if [ "$(uname -s)" == "Darwin" ]; then
-    IS_MAC=0
-fi
-
-command_exists() {
-    command -v "$@" &> /dev/null
-}
-
-install() {
+# utils
+is_installed () {
     local package=$1
     local bin=${2:-$package}
 
-    if command_exists $bin; then
-        echo "$package already installed, skipping"
-        return
-    fi
-
-    local install_command="yay -S"
-
-    if [ "$IS_MAC"]; then
-        install_command="brew install"
-    fi
-
-    echo "Installing $package"
-    $install_command $1
+    command -v $bin &> /dev/null
 }
 
-install_yay(){
-    local tmp_dir=$(mktemp -d)
-    git clone https://aur.archlinux.org/yay.git $tmp_dir
-    cd $tmp_dir
-    makepkg -si
-}
+# dirname $0 && pwd -P ??? https://bytexd.com/what-is-dirname-0-and-usage-examples/
+# BOOTSTRAP_D="${BASH_SOURCE[0]:-${(%):-%x}}.d"
+BOOTSTRAP_D="$0.d"
 
-if ! [ "$IS_MAC" ] && ! command_exists yay; then
-    echo "Installing yay"
-    install_yay
-elif [ "$IS_MAC" ] && ! command_exists brew; then
-    echo "Installing brew"
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if [[ ! -d "$BOOTSTRAP_D" ]]; then
+    echo "Error: bootstrap directory '$BOOTSTRAP_D' not found" >&2
+    exit 1
 fi
 
-
-# Install antidote
-if [ ! -d ${ZDOTDIR:-~}/.antidote ]; then
-    git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
-fi
-
-# Install pnpm
-if ! command_exists pnpm; then
-    curl -fsSL https://get.pnpm.io/install.sh | sh -
-fi
-
-# Set kitty's theme based on the $THEME var
-if [ -z "$THEME" ] && ! [ -f $CONFIG_DIR/kitty/theme.conf ]; then
-    ln -s $CONFIG_DIR/kitty/themes/${THEME}.conf $CONFIG_DIR/kitty/theme.conf
-fi
-
-if [ -z "$(ls -A $XDG_DATA_HOME/nvim/site/pack/packer/start/packer.nvim)" ]; then
-    echo "Bootstraping Vim"
-    nvim '+PackerInstall' '+qall'
-fi
+find -L "$BOOTSTRAP_D" -type f | sort  -n | while IFS= read -r bootstrap; do
+    if [[ -x "$bootstrap" && ! "$bootstrap" =~ "##" && ! "$bootstrap" =~ "~$" ]]; then
+        echo "Executing $bootstrap"
+        . $bootstrap
+        if ! [ "$?" ]; then
+            echo "Error: bootstrap '$bootstrap' failed" >&2
+            exit 1
+        fi
+    fi
+done

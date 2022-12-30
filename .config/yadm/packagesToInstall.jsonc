@@ -1,18 +1,24 @@
+// test
 [
   "autojump",
+  "asdf",
   "bat",
-  "fontconfig",
-  "hex",
+  { "name": "fontconfig", "bin": "fc-match" },
+  { "name": "hex", "mac": "" },
   "httpie",
   "jq",
-  "neovim",
-  "noto-fonts-cjk",
-  "pipewire-pulse",
-  "python-pynvim",
+  { "name": "neovim", "bin": "nvim" },
+  { "name": "noto-fonts-cjk", "mac": "font-noto-sans-cjk" },
+  { "name": "pipewire-pulse", "mac": "" },
+  { "default": "python-pynvim", "mac": "" },
+  "rustup",
   "starship",
-  "ttf-dejavu",
-  "ttf-fira-code",
-  "ttf-nerd-fonts-symbols-common",
+  { "name": "ttf-dejavu", "mac": "font-dejavu" },
+  { "name": "ttf-fira-code", "mac": "font-fira-code" },
+  {
+    "name": "ttf-nerd-fonts-symbols-common",
+    "mac": "font-symbols-only-nerd-font"
+  },
   "wezterm",
   "zsh"
 ]
