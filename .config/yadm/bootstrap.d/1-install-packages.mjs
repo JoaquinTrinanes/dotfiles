@@ -1,4 +1,4 @@
-#!/usr/bin/env zx --experimental
+#!/usr/bin/env -S zx --experimental
 
 const packages = await fs.readJson(
   path.join(__dirname, "../packagesToInstall.json")

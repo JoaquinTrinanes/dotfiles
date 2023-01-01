@@ -3,7 +3,6 @@
   { "name": "asdf", "linux": "asdf-vm" },
   "bat",
   { "name": "fontconfig", "bin": "fc-match" },
-  { "name": "hex", "mac": "" },
   "httpie",
   "jq",
   { "name": "neovim", "bin": "nvim" },

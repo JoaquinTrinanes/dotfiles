@@ -12,6 +12,6 @@ if ! command -v node > /dev/null; then
 fi
 
 if ! command -v zx > /dev/null; then
+    echo "Installing zx"
     pnpm i -g zx
 fi
-

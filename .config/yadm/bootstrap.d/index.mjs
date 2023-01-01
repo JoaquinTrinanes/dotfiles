@@ -1,4 +1,4 @@
-#!/usr/bin/env zx --experimental
+#!/usr/bin/env -S zx --experimental
 
 process.env.FORCE_COLOR = "1";
 

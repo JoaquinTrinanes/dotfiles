@@ -1,4 +1,4 @@
-#!/usr/bin/env zx
+#!/usr/bin/env -S zx
 
 const installBrew = async () => {
   await $`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`;

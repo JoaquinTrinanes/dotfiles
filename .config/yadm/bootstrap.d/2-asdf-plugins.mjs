@@ -1,4 +1,4 @@
-#!/usr/bin/env zx --experimental
+#!/usr/bin/env -S zx --experimental
 
 const installAsdfPlugin = async (plugin, version) => {
   await $`asdf plugin add ${plugin}`;
