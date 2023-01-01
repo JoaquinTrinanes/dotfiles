@@ -2,16 +2,6 @@
 
 set -eu
 
-# utils
-is_installed () {
-    local package=$1
-    local bin=${2:-$package}
-
-    command -v $bin &> /dev/null
-}
-
-# dirname $0 && pwd -P ??? https://bytexd.com/what-is-dirname-0-and-usage-examples/
-# BOOTSTRAP_D="${BASH_SOURCE[0]:-${(%):-%x}}.d"
 BOOTSTRAP_D="$0.d"
 
 if [[ ! -d "$BOOTSTRAP_D" ]]; then
@@ -19,17 +9,7 @@ if [[ ! -d "$BOOTSTRAP_D" ]]; then
     exit 1
 fi
 
-. $BOOTSTRAP_D/shell_utils.sh
+source $BOOTSTRAP_D/base/install-zx.sh
 
-find -L "$BOOTSTRAP_D" -type f -name '[[:digit:]]*' | sort  -n | while IFS= read -r bootstrap; do
-    if [[ -x "$bootstrap" && ! "$bootstrap" =~ "##" && ! "$bootstrap" =~ "~$" ]]; then
-        inf "Executing $bootstrap"
-        increase_indent
-        . $bootstrap
-        decrease_indent
-        if ! [ "$?" ]; then
-            err "Bootstraping '$bootstrap' failed" >&2
-            exit 1
-        fi
-    fi
-done
+$BOOTSTRAP_D/index.mjs
+

@@ -1,7 +1,6 @@
-// test
 [
   "autojump",
-  "asdf",
+  { "name": "asdf", "linux": "asdf-vm" },
   "bat",
   { "name": "fontconfig", "bin": "fc-match" },
   { "name": "hex", "mac": "" },
@@ -13,11 +12,12 @@
   { "default": "python-pynvim", "mac": "" },
   "rustup",
   "starship",
-  { "name": "ttf-dejavu", "mac": "font-dejavu" },
-  { "name": "ttf-fira-code", "mac": "font-fira-code" },
+  { "name": "ttf-dejavu", "mac": "font-dejavu", "font": true },
+  { "name": "ttf-fira-code", "mac": "font-fira-code", "font": true },
   {
     "name": "ttf-nerd-fonts-symbols-common",
-    "mac": "font-symbols-only-nerd-font"
+    "mac": "font-symbols-only-nerd-font",
+    "font": true
   },
   "wezterm",
   "zsh"
