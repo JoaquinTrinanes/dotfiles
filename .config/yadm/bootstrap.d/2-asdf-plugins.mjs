@@ -1,6 +1,7 @@
 #!/usr/bin/env -S zx --experimental
 
 import * as log from "./log.mjs";
+
 const installAsdfPlugin = async (plugin, version) => {
   await $`asdf plugin add ${plugin}`;
   if (version) {
