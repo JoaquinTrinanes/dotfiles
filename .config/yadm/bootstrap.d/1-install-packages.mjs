@@ -1,5 +1,7 @@
 #!/usr/bin/env -S zx --experimental
 
+import * as log from "./log.mjs";
+
 const packages = await fs.readJson(
   path.join(__dirname, "../packagesToInstall.json")
 );
@@ -37,7 +39,6 @@ class PackageManager {
   #current;
 
   async installPackage(pkg) {
-    await sleep(5000);
     await $`${this.#current.install.split(" ")} ${pkg}`;
   }
 
@@ -72,18 +73,25 @@ class PackageManager {
     );
 
     if (isInstalled) {
-      echo`${chalk.yellow(
-        pkgDefinition.name ||
-          pkgDefinition.mac ||
-          pkgDefinition.linux ||
-          pkgDefinition
-      )} already installed. Skipping.`;
+      log.debug(
+        `${chalk.yellow(
+          pkgDefinition.name ||
+            pkgDefinition.mac ||
+            pkgDefinition.linux ||
+            pkgDefinition
+        )} already installed. Skipping.`
+      );
       return;
     }
 
-    await spinner(`Installing ${chalk.yellow(name)}`, () =>
-      this.installPackage(name)
-    );
+    try {
+      await spinner(`Installing ${chalk.yellow(name)}`, () =>
+        this.installPackage(name)
+      );
+      log.ok(`Installed ${chalk.yellow(name)}! 🎉`);
+    } catch (_e) {
+      log.error(`Error installing ${chalk.yellow(name)}`);
+    }
   }
 
   constructor(pkgManager) {

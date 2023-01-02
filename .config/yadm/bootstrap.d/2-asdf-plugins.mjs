@@ -1,5 +1,6 @@
 #!/usr/bin/env -S zx --experimental
 
+import * as log from "./log.mjs";
 const installAsdfPlugin = async (plugin, version) => {
   await $`asdf plugin add ${plugin}`;
   if (version) {
@@ -16,12 +17,15 @@ const installAsdfPluginIfMissing = async (plugin, version) => {
     .catch(() => false);
 
   if (isInstalled) {
-    echo`asdf plugin ${chalk.yellow(plugin)} already installed. Skipping.`;
+    log.debug(
+      `asdf plugin ${chalk.yellow(plugin)} already installed. Skipping.`
+    );
     return;
   }
-  spinner(`Installing asdf plugin ${chalk.yellow(plugin)}`, () =>
+  await spinner(`Installing asdf plugin ${chalk.yellow(plugin)}`, () =>
     installAsdfPlugin(plugin, version)
   );
+  log.ok(`Installed ${chalk.yellow(plugin)} asdf plugin`);
 };
 
 for (const [plugin, version] of [
