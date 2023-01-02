@@ -9,4 +9,3 @@ shell_config_dir="$(dirname $0)"
 . $shell_config_dir/env.sh
 . $shell_config_dir/path.sh
 . $shell_config_dir/aliases.sh
-. $shell_config_dir/bootstrap.sh
