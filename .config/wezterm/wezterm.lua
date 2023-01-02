@@ -1,6 +1,7 @@
 local wez = require("wezterm")
 
 return {
+	default_prog = { '/usr/local/bin/fish' },
 	color_scheme = "nord",
 	font = wez.font_with_fallback({
 		"Fira Code",
