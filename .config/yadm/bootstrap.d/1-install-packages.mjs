@@ -2,29 +2,31 @@
 
 import * as log from "./utils/log.mjs";
 import { IS_MAC } from "./utils/os.mjs";
+import { commandExists } from "./utils/commands.mjs";
 
 const packages = await fs.readJson(
   path.join(__dirname, "../packagesToInstall.json")
 );
 
-const commandExists = (cmd) =>
-  $`command -v ${cmd}`
-    .quiet()
-    .then(() => true)
-    .catch(() => false);
-
 class PackageManager {
   static PACKAGE_MANAGERS = {
-    yay: { list: "yay  -Q", install: "yay --noprogressbar --noconfirm -S" },
+    yay: {
+      list: ["yay", "-Q"],
+      install: ["yay", "--noprogressbar", "--noconfirm", "-S"],
+    },
     pacman: {
-      list: "pacman -Q ",
-      install: "sudo pacman --noprogressbar --noconfirm -S",
+      list: ["pacman", "-Q"],
+      install: ["sudo", "pacman", "--noprogressbar", "--noconfirm", "-S"],
     },
     "apt-get": {
-      list: "apt-get -qq list --installed",
-      install: "sudo apt-get -qq --yes install",
+      list: ["apt-get", "-qq", "list", "--installed"],
+      install: ["sudo", "apt-get", "-qq", "--yes", "install"],
     },
-    brew: { list: "brew list --quiet -1", install: "brew install --quiet" },
+    brew: {
+      list: ["brew", "list", "--quiet", "-1"],
+      install: ["brew", "install", "--quiet"],
+      init: ["brew", "tap", "homebrew/cask-fonts"],
+    },
   };
 
   static async getCurrentPackageManagerName() {
@@ -38,13 +40,13 @@ class PackageManager {
   #current;
 
   async installPackage(pkg) {
-    await $`${this.#current.install.split(" ")} ${pkg}`;
+    await $`${this.#current.install} ${pkg}`;
   }
 
   async isPackageInstalled(pkgDefinition) {
     const name = this.getPackageName(pkgDefinition);
     try {
-      await $`${this.#current.list.split(" ")} ${name}`.quiet();
+      await $`${this.#current.list} ${name}`.quiet();
       return true;
     } catch (_e) {
       if (pkgDefinition.font) return false;
@@ -93,6 +95,15 @@ class PackageManager {
     }
   }
 
+  async init() {
+    if (this.#current.init) {
+      await spinner(
+        `${this.#current.init.join(" ")}`,
+        () => $`${this.#current.init}`
+      );
+    }
+  }
+
   constructor(pkgManager) {
     this.#current = PackageManager.PACKAGE_MANAGERS[pkgManager];
     if (!this.#current) {
@@ -108,6 +119,8 @@ class PackageManager {
 const packageManager = new PackageManager(
   await PackageManager.getCurrentPackageManagerName()
 );
+
+await packageManager.init();
 
 for (const pkg of packages) {
   await packageManager.installPackageIfMissing(pkg);

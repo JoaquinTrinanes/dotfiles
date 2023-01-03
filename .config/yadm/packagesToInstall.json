@@ -1,8 +1,10 @@
 [
   "autojump",
   { "name": "asdf", "linux": "asdf-vm" },
+  { "linux": "base-devel" },
   "bat",
   { "name": "fontconfig", "bin": "fc-match" },
+  "git",
   "httpie",
   "jq",
   { "name": "neovim", "bin": "nvim" },
