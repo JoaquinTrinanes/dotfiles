@@ -13,3 +13,4 @@ source $BOOTSTRAP_D/base/install-zx.sh
 
 $BOOTSTRAP_D/index.mjs
 
+cleanup_temp_node_install

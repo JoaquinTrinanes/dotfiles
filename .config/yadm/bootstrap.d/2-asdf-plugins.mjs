@@ -35,3 +35,5 @@ for (const [plugin, version] of [
 ]) {
   await installAsdfPluginIfMissing(plugin, version);
 }
+
+await spinner("Reshiming asdf...", () => $`asdf reshim`);

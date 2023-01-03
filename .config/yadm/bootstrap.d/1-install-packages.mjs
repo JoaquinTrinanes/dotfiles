@@ -95,6 +95,13 @@ class PackageManager {
 
   constructor(pkgManager) {
     this.#current = PackageManager.PACKAGE_MANAGERS[pkgManager];
+    if (!this.#current) {
+      throw new Error(
+        `No supported package manager found. Got: ${pkgManager}, valid options are: ${JSON.stringify(
+          Object.keys(PackageManager.PACKAGE_MANAGERS)
+        )}`
+      );
+    }
   }
 }
 
