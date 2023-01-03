@@ -2,7 +2,7 @@
 
 process.env.FORCE_COLOR = "1";
 
-import * as log from "./log.mjs";
+import * as log from "./utils/log.mjs";
 
 await within(async () => {
   cd(__dirname);

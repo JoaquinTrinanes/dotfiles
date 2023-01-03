@@ -1,12 +1,11 @@
 #!/usr/bin/env -S zx --experimental
 
-import * as log from "./log.mjs";
+import * as log from "./utils/log.mjs";
+import { IS_MAC } from "./utils/os.mjs";
 
 const packages = await fs.readJson(
   path.join(__dirname, "../packagesToInstall.json")
 );
-
-const IS_MAC = (await $`uname -s`.quiet()).stdout.trim() == "Darwin";
 
 const commandExists = (cmd) =>
   $`command -v ${cmd}`

@@ -1,6 +1,7 @@
 #!/usr/bin/env -S zx
 
-import * as log from "./log.mjs";
+import * as log from "./utils/log.mjs";
+import { IS_MAC } from "./utils/os.mjs";
 
 const installBrew = async () => {
   await $`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`;
@@ -24,7 +25,7 @@ const isManagerInstalled =
 if (isManagerInstalled) {
   log.debug("Package manager is already installed. Skipping.");
 } else {
-  if ((await $`uname -s`).stdout.trim() === "Darwin") {
+  if (IS_MAC) {
     await spinner("Installing brew...", () => installBrew());
     log.ok(`Installed ${chalk.yellow("brew")}!`);
   } else {
