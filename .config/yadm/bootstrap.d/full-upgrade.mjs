@@ -30,3 +30,9 @@ if (!fs.existsSync(antidotePath)) {
 
 await spinner("Upgrading asdf plugins...", () => $`asdf plugin update --all`);
 updateOk("asdf plugins");
+
+await spinner(
+  "Upgrading NeoVim plugins...",
+  () => $`nvim --headless +PackerSync +qall!`
+);
+updateOk("NeoVim plugins");
