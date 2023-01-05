@@ -32,7 +32,7 @@ local plugins = {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		as = "treesitter",
-		require = { "JoosepAlviste/nvim-ts-context-commentstring" },
+		requires = { "JoosepAlviste/nvim-ts-context-commentstring", "nvim-treesitter/nvim-treesitter-textobjects" },
 		run = function()
 			local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
 			ts_update()
@@ -134,6 +134,7 @@ local plugins = {
 					"tailwindcss",
 					"tsserver",
 					"eslint",
+					"intelephense",
 				},
 			})
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
