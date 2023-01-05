@@ -1,16 +1,14 @@
 #!/usr/bin/env -S zx --experimental
 
-import * as log from "./utils/log.mjs";
-import { IS_MAC } from "./utils/os.mjs";
-import { commandExists } from "./utils/commands.mjs";
-import { packageManager } from "./utils/package-manager.mjs";
+import { packageManager, PackageDefinition } from "./utils/package-manager.mjs";
 
-const packages = await fs.readJson(
-  path.join(__dirname, "../packagesToInstall.json")
+const packageInfo = YAML.parse(
+  fs.readFileSync(path.join(__dirname, "../packages.yaml"), "utf-8")
 );
 
 await packageManager.init();
 
-for (const pkg of packages) {
-  await packageManager.installPackageIfMissing(pkg);
+for (const pkg of packageInfo.packages) {
+  const pkgDefinition = new PackageDefinition(pkg);
+  await packageManager.installPackageIfMissing(pkgDefinition);
 }

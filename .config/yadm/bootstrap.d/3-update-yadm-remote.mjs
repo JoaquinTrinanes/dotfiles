@@ -1,4 +1,4 @@
-#!/usr/bin/env zx --experimental
+#!/usr/bin/env -S zx --experimental
 
 import * as log from "./utils/log.mjs";
 

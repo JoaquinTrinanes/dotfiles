@@ -1,0 +1,36 @@
+homebrew:
+  taps:
+    - homebrew/cask-fonts
+    - rsteube/homebrew-tap
+packages:
+  - autojump
+  - asdf:
+      pacman: asdf-vm
+  - bat
+  - fontconfig:
+    bin: fc-match
+  - git
+  - httpie
+  - jq
+  - neovim:
+    bin: nvim
+  - noto-fonts-cjk:
+      brew: font-noto-sans-cjk
+  - pipewire-pulse:
+      brew: ""
+  - python-pynvim:
+      brew: ""
+  - rustup
+  - starship
+  - ttf-dejavu:
+      brew: font-dejavu
+      font: true
+  - ttf-fira-code:
+      brew: font-fira-code
+      font: true
+  - ttf-nerd-fonts-symbols-common:
+      brew: font-symbols-only-nerd-font
+      font: true
+  - wezterm
+  - yadm
+  - zsh

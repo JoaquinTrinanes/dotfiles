@@ -1,88 +1,120 @@
 #!/usr/bin/env -S zx --experimental
 
 import * as log from "./log.mjs";
-import { IS_MAC } from "./os.mjs";
 import { commandExists } from "./commands.mjs";
+
+const taps = await within(async () => {
+  cd(__dirname);
+  const fileContents = fs.readFileSync("../packages.yaml", "utf-8");
+  const packages = YAML.parse(fileContents);
+  return packages?.homebrew.taps || [];
+});
 
 const PACKAGE_MANAGERS = {
   yay: {
-    list: ["yay", "-Q"],
-    install: ["yay", "--noprogressbar", "--noconfirm", "-S"],
-    upgrade: ["yay", "-Syu"],
+    list: ["-Q"],
+    install: ["--noprogressbar", "--noconfirm", "-S"],
+    upgrade: ["-Syu"],
   },
   pacman: {
-    list: ["pacman", "-Q"],
-    install: ["sudo", "pacman", "--noprogressbar", "--noconfirm", "-S"],
-    upgrade: ["sudo", "pacman", "-Syu"],
+    list: ["-Q"],
+    install: ["--noprogressbar", "--noconfirm", "--needed", "-S"],
+    upgrade: ["-Syu"],
+    sudo: true,
   },
   "apt-get": {
-    init: ["sudo", "apt-get", "update"],
-    list: ["apt-get", "-qq", "list", "--installed"],
-    upgrade: ["sudo", "apt-get", "-qq", "--yes", "upgrade"],
-    install: ["sudo", "apt-get", "-qq", "--yes", "install"],
+    init: ["update"],
+    list: ["list", "--installed"],
+    upgrade: ["-qq", "--yes", "upgrade"],
+    install: ["-qq", "--yes", "install"],
+    sudo: true,
   },
   brew: {
-    list: ["brew", "list", "--quiet", "-1"],
-    install: ["brew", "install", "--quiet"],
-    upgrade: ["brew", "upgrade"],
-    init: ["brew", "tap", "homebrew/cask-fonts"],
+    list: ["list", "--quiet", "-1"],
+    install: ["install", "--quiet"],
+    upgrade: ["upgrade"],
+    init: taps.map((t) => ["tap", t]),
   },
 };
 
 const getCurrentPackageManager = async () => {
   for (const [name, manager] of Object.entries(PACKAGE_MANAGERS)) {
     if (await commandExists(name)) {
-      return manager;
+      return { name, ...manager };
     }
   }
 };
 
-export class PackageManager {
-  #current;
+export class PackageDefinition {
+  name;
+  bin;
+  overrides;
 
-  async installPackage(pkg) {
-    await $`${this.#current.install} ${pkg}`;
+  static #getPackageDefinition(pkg) {
+    if (typeof pkg === "string") return { name: pkg };
+
+    const [name, options] = Object.entries(pkg)[0];
+    return { name, ...options };
   }
 
-  async isPackageInstalled(pkgDefinition) {
-    const name = this.getPackageName(pkgDefinition);
-    try {
-      await $`${this.#current.list} ${name}`.quiet();
-      return true;
-    } catch (_e) {
-      if (pkgDefinition.font) return false;
-      return await commandExists(pkgDefinition.bin || name);
+  constructor(def) {
+    const { name, bin, ...rest } = PackageDefinition.#getPackageDefinition(def);
+    this.name = name;
+    this.bin = bin;
+    this.overrides = rest;
+  }
+
+  getField(field) {
+    return this.overrides[field];
+  }
+
+  getFieldOrName(field) {
+    if (field in this.overrides) return this.getField(field);
+    return this.name;
+  }
+}
+
+export class PackageManager {
+  current;
+
+  async runCommand(cmd) {
+    const commandList = Array.isArray(cmd[0]) ? cmd : [cmd];
+    for (const c of commandList) {
+      const command = [
+        ...(this.current.sudo ? ["sudo"] : []),
+        this.current.name,
+        ...(Array.isArray(c) ? c : [c]),
+      ];
+      await spinner(command.join(" "), () => $`${command}`);
     }
   }
 
-  getPackageName(pkgDefinition) {
-    if (typeof pkgDefinition === "string") return pkgDefinition;
-
-    if (IS_MAC && "mac" in pkgDefinition) return pkgDefinition.mac;
-
-    if (!IS_MAC && "linux" in pkgDefinition) return pkgDefinition.linux;
-
-    return pkgDefinition.name;
+  async installPackage(pkg) {
+    await this.runCommand([...this.current.install, pkg]);
   }
 
-  async installPackageIfMissing(pkgDefinition) {
-    const name = this.getPackageName(pkgDefinition);
+  async isPackageInstalled(pkg) {
+    const name = pkg.getFieldOrName(this.current.name);
+    try {
+      await this.runCommand([...this.current.list, name]);
+      return true;
+    } catch (_e) {
+      if (pkg.getField("font")) return false;
+      return await commandExists(pkg.bin || name);
+    }
+  }
+
+  async installPackageIfMissing(pkg) {
+    const name = pkg.getFieldOrName(this.current.name);
     if (!name) return;
 
     const isInstalled = await spinner(
       `Checking if ${name} is installed...`,
-      () => this.isPackageInstalled(pkgDefinition)
+      () => this.isPackageInstalled(pkg)
     );
 
     if (isInstalled) {
-      log.debug(
-        `${chalk.yellow(
-          pkgDefinition.name ||
-            pkgDefinition.mac ||
-            pkgDefinition.linux ||
-            pkgDefinition
-        )} already installed. Skipping.`
-      );
+      log.debug(`${chalk.yellow(name)} already installed. Skipping.`);
       return;
     }
 
@@ -91,24 +123,22 @@ export class PackageManager {
         this.installPackage(name)
       );
       log.ok(`Installed ${chalk.yellow(name)}! 🎉`);
-    } catch (_e) {
+    } catch (e) {
       log.error(`Error installing ${chalk.yellow(name)}`);
+      log.error("\t" + e.toString());
     }
   }
 
   async upgrade() {
-    if (!this.#current.upgrade) {
+    if (!this.current.upgrade) {
       throw new Error("Upgrade command not defined");
     }
-    await $`${this.#current.upgrade}`;
+    await this.runCommand(this.current.upgrade);
   }
 
   async init() {
-    if (this.#current.init) {
-      await spinner(
-        this.#current.init.join(" "),
-        () => $`${this.#current.init}`
-      );
+    if (this.current.init) {
+      await this.runCommand(this.current.init);
     }
   }
 
@@ -118,12 +148,7 @@ export class PackageManager {
         "Invalid package manager, it needs at least an 'install' and 'list' field"
       );
     }
-    this.#current = Object.fromEntries(
-      Object.entries(pkgManager).map(([k, v]) => [
-        k,
-        Array.isArray(v) ? v : v.split(" "),
-      ])
-    );
+    this.current = pkgManager;
   }
 }
 
