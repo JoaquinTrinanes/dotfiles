@@ -1,5 +1,3 @@
-#!/usr/bin/env zx
-
 const log = (entry) => {
   const writeToStderr = (data) => {
     process.stderr.write(`${data}\n`);
