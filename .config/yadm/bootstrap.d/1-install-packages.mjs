@@ -5,9 +5,9 @@ import { IS_MAC } from "./utils/os.mjs";
 import { commandExists } from "./utils/commands.mjs";
 import { packageManager } from "./utils/package-manager.mjs";
 
-const packages = await fs.readJson(
-  path.join(__dirname, "../packagesToInstall.json")
-);
+const packages = (
+  await fs.readJson(path.join(__dirname, "../packagesToInstall.json"))
+).packages;
 
 await packageManager.init();
 

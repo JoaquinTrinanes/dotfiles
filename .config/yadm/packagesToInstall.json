@@ -1,26 +1,29 @@
-[
-  "autojump",
-  { "name": "asdf", "linux": "asdf-vm" },
-  { "linux": "base-devel" },
-  "bat",
-  { "name": "fontconfig", "bin": "fc-match" },
-  "git",
-  "httpie",
-  "jq",
-  { "name": "neovim", "bin": "nvim" },
-  { "name": "noto-fonts-cjk", "mac": "font-noto-sans-cjk" },
-  { "name": "pipewire-pulse", "mac": "" },
-  { "default": "python-pynvim", "mac": "" },
-  "rustup",
-  "starship",
-  { "name": "ttf-dejavu", "mac": "font-dejavu", "font": true },
-  { "name": "ttf-fira-code", "mac": "font-fira-code", "font": true },
-  {
-    "name": "ttf-nerd-fonts-symbols-common",
-    "mac": "font-symbols-only-nerd-font",
-    "font": true
-  },
-  "wezterm",
-  "yadm",
-  "zsh"
-]
+{
+  "homebrew": { "taps": ["homebrew/cask-fonts", "rsteube/homebrew-tap"] },
+  "packages": [
+    "autojump",
+    { "name": "asdf", "linux": "asdf-vm" },
+    "bat",
+    { "name": "carapace-bin", "mac": "rsteube/tap/carapace" },
+    { "name": "fontconfig", "bin": "fc-match" },
+    "git",
+    "httpie",
+    "jq",
+    { "name": "neovim", "bin": "nvim" },
+    { "name": "noto-fonts-cjk", "mac": "font-noto-sans-cjk" },
+    { "name": "pipewire-pulse", "mac": "" },
+    { "default": "python-pynvim", "mac": "" },
+    "rustup",
+    "starship",
+    { "name": "ttf-dejavu", "mac": "font-dejavu", "font": true },
+    { "name": "ttf-fira-code", "mac": "font-fira-code", "font": true },
+    {
+      "name": "ttf-nerd-fonts-symbols-common",
+      "mac": "font-symbols-only-nerd-font",
+      "font": true
+    },
+    "wezterm",
+    "yadm",
+    "zsh"
+  ]
+}

@@ -4,6 +4,11 @@ import * as log from "./log.mjs";
 import { IS_MAC } from "./os.mjs";
 import { commandExists } from "./commands.mjs";
 
+const taps = await within(async () => {
+  cd(__dirname);
+  return (await fs.readJson("../packagesToInstall.json"))?.homebrew.taps;
+});
+
 const PACKAGE_MANAGERS = {
   yay: {
     list: ["yay", "-Q"],
@@ -12,7 +17,14 @@ const PACKAGE_MANAGERS = {
   },
   pacman: {
     list: ["pacman", "-Q"],
-    install: ["sudo", "pacman", "--noprogressbar", "--noconfirm", "-S"],
+    install: [
+      "sudo",
+      "pacman",
+      "--noprogressbar",
+      "--noconfirm",
+      "--needed",
+      "-S",
+    ],
     upgrade: ["sudo", "pacman", "-Syu"],
   },
   "apt-get": {
@@ -25,7 +37,7 @@ const PACKAGE_MANAGERS = {
     list: ["brew", "list", "--quiet", "-1"],
     install: ["brew", "install", "--quiet"],
     upgrade: ["brew", "upgrade"],
-    init: ["brew", "tap", "homebrew/cask-fonts"],
+    init: taps.map((t) => ["brew", "tap", t]),
   },
 };
 
@@ -40,8 +52,18 @@ const getCurrentPackageManager = async () => {
 export class PackageManager {
   #current;
 
+  async #runCommand(cmd) {
+    const commandList = Array.isArray(cmd) ? cmd : [cmd];
+    for (const c of commandList) {
+      await spinner(c.join(" "), () => $`${c}`);
+    }
+  }
+
   async installPackage(pkg) {
-    await $`${this.#current.install} ${pkg}`;
+    await within(async () => {
+      $.prefix = "HOMEBREW_NO_AUTO_UPDATE=1;";
+      await $`${this.#current.install} ${pkg}`;
+    });
   }
 
   async isPackageInstalled(pkgDefinition) {
@@ -100,15 +122,12 @@ export class PackageManager {
     if (!this.#current.upgrade) {
       throw new Error("Upgrade command not defined");
     }
-    await $`${this.#current.upgrade}`;
+    await this.#runCommand(this.#current.upgrade);
   }
 
   async init() {
     if (this.#current.init) {
-      await spinner(
-        this.#current.init.join(" "),
-        () => $`${this.#current.init}`
-      );
+      await this.#runCommand(this.#current.init);
     }
   }
 
