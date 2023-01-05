@@ -6,8 +6,14 @@ local lsp_formatting = function(bufnr, async)
 	vim.lsp.buf.format({
 		bufnr = bufnr,
 		async = async,
-		timeout_ms = 2000,
+		-- filter = function(client)
+		-- 	return client.name == "null-ls"
+		-- end,
+		timeout_ms = 5000,
 	})
+	if vim.fn.exists(":EslintFixAll") > 0 then
+		vim.cmd("EslintFixAll")
+	end
 end
 
 -- Prints the current highlight groups in the cursor position
@@ -25,7 +31,7 @@ vim.api.nvim_create_user_command("WhatHl", function()
 end, {})
 
 local function setup_lsp(client)
-	if client.server_capabilities.documentFormattingProvider then
+	if client.supports_method("textDocument/format") then
 		vim.api.nvim_create_user_command("Autoformat", function()
 			lsp_formatting(0, true)
 		end, {})
@@ -39,7 +45,7 @@ local function setup_lsp(client)
 		})
 	end
 	-- Show info on hover
-	-- if client.server_capabilities.hoverProvider then
+	-- if client.supports_method('textDocument/hover') then
 	-- 	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { focus = false })
 
 	-- 	vim.api.nvim_create_autocmd("CursorHold", {
@@ -48,7 +54,7 @@ local function setup_lsp(client)
 	-- 	})
 	-- end
 
-	-- if client.server_capabilities.completionProvider then
+	-- if client.supports_method('textDocument/completion') then
 	-- vim.api.nvim_create_autocmd("CursorMovedI", {
 	-- 	group = lsp_augroup,
 	-- 	callback = function()
