@@ -9,18 +9,6 @@ alias k0s="k9s"
 
 alias k9s="k9s --readonly"
 
-function curry() {
-    exportfun=$1
-    shift
-    fun=$1
-    shift
-    params=$*
-    cmd=$"function $exportfun() {
-        more_params=\$*;
-        $fun $params \$more_params;
-    }"
-    eval $cmd
-}
 
 # Creates a wrapper around a command
 # Arguments:
@@ -28,26 +16,6 @@ function curry() {
 #   $2: Name of the command
 # Example:
 #   createWrapper vendor/bin/sail composer
-function createWrapper() {
-    local wrapperPath="$1"
-    shift
-    local command="$1"
-    [ ! -z "$command" ] && shift
-    local wrapperCommandName=${command:-$(basename $wrapperPath)}
-
-    # Calls $command with the given arguments.
-    # If $wrapperPath exists, calls the program at $wrapperPath with the command name as argument
-    cmd="
-    function $wrapperCommandName () {
-        if [ -f $wrapperPath ]; then
-            $wrapperPath $command "\$*"
-        else
-            command $wrapperCommandName "\$*"
-        fi
-    }
-    "
-    eval $cmd
-}
 
 commandExists() {
     command -v $1 &>/dev/null
@@ -83,3 +51,5 @@ function .() {
         cd ..
     fi
 }
+
+unfunction commandExists

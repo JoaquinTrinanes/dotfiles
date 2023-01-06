@@ -34,4 +34,4 @@ bindkey "^[[1;5D" backward-word
 # setopt all the options in CUSTOM_ZSH_OPTIONS
 setopt "${CUSTOM_ZSH_OPTIONS[@]}"
 
-unset CUSTOM_ZSH_OPTIONS
+unset CUSTOM_ZSH_OPTIONS load_plugins_path zsh_config_files_path
