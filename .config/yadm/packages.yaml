@@ -4,13 +4,14 @@ brew:
 packages:
   - autojump
   - asdf:
-      pacman: asdf-vm
+      yay: asdf-vm
   - bat
   - fontconfig
   - git
   - httpie
   - jq
-  - neovim
+  - neovim:
+      yay: neovim-git
   - noto-fonts-cjk:
       brew: font-noto-sans-cjk
   - pipewire-pulse:

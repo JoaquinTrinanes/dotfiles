@@ -4,6 +4,8 @@ const overrideName = (await commandExists("brew"))
   ? "brew"
   : (await commandExists("apt-get"))
   ? "apt-get"
+  : (await commandExists("yay"))
+  ? "yay"
   : "pacman";
 
 export class PackageDefinition {
