@@ -18,7 +18,7 @@ const installAsdfPluginIfMissing = async (plugin, version) => {
     .catch(() => false);
 
   if (isInstalled) {
-    log.debug(
+    log.info(
       `asdf plugin ${chalk.yellow(plugin)} already installed. Skipping.`
     );
     return;

@@ -36,7 +36,6 @@ const log = (entry) => {
 const error = (data) => log({ kind: "error", data });
 const warn = (data) => log({ kind: "warn", data });
 const ok = (data) => log({ kind: "ok", data });
-const debug = (data) => log({ kind: "info", data });
+const info = (data) => log({ kind: "info", data });
 
-// export default log;
-export { error, warn, ok, debug };
+export { error, warn, ok, info };

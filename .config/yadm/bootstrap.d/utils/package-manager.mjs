@@ -74,7 +74,7 @@ export class PackageManager {
   }
 
   async upgrade() {
-    await $`${command} -Syu`;
+    await $`${command} -Syu --noconfirm`;
   }
 
   async init() {

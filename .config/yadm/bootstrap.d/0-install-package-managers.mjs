@@ -34,7 +34,7 @@ const PACKAGE_MANAGERS = ["yay", "brew"];
 const isManagerInstalled = commandExists(PACKAGE_MANAGERS);
 
 if (isManagerInstalled) {
-  log.debug("Package manager is already installed. Skipping.");
+  log.info("Package manager is already installed. Skipping.");
 } else {
   if (IS_MAC) {
     await spinner("Installing brew...", () => installBrew());
