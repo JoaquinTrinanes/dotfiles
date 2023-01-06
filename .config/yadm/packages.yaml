@@ -1,6 +1,8 @@
 brew:
   taps:
     - homebrew/cask-fonts
+cargo:
+  - cargo-update
 packages:
   - autojump
   - asdf:

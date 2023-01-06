@@ -42,3 +42,6 @@ if (await commandExists("rustup")) {
 } else {
   log.warn("rustup not found. Skipping update");
 }
+
+await spinner("Updating cargo crates...", () => $`cargo install-update --all`);
+updateOk("cargo crates");
