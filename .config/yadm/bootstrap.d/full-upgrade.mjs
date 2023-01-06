@@ -2,12 +2,13 @@
 
 import { packageManager } from "./utils/package-manager.mjs";
 import * as log from "./utils/log.mjs";
+import { commandExists } from "./utils/commands.mjs";
 
 const updateOk = (data) => {
   log.ok(`Successfully updated ${chalk.yellow(data)}`);
 };
 
-log.info("Upgrading system dependencies...");
+log.info("Updating system dependencies...");
 await packageManager.upgrade();
 updateOk("system packages");
 
@@ -26,11 +27,18 @@ if (!fs.existsSync(antidotePath)) {
   });
 }
 
-await spinner("Upgrading asdf plugins...", () => $`asdf plugin update --all`);
+await spinner("Updating asdf plugins...", () => $`asdf plugin update --all`);
 updateOk("asdf plugins");
 
 await spinner(
-  "Upgrading NeoVim plugins...",
+  "Updating NeoVim plugins...",
   () => $`nvim --headless +PackerSync +qall!`
 );
 updateOk("NeoVim plugins");
+
+if (await commandExists("rustup")) {
+  await spinner("Updating rust via rustup", () => $`rustup update`);
+  updateOk("rust");
+} else {
+  log.warn("rustup not found. Skipping update");
+}

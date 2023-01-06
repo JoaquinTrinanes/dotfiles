@@ -17,7 +17,8 @@ packages:
       brew: null
   - python-pynvim:
       brew: null
-  - rustup
+  - rustup:
+      brew: null
   - starship
   - ttf-dejavu:
       brew: font-dejavu
