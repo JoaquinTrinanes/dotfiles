@@ -58,15 +58,21 @@ let-env NU_PLUGIN_DIRS = [
     ($nu.config-path | path dirname | path join 'plugins')
 ]
 
+
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
-let-env PATH = ($env.PATH | split row (char esep) | prepend '/usr/local/bin')
+
+def-env path_add [path: string] {
+    let-env PATH = ($env.PATH | split row (char esep) | prepend $path)
+}
+
+path_add /usr/local/bin
 
 try  {
     command -v brew | null
-    let-env PATH = ($env.PATH | split row (char esep) | prepend $"(brew --prefix asdf)/bin")
+    path_add $"(brew --prefix asdf)/bin"
 } catch {
-    let-env PATH = ($env.PATH | split row (char esep) | prepend "/opt/asdf-vm/bin")
+    path_add "/opt/asdf-vm/bin"
 }
 
-let-env PATH = ($env.PATH | split row (char esep) | prepend "~/.asdf/shims")
+path_add "~/.asdf/shims"
