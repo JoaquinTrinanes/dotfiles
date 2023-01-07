@@ -1,6 +1,15 @@
 local wez = require("wezterm")
 
 return {
+	--	default_prog = { "/usr/local/bin/oil", "-l" },
+	default_prog = {
+		"/usr/local/bin/nu",
+		"-l",
+		"--config",
+		"~/.config/nushell/config.nu",
+		"--env-config",
+		"~/.config/nushell/env.nu",
+	},
 	color_scheme = "nord",
 	font = wez.font_with_fallback({
 		"Fira Code",

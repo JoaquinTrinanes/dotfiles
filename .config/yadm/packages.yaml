@@ -16,6 +16,7 @@ packages:
       yay: neovim-git
   - noto-fonts-cjk:
       brew: font-noto-sans-cjk
+  - nushell
   - pipewire-pulse:
       brew: null
   - python-pynvim:

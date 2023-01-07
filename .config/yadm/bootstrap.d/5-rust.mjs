@@ -10,4 +10,15 @@ if (!(await commandExists("rustup"))) {
   log.info("rustup already exists. Skipping");
 }
 
-await $`cargo install ${packages.cargo}`;
+const packagesWithoutFeatures = packages.cargo.filter(
+  (p) => typeof p === "string"
+);
+const packagesWithFeatures = packages.cargo.filter(
+  (p) => typeof p !== "string"
+);
+
+await $`cargo install ${packagesWithoutFeatures}`;
+for (const p of packagesWithFeatures) {
+  const [name, { features }] = Object.entries(p)[0];
+  await $`cargo install ${name} --features ${features}`;
+}
