@@ -1,5 +1,6 @@
 brew:
   taps:
+    - rsteube/homebrew-tap
     - homebrew/cask-fonts
 cargo:
   - cargo-update
@@ -11,6 +12,9 @@ packages:
   - asdf:
       yay: asdf-vm
   - bat
+  - carapace:
+      brew: rsteube/tap/carapace
+      yay: carapace-bin
   - fontconfig
   - git
   - httpie

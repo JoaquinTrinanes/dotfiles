@@ -152,7 +152,7 @@ let-env config = {
     trim: {
       methodology: wrapping # wrapping or truncating
       wrapping_try_keep_words: true # A strategy used by the 'wrapping' methodology
-      truncating_suffix: "..." # A suffix used by the 'truncating' methodology
+      truncating_suffix: "…" # "..." # A suffix used by the 'truncating' methodology
     }
   }
 
