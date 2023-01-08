@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PNPM_HOME="$HOME/.local/share/pnpm"
+
 cleanup_temp_node_install() {
     if pnpm env -g list lts | grep "" &> /dev/null; then
         echo "Deleting temporal node..."
@@ -12,10 +14,10 @@ cleanup_temp_node_install() {
 }
 
 # Install pnpm
-if ! command -v pnpm > /dev/null; then
+if ! [ -f "$PNPM_HOME/pnpm" ]; then
     echo "Installing pnpm"
     # The install script will try to update the current shell config, this is avoided by unsetting it
-    curl -fsSL https://get.pnpm.io/install.sh | env SHELL="" PNPM_HOME="$HOME/.local/share/pnpm" sh - | grep -v "ERR_PNPM_UNSUPPORTED_SHELL" || true
+    curl -fsSL https://get.pnpm.io/install.sh | env SHELL="" sh - | grep -v "ERR_PNPM_UNSUPPORTED_SHELL" || true
 fi
 
 if ! command -v node > /dev/null; then
@@ -23,7 +25,7 @@ if ! command -v node > /dev/null; then
     pnpm env -g use lts
 fi
 
-if ! command -v zx > /dev/null; then
+if ! pnpm -g ls zx | grep "" > /dev/null; then
     echo "Installing zx"
     pnpm i -g zx
 fi
