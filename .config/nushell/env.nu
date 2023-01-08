@@ -68,7 +68,7 @@ def-env path_add [path: string] {
 
 path_add /usr/local/bin
 
-try  {
+try {
     command -v brew | null
     path_add $"(brew --prefix asdf)/bin"
 } catch {
@@ -76,3 +76,10 @@ try  {
 }
 
 path_add "~/.asdf/shims"
+
+# pnpm
+let-env PNPM_HOME = $"($env.HOME)/.local/share/pnpm"
+path_add $env.PNPM_HOME
+
+# rust
+path_add "~/.cargo/bin"
