@@ -1,9 +1,30 @@
 local wez = require("wezterm")
 
+function file_exists(name)
+	local f = io.open(name, "r")
+	if f ~= nil then
+		io.close(f)
+		return true
+	else
+		return false
+	end
+end
+
+local nu_paths = { wez.home_dir .. "/.cargo/bin/nu", "/usr/local/bin/nu" }
+
+local nu_path = "nu"
+
+for _, file in ipairs(nu_paths) do
+	if file_exists(file) then
+		nu_path = file
+		break
+	end
+end
+
 return {
 	--	default_prog = { "/usr/local/bin/oil", "-l" },
 	default_prog = {
-		"/usr/local/bin/nu",
+		nu_path,
 		"-l",
 		"--config",
 		"~/.config/nushell/config.nu",
