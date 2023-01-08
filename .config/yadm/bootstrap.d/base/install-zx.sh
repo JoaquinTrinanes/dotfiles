@@ -14,7 +14,8 @@ cleanup_temp_node_install() {
 # Install pnpm
 if ! command -v pnpm > /dev/null; then
     echo "Installing pnpm"
-    curl -fsSL https://get.pnpm.io/install.sh | sh -
+    # The install script will try to update the current shell config, this is avoided by unsetting it
+    curl -fsSL https://get.pnpm.io/install.sh | env SHELL="" PNPM_HOME="$HOME/.local/share/pnpm" sh - | grep -v "ERR_PNPM_UNSUPPORTED_SHELL" || true
 fi
 
 if ! command -v node > /dev/null; then
