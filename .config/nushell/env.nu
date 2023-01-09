@@ -83,3 +83,8 @@ path_add $env.PNPM_HOME
 
 # rust
 path_add "~/.cargo/bin"
+
+let-env THEME = "nord"
+
+let-env LS_COLORS = (vivid generate $env.THEME | str trim)
+

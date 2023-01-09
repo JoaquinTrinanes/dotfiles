@@ -36,6 +36,7 @@ packages:
       brew: font-fira-code
   - ttf-nerd-fonts-symbols-common:
       brew: font-symbols-only-nerd-font
+  - vivid
   - wezterm
   - yadm
   - zsh
