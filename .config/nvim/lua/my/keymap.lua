@@ -48,7 +48,7 @@ map("n", "<leader>fh", "<cmd>Telescope help_tags<cr>")
 -- Dir tree
 local dirtree_ok = pcall(require, "nvim-tree")
 if dirtree_ok then
-	map("n", "<C-b>", "<cmd>NvimTreeToggle<cr>")
+	map("n", "<C-b>", "<cmd>NvimTreeFindFileToggle<cr>")
 end
 
 -- Code actions
