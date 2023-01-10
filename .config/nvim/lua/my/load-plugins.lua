@@ -293,7 +293,7 @@ local plugins = {
 			})
 		end,
 	},
-	{ "folke/lsp-colors.nvim" },
+	{ "folke/lsp-colors.nvim", as = "lsp-colors" },
 	{ "gpanders/editorconfig.nvim" },
 	{
 		"lewis6991/gitsigns.nvim",
@@ -336,7 +336,7 @@ local plugins = {
 			require("telescope").load_extension("file_browser")
 		end,
 	},
-	{ "shaunsingh/nord.nvim" },
+	-- { "shaunsingh/nord.nvim" },
 	{ "tpope/vim-commentary" },
 	{ "tpope/vim-eunuch" },
 	{ "tpope/vim-repeat" },
@@ -628,6 +628,71 @@ local plugins = {
 		end,
 	},
 	{ "direnv/direnv.vim" },
+	{
+		"oncomouse/lushwal",
+		requires = {
+			{ "rktjmp/lush.nvim" },
+			{ "rktjmp/shipwright.nvim", opt = true },
+		},
+		after = { "lsp-colors" },
+		setup = function()
+			vim.g.lushwal_configuration = {
+				color_overrides = function(colors)
+					local overrides = {}
+					return vim.tbl_extend("force", colors, overrides)
+				end,
+				addons = {
+					ale = false,
+					barbar = false,
+					bufferline_nvim = false,
+					coc_nvim = false,
+					dashboard_nvim = false,
+					fern_vim = false,
+					gina = false,
+					gitsigns_nvim = true,
+					hop_nvim = false,
+					hydra_nvim = false,
+					indent_blankline_nvim = true,
+					lightspeed_nvim = false,
+					lspsaga_nvim = false,
+					lsp_trouble_nvim = true,
+					lualine = true,
+					markdown = false,
+					mini_nvim = true,
+					native_lsp = true,
+					neogit = false,
+					neomake = false,
+					nerdtree = false,
+					nvim_cmp = true,
+					nvim_tree_lua = false,
+					nvim_ts_rainbow = false,
+					semshi = false,
+					telescope_nvim = true,
+					treesitter = true,
+					vim_dirvish = false,
+					vim_gitgutter = false,
+					vim_signify = false,
+					vim_sneak = false,
+					which_key_nvim = false,
+				},
+			}
+		end,
+		config = function()
+			local function get_color(color)
+				return require("lushwal.colors")()[color].hex
+			end
+
+			local function setup()
+				vim.cmd([[hi clear CursorLine]])
+				vim.cmd([[hi Conceal guibg=None guifg=]] .. get_color("color0"))
+				vim.cmd([[hi CursorLine guifg=None guibg=]] .. get_color("color8"))
+			end
+
+			vim.cmd([[colorscheme lushwal]])
+			require("lushwal").add_reload_hook(setup)
+			setup()
+		end,
+	},
 }
 
 return require("packer").startup({

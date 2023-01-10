@@ -43,23 +43,17 @@ let-env VISUAL = "code"
 let-env XDG_DATA_HOME = home ".local/share"
 let-env XDG_CACHE_HOME = home ".cache"
 
-# let-env NVIM_HOME = $env.XDG_CONFIG_HOME | path join "nvim"
-
-
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
-let-env THEME = "nord"
-
-load-env {
-    PNPM_HOME: (home ".local/share/pnpm")
-    LS_COLORS: $"(vivid generate $env.THEME | str trim):su=30;41:ow=30;42:st=30;44:"
-}
 
 def-env path_add [path: string] {
     let-env PATH = ($env.PATH | split row (char esep) | prepend $path)
 }
 
 path_add /usr/local/bin
+
+# rust
+path_add "~/.cargo/bin"
 
 if command exists "brew" {
     let paths = (brew --prefix asdf python | str trim | lines)
@@ -80,8 +74,24 @@ path_add (python -m site --user-base | str trim | path join "bin")
 path_add "~/.asdf/shims"
 
 # pnpm
+let-env PNPM_HOME = (home ".local/share/pnpm")
 path_add $env.PNPM_HOME
 
-# rust
-path_add "~/.cargo/bin"
+def get_current_theme [] {
+    let path = ($env.XDG_CACHE_HOME | path join "wal/last_used_theme")
+    if not ($path | path exists) {
+        return null
+    }
+    open $path | str trim | split row '.' | get 0
+}
+
+let theme = get_current_theme
+if not ($theme | is-empty) {
+    let vivid_themes = (vivid themes | lines)
+    if ($theme in $vivid_themes) {
+        let-env LS_COLORS = $"(vivid generate $theme | str trim):su=30;41:ow=30;42:st=30;44:"
+    }
+    let-env THEME = $theme
+}
+
 
