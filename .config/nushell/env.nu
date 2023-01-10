@@ -1,5 +1,7 @@
 # Nushell Environment Config File
 
+use ~/.config/nushell/scripts/command.nu
+
 def create_left_prompt [] {
     let path_segment = if (is-admin) {
         $"(ansi red_bold)($env.PWD)"
@@ -68,12 +70,26 @@ def-env path_add [path: string] {
 
 path_add /usr/local/bin
 
-try {
-    command -v brew | null
-    path_add $"(brew --prefix asdf)/bin"
-} catch {
+
+if command exists "brew" {
+    # let brew_programs = [asdf python]
+    # let brew_paths = ($brew_programs | par-each { |it| brew --prefix $it | str trim | path join "bin" })
+    # path_add $brew_paths
+
+    let paths = (brew --prefix asdf python | str trim | lines)
+    let asdf_path = $paths.0
+    let python_path = $paths.1
+
+    path_add ($asdf_path | path join "bin")
+
+    # Access version-less python command
+    path_add ($python_path | path join "libexec/bin")
+} else {
     path_add "/opt/asdf-vm/bin"
 }
+
+# pip-installed binaries
+path_add (python -m site --user-base | str trim | path join "bin")
 
 path_add "~/.asdf/shims"
 

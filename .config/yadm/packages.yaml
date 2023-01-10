@@ -18,11 +18,13 @@ packages:
   - fontconfig
   - git
   - httpie
+  - imagemagick
   - jq
   - neovim:
       yay: neovim-git
   - noto-fonts-cjk:
       brew: font-noto-sans-cjk
+  - pipenv
   - pipewire-pulse:
       brew: null
   - python-pynvim:
@@ -40,3 +42,5 @@ packages:
   - wezterm
   - yadm
   - zsh
+pip:
+  - https://github.com/dylanaraps/pywal/archive/master.zip

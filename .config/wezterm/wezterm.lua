@@ -21,17 +21,20 @@ for _, file in ipairs(nu_paths) do
 	end
 end
 
+local themes_dir = wez.home_dir .. "/.cache/wal"
+wez.add_to_config_reload_watch_list(themes_dir .. "/wezterm-wal.toml")
+
 return {
-	--	default_prog = { "/usr/local/bin/oil", "-l" },
 	default_prog = {
 		nu_path,
 		"-l",
 		"--config",
-		"~/.config/nushell/config.nu",
+		wez.home_dir .. "/.config/nushell/config.nu",
 		"--env-config",
-		"~/.config/nushell/env.nu",
+		wez.home_dir .. "/.config/nushell/env.nu",
 	},
-	color_scheme = "nord",
+	color_scheme = "wezterm-wal",
+	color_scheme_dirs = { themes_dir },
 	font = wez.font_with_fallback({
 		"Fira Code",
 		{ family = "JoyPixels", assume_emoji_presentation = true },

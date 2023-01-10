@@ -127,7 +127,7 @@ module completions {
 # Get just the extern definitions without the custom completion commands
 use completions *
 
-use ~/.config/nushell/themes/nord.nu theme
+use ~/.config/nushell/theme.nu theme
 
 # External completer example
 let carapace_completer = {|spans| 
