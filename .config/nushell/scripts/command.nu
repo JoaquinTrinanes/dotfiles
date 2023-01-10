@@ -2,7 +2,6 @@
 export def "exists" [
     name: string # name of the command
   ] {
-    let result = (command -v $name | complete)
-    $result.exit_code == 0
+  if (which $name | is-empty) { false } else { true }
   }
 

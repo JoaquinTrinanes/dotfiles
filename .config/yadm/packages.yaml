@@ -24,7 +24,8 @@ packages:
       yay: neovim-git
   - noto-fonts-cjk:
       brew: font-noto-sans-cjk
-  - pipenv
+  - pipenv:
+      yay: python-pipenv
   - pipewire-pulse:
       brew: null
   - python-pynvim:
