@@ -364,7 +364,7 @@ let-env config = {
   ]
 }
 
-source ~/.config/nushell/aliases.nu
-source ~/.config/nushell/plugins/starship.nu
-source ~/.config/nushell/plugins/autojump.nu
+source aliases.nu
+source starship.nu
+source autojump.nu
 
