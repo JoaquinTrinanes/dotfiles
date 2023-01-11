@@ -77,6 +77,11 @@ path_add "~/.asdf/shims"
 let-env PNPM_HOME = (home ".local/share/pnpm")
 path_add $env.PNPM_HOME
 
+# golang
+let-env GOPATH = (home "go")
+let-env GOBIN = ($env.GOPATH | path join "bin")
+path_add $env.GOBIN
+
 def get_current_theme [] {
     let path = ($env.XDG_CACHE_HOME | path join "wal/last_used_theme")
     if not ($path | path exists) {

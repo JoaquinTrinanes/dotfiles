@@ -17,6 +17,7 @@ packages:
       yay: carapace-bin
   - fontconfig
   - git
+  - go
   - httpie
   - imagemagick
   - jq
