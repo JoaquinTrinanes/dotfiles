@@ -10,7 +10,9 @@ function file_exists(name)
 	end
 end
 
-local nu_paths = { wez.home_dir .. "/.cargo/bin/nu", "/usr/local/bin/nu" }
+local home = wez.home_dir
+
+local nu_paths = { home .. "/.cargo/bin/nu", "/usr/local/bin/nu" }
 
 local nu_path = "nu"
 
@@ -21,7 +23,7 @@ for _, file in ipairs(nu_paths) do
 	end
 end
 
-local themes_dir = wez.home_dir .. "/.cache/wal"
+local themes_dir = home .. "/.cache/wal"
 wez.add_to_config_reload_watch_list(themes_dir .. "/wezterm-wal.toml")
 
 return {
@@ -29,9 +31,9 @@ return {
 		nu_path,
 		"-l",
 		"--config",
-		wez.home_dir .. "/.config/nushell/config.nu",
+		home .. "/.config/nushell/config.nu",
 		"--env-config",
-		wez.home_dir .. "/.config/nushell/env.nu",
+		home .. "/.config/nushell/env.nu",
 	},
 	color_scheme = "wezterm-wal",
 	color_scheme_dirs = { themes_dir },

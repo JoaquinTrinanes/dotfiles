@@ -23,5 +23,3 @@ brights = [
 ]
 cursor_bg = '{cursor}'
 selection_bg = '{color8}'
-
-[colors.indexed]
