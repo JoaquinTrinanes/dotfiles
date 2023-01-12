@@ -6,9 +6,9 @@ local lsp_formatting = function(bufnr, async)
 	vim.lsp.buf.format({
 		bufnr = bufnr,
 		async = async,
-		-- filter = function(client)
-		-- 	return client.name == "null-ls"
-		-- end,
+		filter = function(client)
+			return client.name == "null-ls"
+		end,
 		timeout_ms = 5000,
 	})
 	if vim.fn.exists(":EslintFixAll") > 0 then
