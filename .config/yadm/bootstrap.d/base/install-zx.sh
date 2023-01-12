@@ -27,7 +27,7 @@ fi
 
 if ! pnpm -g ls zx | grep "" > /dev/null; then
     echo "Installing zx"
-    pnpm i -g zx
+    pnpm add -g zx
 fi
 
 export -f cleanup_temp_node_install
