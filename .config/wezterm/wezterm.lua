@@ -29,11 +29,14 @@ wez.add_to_config_reload_watch_list(themes_dir .. "/wezterm-wal.toml")
 return {
 	default_prog = {
 		nu_path,
-		"-l",
+		-- "-l",
+		"-i",
 		"--config",
 		home .. "/.config/nushell/config.nu",
 		"--env-config",
 		home .. "/.config/nushell/env.nu",
+		"--plugin-config",
+		home .. "/.config/nushell/plugin.nu",
 	},
 	color_scheme = "wezterm-wal",
 	color_scheme_dirs = { themes_dir },

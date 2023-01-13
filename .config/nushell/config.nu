@@ -367,6 +367,6 @@ let-env config = {
 }
 
 source aliases.nu
-source starship.nu
-source autojump.nu
+source plugins/starship.nu
+source plugins/zoxide.nu
 

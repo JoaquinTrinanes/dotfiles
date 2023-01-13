@@ -8,7 +8,6 @@ cargo:
       features:
         - dataframe
 packages:
-  - autojump
   - asdf:
       yay: asdf-vm
   - bat
@@ -16,6 +15,7 @@ packages:
       brew: rsteube/tap/carapace
       yay: carapace-bin
   - fontconfig
+  - fzf
   - git
   - go
   - httpie
@@ -43,6 +43,6 @@ packages:
   - vivid
   - wezterm
   - yadm
-  - zsh
+  - zoxide
 pip:
   - https://github.com/dylanaraps/pywal/archive/master.zip

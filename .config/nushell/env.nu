@@ -99,4 +99,5 @@ if not ($theme | is-empty) {
     let-env THEME = $theme
 }
 
-
+zoxide init nushell --cmd j | save -f ~/.config/nushell/scripts/plugins/zoxide.nu
+starship init nu | save -f ~/.config/nushell/scripts/plugins/starship.nu
