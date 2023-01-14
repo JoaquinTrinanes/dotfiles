@@ -7,6 +7,7 @@ cargo:
   - nu:
       features:
         - dataframe
+  - flavours
 packages:
   - asdf:
       yay: asdf-vm
