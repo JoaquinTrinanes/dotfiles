@@ -60,7 +60,7 @@ vim.cmd([[
   highlight clear
   syntax reset
 ]])
-vim.g.colors_name = "base16-{{scheme-slug}}"
+vim.g.colors_name = "{{scheme-slug}}"
 
 -- Vim editor colors                    fg bg ctermfg ctermbg attr guisp
 vim.api.nvim_set_hl(0, "Normal", { fg = gui05, bg = gui00, ctermfg = cterm05, ctermbg = cterm00 })
