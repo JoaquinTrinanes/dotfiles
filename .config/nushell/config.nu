@@ -3,7 +3,7 @@
 # Get just the extern definitions without the custom completion commands
 use ~/.config/nushell/completions/yadm.nu *
 
-use ~/.config/nushell/theme.nu theme
+use plugins/theme.nu theme
 
 use to.nu
 use from.nu

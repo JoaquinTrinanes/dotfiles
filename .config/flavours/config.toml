@@ -3,20 +3,12 @@ template = "wezterm"
 file = "~/.config/wezterm/colors/flavours.toml"
 rewrite = true
 
-# [[items]]
-# template = "neovim"
-# file = "~/.config/nvim/colors/flavours.lua"
-# rewrite = true
-
-# TODO: maybe make lua config work
-# TODO: override theme so SignColumn and LineNr have colour 0
-# TODO: ignore generated files and check they exist before loading
 [[items]]
-template = "vim"
-file = "~/.config/nvim/colors/flavours.vim"
+template = "neovim"
+file = "~/.config/nvim/colors/flavours.lua"
 rewrite = true
 
 [[items]]
 template = "nushell"
-file = "~/.config/nushell/theme.nu"
+file = "~/.config/nushell/scripts/plugins/theme.nu"
 rewrite = true

@@ -4,7 +4,7 @@ local files = {
 	"commands",
 	"lsp",
 	"keymap",
-	-- "theme",
+	"theme",
 	"render-whitespace",
 }
 

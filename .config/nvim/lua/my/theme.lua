@@ -1,13 +1,30 @@
-local ok, nord = pcall(require, "nord")
-if not ok then
-	return
+local colorscheme_path = vim.fn.expand("~/.config/nvim/colors/flavours.lua")
+local w = vim.loop.new_fs_event()
+
+local function set_colorscheme()
+	vim.cmd([[colorscheme flavours]])
 end
 
-local g = vim.g
+local function on_change()
+	set_colorscheme()
+end
 
-g.nord_contrast = true
-g.nord_borders = true
-g.nord_italic = false
+local function watch_file()
+	w:start(
+		colorscheme_path,
+		{},
+		vim.schedule_wrap(function(...)
+			on_change(...)
+		end)
+	)
+end
 
-nord.set()
-vim.cmd([[colorscheme nord]])
+local group = vim.api.nvim_create_augroup("ReloadTheme", {})
+vim.api.nvim_create_autocmd("VimEnter", {
+	group = group,
+	callback = function()
+		watch_file()
+	end,
+})
+
+set_colorscheme()
