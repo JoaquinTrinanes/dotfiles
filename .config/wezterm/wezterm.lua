@@ -11,17 +11,6 @@ local function file_exists(name)
 end
 
 local home = wez.home_dir
-local last_theme_path = home .. "/.cache/wal/last_used_theme"
-
-local function get_current_theme()
-	local f = io.open(last_theme_path, "r")
-	if not f then
-		return nil
-	end
-	local theme_file = f:read("l")
-	local theme = theme_file:gmatch("(.-)%..-")()
-	return theme
-end
 
 local nu_paths = { home .. "/.cargo/bin/nu", "/usr/local/bin/nu" }
 local nu_path = "nu"
@@ -33,16 +22,9 @@ for _, file in ipairs(nu_paths) do
 	end
 end
 
-local themes_dir = home .. "/.cache/wal"
-wez.add_to_config_reload_watch_list(themes_dir .. "/wezterm-wal.toml")
-wez.add_to_config_reload_watch_list(last_theme_path)
-
-local theme = get_current_theme()
+wez.add_to_config_reload_watch_list(home .. "/.config/wezterm/colors/flavours.toml")
 
 return {
-	set_environment_variables = {
-		THEME = theme,
-	},
 	default_prog = {
 		nu_path,
 		-- "-l",
@@ -54,8 +36,7 @@ return {
 		"--plugin-config",
 		home .. "/.config/nushell/plugin.nu",
 	},
-	color_scheme = "wezterm-wal",
-	color_scheme_dirs = { themes_dir },
+	color_scheme = "flavours",
 	font = wez.font_with_fallback({
 		"Fira Code",
 		{ family = "JoyPixels", assume_emoji_presentation = true },
