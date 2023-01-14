@@ -61,7 +61,7 @@ let-env config = {
     }
 
     table: {
-      split_line: '#404040' 
+      # split_line: '#404040' 
 
       cursor: true
 
@@ -85,7 +85,7 @@ let-env config = {
     }
 
     config: {
-      cursor_color: {bg: 'yellow' fg: 'black' }
+      # cursor_color: {bg: 'yellow' fg: 'black' }
 
       # border_color: white
       # list_color: green
