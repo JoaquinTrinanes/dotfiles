@@ -1,6 +1,6 @@
 local wez = require("wezterm")
 
-function file_exists(name)
+local function file_exists(name)
 	local f = io.open(name, "r")
 	if f ~= nil then
 		io.close(f)
@@ -11,9 +11,19 @@ function file_exists(name)
 end
 
 local home = wez.home_dir
+local last_theme_path = home .. "/.cache/wal/last_used_theme"
+
+local function get_current_theme()
+	local f = io.open(last_theme_path, "r")
+	if not f then
+		return nil
+	end
+	local theme_file = f:read("l")
+	local theme = theme_file:gmatch("(.-)%..-")()
+	return theme
+end
 
 local nu_paths = { home .. "/.cargo/bin/nu", "/usr/local/bin/nu" }
-
 local nu_path = "nu"
 
 for _, file in ipairs(nu_paths) do
@@ -25,8 +35,14 @@ end
 
 local themes_dir = home .. "/.cache/wal"
 wez.add_to_config_reload_watch_list(themes_dir .. "/wezterm-wal.toml")
+wez.add_to_config_reload_watch_list(last_theme_path)
+
+local theme = get_current_theme()
 
 return {
+	set_environment_variables = {
+		THEME = theme,
+	},
 	default_prog = {
 		nu_path,
 		-- "-l",
