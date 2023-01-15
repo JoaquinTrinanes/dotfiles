@@ -86,6 +86,13 @@ local plugins = {
 		},
 		config = function()
 			local dap, dapui = require("dap"), require("dapui")
+
+			local sign = vim.fn.sign_define
+
+			sign("DapBreakpoint", { text = "●", texthl = "DapBreakpoint", linehl = "", numhl = "" })
+			sign("DapBreakpointCondition", { text = "●", texthl = "DapBreakpointCondition", linehl = "", numhl = "" })
+			sign("DapLogPoint", { text = "◆", texthl = "DapLogPoint", linehl = "", numhl = "" })
+
 			dap.listeners.after.event_initialized["dapui_config"] = function()
 				dapui.open()
 			end
@@ -654,6 +661,18 @@ local plugins = {
 			nvim_tree_events.subscribe("TreeClose", function()
 				bufferline_api.set_offset(0)
 			end)
+		end,
+	},
+	{
+		"akinsho/toggleterm.nvim",
+		tag = "*",
+		config = function()
+			local nu_config = vim.fn.expand("~/.config/nushell/config.nu")
+			local nu_env = vim.fn.expand("~/.config/nushell/env.nu")
+			require("toggleterm").setup({
+				open_mapping = [[<c-\>]],
+				shell = "nu --config " .. nu_config .. " --env-config " .. nu_env,
+			})
 		end,
 	},
 }
