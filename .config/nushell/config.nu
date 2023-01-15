@@ -2,6 +2,8 @@
 
 # Get just the extern definitions without the custom completion commands
 use ~/.config/nushell/completions/yadm.nu *
+use ~/.config/nushell/completions/asdf.nu *
+use ~/.config/nushell/completions/flavours.nu *
 
 use plugins/theme.nu theme
 
