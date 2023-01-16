@@ -100,4 +100,7 @@ if not ($theme | is-empty) {
 }
 
 zoxide init nushell --cmd j | save -f ~/.config/nushell/scripts/plugins/zoxide.nu
+
+let-env PROMPT_INDICATOR_VI_NORMAL = ""
+let-env PROMPT_INDICATOR_VI_INSERT = ""
 starship init nu | save -f ~/.config/nushell/scripts/plugins/starship.nu

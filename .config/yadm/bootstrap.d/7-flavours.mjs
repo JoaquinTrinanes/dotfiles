@@ -16,7 +16,7 @@ const macFlavoursConfigPath = path.join(
   "Library/Preferences/flavours"
 );
 
-const configFileExists = await fileExists(macFlavoursConfigPath);
+const configFileExists = fs.existsSync(macFlavoursConfigPath);
 
 if (IS_MAC && !configFileExists) {
   await $`ln -s ${path.join(

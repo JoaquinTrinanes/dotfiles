@@ -46,6 +46,7 @@ return {
 	font_size = 16,
 	use_fancy_tab_bar = false,
 	default_cursor_style = "SteadyBar",
+	cursor_blink_rate = 0,
 	enable_scroll_bar = true,
 	audible_bell = "Disabled",
 	unicode_version = 15,
