@@ -5,12 +5,6 @@ import * as log from "./utils/log.mjs";
 
 const DEFAULT_THEME = "nord";
 
-const fileExists = (path) =>
-  $`ls ${path}`
-    .quiet()
-    .then(() => true)
-    .catch(() => false);
-
 const macFlavoursConfigPath = path.join(
   os.homedir(),
   "Library/Preferences/flavours"
@@ -24,6 +18,8 @@ if (IS_MAC && !configFileExists) {
     ".config/flavours"
   )} ${flavoursConfigPath}`;
 }
+
+await $`flavours update all`;
 
 try {
   await $`flavours current`.quiet();

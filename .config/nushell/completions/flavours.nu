@@ -41,6 +41,7 @@ export extern "flavours info" [
 def "complete generate mode" [] {
   [dark light]
 }
+
 # Generates a scheme based on an image
 export extern "flavours generate" [
   mode: string@"complete generate mode" # Whether to generate a dark or light scheme
