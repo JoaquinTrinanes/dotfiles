@@ -12,3 +12,8 @@ rewrite = true
 template = "nushell"
 file = "~/.config/nushell/scripts/plugins/theme.nu"
 rewrite = true
+
+# [[items]]
+# template = "vscode"
+# file = "~/.config/Code - OSS/User/test-theme.json"
+# rewrite = true

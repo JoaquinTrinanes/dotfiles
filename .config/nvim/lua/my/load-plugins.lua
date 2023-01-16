@@ -675,6 +675,12 @@ local plugins = {
 			})
 		end,
 	},
+	{
+		"numToStr/Navigator.nvim",
+		config = function()
+			require("Navigator").setup()
+		end,
+	},
 }
 
 return require("packer").startup({
