@@ -15,6 +15,7 @@ packages:
   - carapace:
       brew: rsteube/tap/carapace
       yay: carapace-bin
+  - delta
   - fontconfig
   - fzf
   - git

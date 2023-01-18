@@ -1,4 +1,9 @@
 [core]
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    navigate = true
 [alias]
     a = add
     aa = add --all
@@ -74,6 +79,7 @@
 [diff]
     mnemonicprefix = true
     tool = meld
+    colorMoved = default
 [difftool]
     prompt = false
 [icdiff]
@@ -85,6 +91,7 @@
 [merge]
     log = false
     tool = meld
+    conflictStyle = diff3
 [mergetool]
     keepBackup = false
     prompt = false
