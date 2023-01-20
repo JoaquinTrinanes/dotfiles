@@ -159,9 +159,9 @@ let-env config = {
             col_padding: 2
         }
         style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
+            text: blue
+            # selected_text: green_reverse
+            # description_text: yellow
         }
       }
       {
@@ -173,9 +173,9 @@ let-env config = {
             page_size: 10
         }
         style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
+            # text: green
+            # selected_text: green_reverse
+            # description_text: yellow
         }
       }
       {
@@ -191,9 +191,9 @@ let-env config = {
             description_rows: 10
         }
         style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
+            # text: green
+            # selected_text: green_reverse
+            # description_text: yellow
         }
       }
       # Example of extra menus created using a nushell source
@@ -210,9 +210,9 @@ let-env config = {
             col_padding: 2
         }
         style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
+            # text: green
+            # selected_text: green_reverse
+            # description_text: yellow
         }
         source: { |buffer, position|
             $nu.scope.commands
@@ -229,9 +229,9 @@ let-env config = {
             page_size: 10
         }
         style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
+            # text: green
+            # selected_text: green_reverse
+            # description_text: yellow
         }
         source: { |buffer, position|
             $nu.scope.vars
@@ -253,9 +253,9 @@ let-env config = {
             description_rows: 10
         }
         style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
+            # text: green
+            # selected_text: green_reverse
+            # description_text: yellow
         }
         source: { |buffer, position|
             $nu.scope.commands
