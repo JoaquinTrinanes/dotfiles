@@ -371,4 +371,4 @@ let-env config = {
 source aliases.nu
 source plugins/starship.nu
 source plugins/zoxide.nu
-
+let-env PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: "
