@@ -2,6 +2,6 @@
 export def "exists" [
     name: string # name of the command
   ] {
-  if (which $name | is-empty) { false } else { true }
+  not (which $name | is-empty)
   }
 
