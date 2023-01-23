@@ -28,6 +28,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	desc = "Compile Packer plugins source",
 })
 
+local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
+
 local plugins = {
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -242,6 +244,53 @@ local plugins = {
 					-- python
 					f.black,
 				},
+				on_attach = function(client, bufnr)
+					if client.name == "rust_analyzer" then
+						local rt = require("rust-tools")
+						vim.keymap.set("n", "<C-.>", rt.hover_actions.hover_actions, { remap = true })
+						return
+					end
+					if client.supports_method("textDocument/formatting") then
+						local function format(opts)
+							if vim.fn.exists(":EslintFixAll") > 0 then
+								vim.cmd("EslintFixAll")
+							end
+							vim.lsp.buf.format(opts)
+						end
+
+						vim.api.nvim_create_user_command("Autoformat", function()
+							format({ bufnr = 0, async = true, timeout_ms = 5000 })
+						end, {})
+
+						-- Format on save
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							buffer = bufnr,
+							group = lsp_formatting_group,
+							callback = function()
+								format({ bufnr = 0, async = false, timeout_ms = 5000 })
+							end,
+						})
+					end
+					-- Show info on hover
+					-- if client.supports_method('textDocument/hover') then
+					-- 	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { focus = false })
+
+					-- 	vim.api.nvim_create_autocmd("CursorHold", {
+					-- 		group = lsp_augroup,
+					-- 		command = "silent! lua vim.lsp.buf.hover()",
+					-- 	})
+					-- end
+
+					-- if client.supports_method('textDocument/completion') then
+					-- vim.api.nvim_create_autocmd("CursorMovedI", {
+					-- 	group = lsp_augroup,
+					-- 	callback = function()
+					-- 		vim.lsp.buf.completion()
+					-- 	end,
+					-- })
+					-- end
+					-- end
+				end,
 			})
 		end,
 	},
@@ -251,9 +300,16 @@ local plugins = {
 		as = "nvim-tree",
 		config = function()
 			require("nvim-tree").setup({
+				diagnostics = { enable = true, debounce_delay = 1000 },
 				open_on_setup = false,
 				live_filter = {
 					always_show_folders = false,
+				},
+				renderer = {
+					group_empty = true,
+				},
+				filters = {
+					dotfiles = true,
 				},
 				view = {
 					mappings = {
