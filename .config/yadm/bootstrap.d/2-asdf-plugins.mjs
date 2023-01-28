@@ -7,6 +7,8 @@ const installAsdfPlugin = async (plugin, version) => {
   if (version) {
     await $`asdf install ${plugin} ${version}`;
     await $`asdf global ${plugin} ${version}`;
+  } else {
+    await $`asdf global ${plugin} system`;
   }
 };
 
@@ -29,10 +31,7 @@ const installAsdfPluginIfMissing = async (plugin, version) => {
   log.ok(`Installed ${chalk.yellow(plugin)} asdf plugin`);
 };
 
-for (const [plugin, version] of [
-  ["nodejs", "lts"],
-  ["direnv", "system"],
-]) {
+for (const [plugin, version] of [["nodejs"], ["direnv"]]) {
   await installAsdfPluginIfMissing(plugin, version);
 }
 

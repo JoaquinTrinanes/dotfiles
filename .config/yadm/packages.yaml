@@ -24,6 +24,7 @@ packages:
   - jq
   - neovim:
       yay: neovim-git
+  - node
   - noto-fonts-cjk:
       brew: font-noto-sans-cjk
   - pipenv:
