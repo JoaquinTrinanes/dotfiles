@@ -15,7 +15,4 @@ alias grba = git rebase --abort
 alias grbc = git rebase --continue
 alias grbi = git rebase -i
 
-
-alias nu = nu --config $nu.config-path --env-config $nu.env-path
-
 alias la = ls -la
