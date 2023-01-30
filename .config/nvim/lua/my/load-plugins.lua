@@ -214,6 +214,8 @@ local plugins = {
 					f.prettierd,
 					c.luasnip,
 
+					f.eslint_d,
+
 					-- TOML
 					f.taplo,
 
@@ -252,22 +254,18 @@ local plugins = {
 					end
 					if client.supports_method("textDocument/formatting") then
 						local function format(opts)
-							if vim.fn.exists(":EslintFixAll") > 0 then
-								vim.cmd("EslintFixAll")
-							end
 							vim.lsp.buf.format(opts)
 						end
 
 						vim.api.nvim_create_user_command("Autoformat", function()
 							format({ bufnr = 0, async = true, timeout_ms = 5000 })
 						end, {})
-
 						-- Format on save
 						vim.api.nvim_create_autocmd("BufWritePre", {
 							buffer = bufnr,
 							group = lsp_formatting_group,
 							callback = function()
-								format({ bufnr = 0, async = false, timeout_ms = 5000 })
+								format({ bufnr = 0, async = false, timeout_ms = 5000, name = "null-ls" })
 							end,
 						})
 					end
