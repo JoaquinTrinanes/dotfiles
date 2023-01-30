@@ -31,6 +31,7 @@ packages:
       yay: python-pipenv
   - pipewire-pulse:
       brew: null
+  - pueue
   - python-pynvim:
       brew: null
   - rustup:
