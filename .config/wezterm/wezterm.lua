@@ -27,14 +27,7 @@ wez.add_to_config_reload_watch_list(home .. "/.config/wezterm/colors/flavours.to
 return {
 	default_prog = {
 		nu_path,
-		-- "-l",
 		"-i",
-		"--config",
-		home .. "/.config/nushell/config.nu",
-		"--env-config",
-		home .. "/.config/nushell/env.nu",
-		"--plugin-config",
-		home .. "/.config/nushell/plugin.nu",
 	},
 	color_scheme = "flavours",
 	font = wez.font_with_fallback({
