@@ -6,6 +6,7 @@ use ~/.config/nushell/completions/asdf.nu *
 use ~/.config/nushell/completions/flavours.nu *
 
 use plugins/theme.nu theme
+use job.nu
 
 use to.nu
 use from.nu
