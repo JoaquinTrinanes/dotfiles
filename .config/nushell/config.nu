@@ -13,7 +13,8 @@ use from.nu
 
 # External completer example
 let carapace_completer = {|spans|
-    carapace $spans.0 nushell $spans | from json
+    # carapace $spans.0 nushell $spans | from json
+    carapace --bridge $"($spans.0)/fish" nushell $spans | from json
 }
 
 # The default config record. This is where much of your global configuration is setup.
