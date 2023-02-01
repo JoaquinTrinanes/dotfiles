@@ -5,7 +5,7 @@ use ~/.config/nushell/completions/yadm.nu *
 use ~/.config/nushell/completions/asdf.nu *
 use ~/.config/nushell/completions/flavours.nu *
 
-use plugins/theme.nu theme
+use plugins/theme.nu
 use job.nu
 
 use to.nu
