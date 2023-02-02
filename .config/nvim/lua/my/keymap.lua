@@ -83,7 +83,3 @@ end, { desc = "Step over" })
 map({ "n", "i" }, [[<C-w>]], "<cmd>BufferClose<cr>")
 
 map("i", "<C-c>", "<ESC>", { silent = true })
-
-map("n", "<C-r>", function()
-	vim.lsp.buf.rename()
-end)

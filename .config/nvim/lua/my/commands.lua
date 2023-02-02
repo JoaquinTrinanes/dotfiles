@@ -20,3 +20,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		telescope.find_files()
 	end,
 })
+
+vim.api.nvim_create_user_command("Rename", function()
+	vim.lsp.buf.rename()
+end, {})

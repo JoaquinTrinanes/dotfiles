@@ -399,7 +399,6 @@ local plugins = {
 	},
 	-- { "shaunsingh/nord.nvim" },
 	{ "tpope/vim-commentary" },
-	{ "tpope/vim-eunuch" },
 	{ "tpope/vim-repeat" },
 	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-surround" },
