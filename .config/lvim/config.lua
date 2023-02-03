@@ -3,11 +3,20 @@
  `lvim` is the global options object
 ]]
 
+local function map(mode, lhs, rhs, opts)
+  local options = { noremap = true }
+  if opts then
+    options = vim.tbl_extend("force", options, opts)
+  end
+  vim.keymap.set(mode, lhs, rhs, options)
+end
+
 -- vim options
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.relativenumber = true
 vim.opt.timeoutlen = 500
+vim.opt.wrap = true
 
 -- general
 lvim.log.level = "info"
@@ -25,6 +34,10 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 
+-- Remap for dealing with word wrap
+map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 
@@ -38,11 +51,31 @@ lvim.colorscheme = "flavours"
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
+
 lvim.builtin.dap.active = true
+
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.shell = "nu"
+
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+
+local components = require("lvim.core.lualine.components")
+lvim.builtin.lualine.sections.lualine_x = {
+  components.diagnostics,
+  components.lsp,
+  -- components.spaces,
+  components.filetype,
+}
+lvim.builtin.lualine.sections.lualine_y = {
+  components.encoding,
+  'filesize',
+  components.location,
+}
+
+lvim.builtin.gitsigns.active = true
+lvim.builtin.gitsigns.opts.yadm.enable = true
+lvim.builtin.gitsigns.opts.current_line_blame = true
 
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
