@@ -1,4 +1,4 @@
-alias vim = nvim
+alias vim = lvim
 alias c = yadm
 alias g = git
 
@@ -16,3 +16,5 @@ alias grbc = git rebase --continue
 alias grbi = git rebase -i
 
 alias la = ls -la
+
+alias trash = rm --trash

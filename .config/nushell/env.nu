@@ -37,7 +37,7 @@ def home [path: string] {
 }
 
 let-env XDG_CONFIG_HOME = home ".config"
-let-env EDITOR = "nvim"
+let-env EDITOR = "lvim"
 let-env VISUAL = "code"
 
 let-env XDG_DATA_HOME = home ".local/share"

@@ -1,3 +1,7 @@
+[[extra_scheme]]
+name = "obsidian"
+source = "https://github.com/acidghost/base16-obsidian"
+
 [[items]]
 template = "wezterm"
 file = "~/.config/wezterm/colors/flavours.toml"
@@ -9,6 +13,16 @@ file = "~/.config/nvim/colors/flavours.lua"
 rewrite = true
 
 [[items]]
+template = "neovim"
+file = "~/.config/lvim/colors/flavours.lua"
+rewrite = true
+
+[[items]]
 template = "nushell"
 file = "~/.config/nushell/scripts/plugins/theme.nu"
+rewrite = true
+
+[[items]]
+template = "obsidian"
+file = "~/Documents/obsidian/.obsidian/themes/flavours.css"
 rewrite = true
