@@ -36,6 +36,13 @@ await spinner(
 );
 updateOk("NeoVim plugins");
 
+await spinner(
+  "Updating Lunarvim...",
+  () => $`lvim --headless +LvimUpdate +LvimSyncCorePlugins +qall!`
+);
+updateOk("Lunarvim plugins");
+
+
 if (await commandExists("rustup")) {
   await spinner("Updating rust via rustup", () => $`rustup update`);
   updateOk("rust");
