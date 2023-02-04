@@ -145,6 +145,7 @@ formatters.setup({
 	{ name = "prettierd" },
 	{ name = "stylua" },
 })
+
 -- formatters.setup {
 --   { command = "stylua" },
 --   {
@@ -179,6 +180,7 @@ lvim.plugins = {
 						info = "DiagnosticFloatingInfo",
 						hint = "DiagnosticFloatingHint",
 					}),
+					map.gen_integration.gitsigns(),
 				},
 				symbols = {
 					encode = map.gen_encode_symbols.dot("4x2"),
@@ -289,8 +291,9 @@ lvim.plugins = {
 					},
 				},
 				presets = {
-					lsp_doc_border = true,
-					long_message_to_split = true,
+					long_message_to_split = true, -- long messages will be sent to a split
+					lsp_doc_border = false, -- add a border to hover docs and signature help
+					command_palette = true, -- position the cmdline and popupmenu together
 				},
 				popupmenu = { backend = "cmp" },
 			})
