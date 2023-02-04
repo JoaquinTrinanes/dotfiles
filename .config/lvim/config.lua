@@ -4,11 +4,11 @@
 ]]
 
 local function map(mode, lhs, rhs, opts)
-  local options = { noremap = true }
-  if opts then
-    options = vim.tbl_extend("force", options, opts)
-  end
-  vim.keymap.set(mode, lhs, rhs, options)
+	local options = { noremap = true }
+	if opts then
+		options = vim.tbl_extend("force", options, opts)
+	end
+	vim.keymap.set(mode, lhs, rhs, options)
 end
 
 -- vim options
@@ -22,9 +22,9 @@ vim.opt.wrap = true
 lvim.log.level = "info"
 
 lvim.format_on_save = {
-  enabled = true,
-  -- pattern = "*.lua",
-  timeout = 1000,
+	enabled = true,
+	-- pattern = "*.lua",
+	timeout = 1000,
 }
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -60,17 +60,19 @@ lvim.builtin.terminal.shell = "nu"
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
+lvim.builtin.breadcrumbs.active = true
+
 local components = require("lvim.core.lualine.components")
 lvim.builtin.lualine.sections.lualine_x = {
-  components.diagnostics,
-  components.lsp,
-  -- components.spaces,
-  components.filetype,
+	components.diagnostics,
+	components.lsp,
+	-- components.spaces,
+	components.filetype,
 }
 lvim.builtin.lualine.sections.lualine_y = {
-  components.encoding,
-  'filesize',
-  components.location,
+	components.encoding,
+	"filesize",
+	components.location,
 }
 
 lvim.builtin.gitsigns.active = true
@@ -110,8 +112,19 @@ lvim.builtin.treesitter.auto_install = true
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
 
+require("lvim.lsp.manager").setup("eslint", {
+	settings = {
+		rulesCustomizations = { { rule = "prettier/prettier", severity = "off" } },
+	},
+})
+
 -- -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
--- local formatters = require "lvim.lsp.null-ls.formatters"
+local formatters = require("lvim.lsp.null-ls.formatters")
+formatters.setup({
+	-- { name = "eslint" },
+	{ name = "prettierd" },
+	{ name = "stylua" },
+})
 -- formatters.setup {
 --   { command = "stylua" },
 --   {
@@ -130,12 +143,109 @@ lvim.builtin.treesitter.auto_install = true
 -- }
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
--- lvim.plugins = {
---     {
---       "folke/trouble.nvim",
---       cmd = "TroubleToggle",
---     },
--- }
+lvim.plugins = {
+	-- {
+	--   "folke/trouble.nvim",
+	--   cmd = "TroubleToggle",
+	-- },
+	{
+		"echasnovski/mini.map",
+		event = "BufEnter",
+		config = function()
+			require("mini.map").setup()
+			local map = require("mini.map")
+			map.setup({
+				integrations = {
+					map.gen_integration.builtin_search(),
+					map.gen_integration.diagnostic({
+						error = "DiagnosticFloatingError",
+						warn = "DiagnosticFloatingWarn",
+						info = "DiagnosticFloatingInfo",
+						hint = "DiagnosticFloatingHint",
+					}),
+				},
+				symbols = {
+					encode = map.gen_encode_symbols.dot("4x2"),
+				},
+				window = {
+					focusable = true,
+					side = "right",
+					width = 20, -- set to 1 for a pure scrollbar :)
+					winblend = 15,
+					show_integration_count = false,
+				},
+			})
+			MiniMap.open()
+		end,
+	},
+	{
+		"ggandor/leap.nvim",
+		event = "BufRead",
+		config = function()
+			require("leap").add_default_mappings()
+		end,
+	},
+	{
+		"windwp/nvim-ts-autotag",
+		filetypes = {
+			"typescriptreact",
+		},
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
+	},
+	{
+		"folke/lsp-colors.nvim",
+		event = "LspAttach",
+	},
+	{
+		"ray-x/lsp_signature.nvim",
+		event = "LspAttach",
+		config = function()
+			require("lsp_signature").setup({ hint_enable = false })
+			require("lsp_signature").on_attach()
+		end,
+	},
+	{
+		"folke/trouble.nvim",
+		init = function()
+			lvim.builtin.which_key.mappings["t"] = {
+				name = "Diagnostics",
+				t = { "<cmd>TroubleToggle<cr>", "trouble" },
+				w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
+				d = { "<cmd>TroubleToggle document_diagnostics<cr>", "document" },
+				q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
+				l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
+				r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
+			}
+		end,
+		cmd = "TroubleToggle",
+	},
+	{
+		"kylechui/nvim-surround",
+		config = function()
+			require("nvim-surround").setup({})
+		end,
+	},
+	{
+		"stevearc/dressing.nvim",
+		event = "VimEnter",
+		config = function()
+			local telescope_themes = require("telescope.themes")
+			require("dressing").setup({
+				-- input = { relative = "cursor" },
+				select = {
+					get_config = function(opts)
+						if opts.kind == "codeaction" or opts.kind == "hover" then
+							return { telescope = telescope_themes.get_cursor() }
+						end
+					end,
+					telescope = telescope_themes.get_dropdown(),
+				},
+			})
+		end,
+	},
+}
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
 -- vim.api.nvim_create_autocmd("FileType", {
