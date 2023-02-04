@@ -296,8 +296,9 @@ vim.api.nvim_set_hl(0, "StartifySpecial", { fg = gui03, ctermfg = cterm03 })
 -- Java highlighting
 vim.api.nvim_set_hl(0, "javaOperator", { fg = gui0D, ctermfg = cterm0D })
 
--- Telescope
-vim.api.nvim_set_hl(0, "TelescopeNormal", { link = "Float" })
-vim.api.nvim_set_hl(0, "CmpItemMenu", { link = "Float" })
+vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { link = "Search" })
+
+vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
+vim.api.nvim_set_hl(0, "FloatBorder", { link = "Normal" })
 
 -- vim: filetype=lua

@@ -1,8 +1,3 @@
---[[
- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
- `lvim` is the global options object
-]]
-
 local function map(mode, lhs, rhs, opts)
 	local options = { noremap = true }
 	if opts then
@@ -20,7 +15,6 @@ vim.opt.wrap = true
 
 -- general
 lvim.log.level = "info"
-
 lvim.format_on_save = {
 	enabled = true,
 	-- pattern = "*.lua",
@@ -33,7 +27,6 @@ lvim.format_on_save = {
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-
 -- Remap for dealing with word wrap
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -63,10 +56,27 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 lvim.builtin.breadcrumbs.active = true
 
 local components = require("lvim.core.lualine.components")
+local function buftype()
+	return vim.bo.buftype
+end
+local function currentHl()
+	local line = vim.fn.line(".")
+	local col = vim.fn.col(".")
+	local result = vim.fn.synstack(line, col)
+
+	local highlight_names = vim.tbl_map(function(item)
+		return vim.fn.synIDattr(item, "name")
+	end, result)
+	return highlight_names
+end
 lvim.builtin.lualine.sections.lualine_x = {
+	function()
+		return vim.inspect(currentHl())
+	end,
 	components.diagnostics,
 	components.lsp,
 	-- components.spaces,
+	buftype,
 	components.filetype,
 }
 lvim.builtin.lualine.sections.lualine_y = {
@@ -79,8 +89,18 @@ lvim.builtin.gitsigns.active = true
 lvim.builtin.gitsigns.opts.yadm.enable = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
+lvim.builtin.cmp.experimental.ghost_text = true
+
 -- Automatically install missing parsers when entering buffer
+lvim.builtin.treesitter.highlight.enable = true
 lvim.builtin.treesitter.auto_install = true
+lvim.builtin.treesitter.highlight.additional_vim_regex_highlighting = true
+lvim.builtin.treesitter.ensure_installed = {
+	"markdown",
+	"regex",
+	"vim",
+	"markdown_inline",
+}
 -- lvim.builtin.lualine.style = "default" -- or "none"
 
 -- lvim.builtin.treesitter.ignore_install = { "haskell" }
@@ -144,10 +164,6 @@ formatters.setup({
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
-	-- {
-	--   "folke/trouble.nvim",
-	--   cmd = "TroubleToggle",
-	-- },
 	{
 		"echasnovski/mini.map",
 		event = "BufEnter",
@@ -202,8 +218,14 @@ lvim.plugins = {
 		"ray-x/lsp_signature.nvim",
 		event = "LspAttach",
 		config = function()
-			require("lsp_signature").setup({ hint_enable = false })
-			require("lsp_signature").on_attach()
+			local cfg = {
+				bind = true,
+				handler_opts = {
+					border = "rounded", -- double, single, shadow, none
+				},
+				hint_prefix = "",
+			}
+			require("lsp_signature").on_attach(cfg)
 		end,
 	},
 	{
@@ -233,9 +255,10 @@ lvim.plugins = {
 		config = function()
 			local telescope_themes = require("telescope.themes")
 			require("dressing").setup({
-				-- input = { relative = "cursor" },
+				input = { relative = "cursor" },
 				select = {
 					get_config = function(opts)
+						print(opts.kind)
 						if opts.kind == "codeaction" or opts.kind == "hover" then
 							return { telescope = telescope_themes.get_cursor() }
 						end
@@ -245,13 +268,44 @@ lvim.plugins = {
 			})
 		end,
 	},
+	{
+		"folke/noice.nvim",
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+		},
+		config = function()
+			require("telescope").load_extension("noice")
+			require("noice").setup({
+				lsp = {
+					signature = {
+						enabled = false,
+					},
+					override = {
+						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+						["vim.lsp.util.stylize_markdown"] = true,
+						["cmp.entry.get_documentation"] = true,
+					},
+				},
+				presets = {
+					lsp_doc_border = true,
+					long_message_to_split = true,
+				},
+				popupmenu = { backend = "cmp" },
+			})
+		end,
+	},
 }
 
--- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = "zsh",
---   callback = function()
---     -- let treesitter use bash highlight for zsh files as well
---     require("nvim-treesitter.highlight").attach(0, "bash")
---   end,
--- })
+vim.api.nvim_create_user_command("WhatHl", function()
+	print(vim.inspect(currentHl()))
+end, {})
+
+-- lvim.autocommands = {
+--   {
+--     "BufEnter", -- see `:h autocmd-events`
+--     { -- this table is passed verbatim as `opts` to `nvim_create_autocmd`
+--         pattern = { "*.json", "*.jsonc" }, -- see `:h autocmd-events`
+--         command = "setlocal wrap",
+--     }
+-- },
+-- }
