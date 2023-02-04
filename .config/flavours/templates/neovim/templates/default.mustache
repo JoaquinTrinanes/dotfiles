@@ -73,7 +73,7 @@ vim.api.nvim_set_hl(0, "Exception", { fg = gui08, ctermfg = cterm08 })
 vim.api.nvim_set_hl(0, "FoldColumn", { fg = gui0C, bg = gui01, ctermfg = cterm0C, ctermbg = cterm01 })
 vim.api.nvim_set_hl(0, "Folded", { fg = gui03, bg = gui01, ctermfg = cterm03, ctermbg = cterm01 })
 vim.api.nvim_set_hl(0, "IncSearch", { fg = gui01, bg = gui09, ctermfg = cterm01, ctermbg = cterm09 })
-vim.api.nvim_set_hl(0, "Italic", {})
+vim.api.nvim_set_hl(0, "Italic", { italic = true })
 vim.api.nvim_set_hl(0, "Macro", { fg = gui08, ctermfg = cterm08 })
 vim.api.nvim_set_hl(0, "MatchParen", { bg = gui03, ctermbg = cterm03 })
 vim.api.nvim_set_hl(0, "ModeMsg", { fg = gui0B, ctermfg = cterm0B })
@@ -295,8 +295,6 @@ vim.api.nvim_set_hl(0, "StartifySpecial", { fg = gui03, ctermfg = cterm03 })
 
 -- Java highlighting
 vim.api.nvim_set_hl(0, "javaOperator", { fg = gui0D, ctermfg = cterm0D })
-
-vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", { link = "Search" })
 
 vim.api.nvim_set_hl(0, "NormalFloat", { link = "Normal" })
 vim.api.nvim_set_hl(0, "FloatBorder", { link = "Normal" })

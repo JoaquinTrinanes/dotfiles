@@ -224,6 +224,8 @@ lvim.plugins = {
 					border = "rounded", -- double, single, shadow, none
 				},
 				hint_prefix = "",
+				floating_window_above_cur_line = true,
+				hi_parameter = "Search",
 			}
 			require("lsp_signature").on_attach(cfg)
 		end,
@@ -292,6 +294,18 @@ lvim.plugins = {
 				},
 				popupmenu = { backend = "cmp" },
 			})
+		end,
+	},
+	{
+		"zbirenbaum/copilot-cmp",
+		after = "nvim-cmp",
+		dependencies = { "zbirenbaum/copilot.lua" },
+		config = function()
+			require("copilot").setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+			})
+			require("copilot_cmp").setup()
 		end,
 	},
 }
