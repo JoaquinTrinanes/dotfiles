@@ -74,6 +74,7 @@ local function currentHl()
 	end, result)
 	return highlight_names
 end
+
 lvim.builtin.lualine.sections.lualine_x = {
 	-- function()
 	-- 	return vim.inspect(currentHl())
@@ -148,7 +149,7 @@ require("lvim.lsp.manager").setup("eslint", {
 -- -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
-	-- { name = "eslint" },
+	{ name = "eslint_d" },
 	{ name = "prettierd" },
 	{ name = "stylua" },
 })
