@@ -1,9 +1,9 @@
 # Nushell Config File
 
 # Get just the extern definitions without the custom completion commands
-use ~/.config/nushell/completions/yadm.nu *
-use ~/.config/nushell/completions/asdf.nu *
-use ~/.config/nushell/completions/flavours.nu *
+# use completions/yadm.nu
+# use completions/asdf.nu
+use completions/flavours.nu
 
 use plugins/theme.nu
 use job.nu
@@ -144,6 +144,8 @@ let-env config = {
       }]
     }
     display_output: {
+      # temp fix, hopefully
+      # table
       if (term size).columns >= 100 { table -e } else { table }
     }
   }

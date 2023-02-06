@@ -11,9 +11,10 @@ def "complete flavours subcommands" [] {
 }
 
 def "complete flavours themes" [] {
-  ^flavours list | str trim | split row " "
+  ^flavours list -l | lines
 }
 
+ # A simple way to manage and use base16 standard schemes and templates
 export extern "main" [
   subcommand: string@"complete flavours subcommands"
   --help(-h) # Print help information
