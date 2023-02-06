@@ -29,6 +29,8 @@ lvim.format_on_save.enabled = true
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["x"] = [["_x]]
+lvim.keys.normal_mode["X"] = [["_X]]
 -- Remap for dealing with word wrap
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
