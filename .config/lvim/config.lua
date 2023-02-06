@@ -21,6 +21,8 @@ vim.opt.listchars:append("tab:→ ")
 -- general
 lvim.log.level = "info"
 lvim.format_on_save.enabled = true
+lvim.format_on_save.timeout = 10000
+lvim.format_on_save.pattern = nil
 
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
