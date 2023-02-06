@@ -12,14 +12,16 @@ vim.opt.tabstop = 2
 vim.opt.relativenumber = true
 vim.opt.timeoutlen = 500
 vim.opt.wrap = true
+vim.opt.list = true
+-- vim.opt.listchars = {}
+vim.opt.listchars:append("space:⋅")
+vim.opt.listchars:append("trail: ")
+vim.opt.listchars:append("tab:→ ")
 
 -- general
 lvim.log.level = "info"
-lvim.format_on_save = {
-	enabled = true,
-	-- pattern = "*.lua",
-	timeout = 1000,
-}
+lvim.format_on_save.enabled = true
+
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -56,9 +58,6 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 lvim.builtin.breadcrumbs.active = true
 
 local components = require("lvim.core.lualine.components")
-local function buftype()
-	return vim.bo.buftype
-end
 local function currentHl()
 	local line = vim.fn.line(".")
 	local col = vim.fn.col(".")
@@ -70,13 +69,15 @@ local function currentHl()
 	return highlight_names
 end
 lvim.builtin.lualine.sections.lualine_x = {
-	function()
-		return vim.inspect(currentHl())
-	end,
+	-- function()
+	-- 	return vim.inspect(currentHl())
+	-- end,
 	components.diagnostics,
 	components.lsp,
 	-- components.spaces,
-	buftype,
+	-- function()
+	-- 	return vim.bo.buftype
+	-- end,
 	components.filetype,
 }
 lvim.builtin.lualine.sections.lualine_y = {
@@ -188,8 +189,7 @@ lvim.plugins = {
 				window = {
 					focusable = true,
 					side = "right",
-					width = 20, -- set to 1 for a pure scrollbar :)
-					winblend = 15,
+					winblend = 50,
 					show_integration_count = false,
 				},
 			})
@@ -208,9 +208,18 @@ lvim.plugins = {
 		filetypes = {
 			"typescriptreact",
 		},
-		config = function()
-			require("nvim-ts-autotag").setup()
-		end,
+		config = true,
+	},
+	{
+		"JoosepAlviste/nvim-ts-context-commentstring",
+		event = "BufRead",
+	},
+	{
+		"nvim-treesitter/playground",
+		cmd = "TSPlaygroundToggle",
+	},
+	{
+		"rktjmp/lush.nvim",
 	},
 	{
 		"folke/lsp-colors.nvim",
@@ -220,7 +229,7 @@ lvim.plugins = {
 		"ray-x/lsp_signature.nvim",
 		event = "LspAttach",
 		config = function()
-			local cfg = {
+			require("lsp_signature").on_attach({
 				bind = true,
 				handler_opts = {
 					border = "rounded", -- double, single, shadow, none
@@ -228,8 +237,7 @@ lvim.plugins = {
 				hint_prefix = "",
 				floating_window_above_cur_line = true,
 				hi_parameter = "Search",
-			}
-			require("lsp_signature").on_attach(cfg)
+			})
 		end,
 	},
 	{
@@ -249,9 +257,7 @@ lvim.plugins = {
 	},
 	{
 		"kylechui/nvim-surround",
-		config = function()
-			require("nvim-surround").setup({})
-		end,
+		config = true,
 	},
 	{
 		"stevearc/dressing.nvim",
@@ -277,39 +283,60 @@ lvim.plugins = {
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 		},
-		config = function()
-			require("telescope").load_extension("noice")
-			require("noice").setup({
-				lsp = {
-					signature = {
-						enabled = false,
-					},
-					override = {
-						["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-						["vim.lsp.util.stylize_markdown"] = true,
-						["cmp.entry.get_documentation"] = true,
-					},
+		opts = {
+			lsp = {
+				signature = {
+					enabled = false,
 				},
-				presets = {
-					long_message_to_split = true, -- long messages will be sent to a split
-					lsp_doc_border = false, -- add a border to hover docs and signature help
-					command_palette = true, -- position the cmdline and popupmenu together
+				override = {
+					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+					["vim.lsp.util.stylize_markdown"] = true,
+					["cmp.entry.get_documentation"] = true,
 				},
-				popupmenu = { backend = "cmp" },
-			})
-		end,
+			},
+			presets = {
+				long_message_to_split = true, -- long messages will be sent to a split
+				lsp_doc_border = true, -- add a border to hover docs and signature help
+				command_palette = true, -- position the cmdline and popupmenu together
+			},
+		},
+		config = true,
 	},
 	{
 		"zbirenbaum/copilot-cmp",
 		after = "nvim-cmp",
-		dependencies = { "zbirenbaum/copilot.lua" },
+		dependencies = {
+			"zbirenbaum/copilot.lua",
+			opts = { suggestion = { enabled = false }, panel = { enabled = false } },
+			config = true,
+		},
+		config = true,
+	},
+	{
+		"folke/todo-comments.nvim",
+		event = "BufRead",
+		config = true,
+	},
+	{
+		"folke/persistence.nvim",
+		event = "BufReadPre", -- this will only start session saving when an actual file was opened
 		config = function()
-			require("copilot").setup({
-				suggestion = { enabled = false },
-				panel = { enabled = false },
+			require("persistence").setup({
+				dir = vim.fn.expand(vim.fn.stdpath("config") .. "/session/"),
+				options = { "buffers", "curdir", "tabpages", "winsize" },
 			})
-			require("copilot_cmp").setup()
+			lvim.builtin.which_key.mappings["S"] = {
+				name = "Session",
+				c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
+				l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
+				Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
+			}
 		end,
+	},
+	{ "tpope/vim-repeat" },
+	{
+		"norcalli/nvim-colorizer.lua",
+		config = true,
 	},
 }
 
