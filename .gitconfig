@@ -1,4 +1,8 @@
 [core]
+    filemode = false
+    excludesFile = ~/.gitignore
+    whitespace = trailing-space,space-before-tab
+    editor = lvim
 [alias]
     a = add
     aa = add --all
@@ -66,11 +70,6 @@
     remote = green
 [commit]
     verbose=true
-[core]
-    filemode = false
-    excludesFile = ~/.gitignore
-    whitespace = trailing-space,space-before-tab
-    editor = nvim
 [diff]
     mnemonicprefix = true
     tool = meld
