@@ -287,6 +287,7 @@ lvim.plugins = {
 	},
 	{
 		"folke/noice.nvim",
+		event = "VimEnter",
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 		},
@@ -343,6 +344,7 @@ lvim.plugins = {
 	{ "tpope/vim-repeat" },
 	{
 		"norcalli/nvim-colorizer.lua",
+		event = "BufRead",
 		config = function()
 			require("colorizer").setup()
 		end,
