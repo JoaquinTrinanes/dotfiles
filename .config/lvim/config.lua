@@ -104,6 +104,9 @@ lvim.builtin.lualine.sections.lualine_y = {
 	components.location,
 }
 
+lvim.builtin.lir.show_hidden_files = true
+vim.list_extend(lvim.builtin.lir.ignore, { ".DS_Store", "node_modules", ".git" })
+
 lvim.builtin.gitsigns.active = true
 lvim.builtin.gitsigns.opts.yadm.enable = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
