@@ -15,9 +15,7 @@ vim.opt.relativenumber = true
 vim.opt.timeoutlen = 500
 vim.opt.wrap = true
 vim.opt.list = true
--- vim.opt.listchars = {}
-vim.opt.listchars:append("space:⋅")
-vim.opt.listchars:append("trail: ")
+-- vim.opt.listchars:append("lead:⋅")
 vim.opt.listchars:append("tab:→ ")
 
 -- general
