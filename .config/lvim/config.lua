@@ -432,4 +432,14 @@ lvim.autocommands = {
 			end,
 		},
 	},
+	{
+		"BufEnter",
+		{
+			callback = function()
+				if vim.bo.buftype ~= "" then
+					vim.opt_local.list = false
+				end
+			end,
+		},
+	},
 }
