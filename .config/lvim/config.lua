@@ -160,7 +160,6 @@ lvim.builtin.treesitter.ensure_installed = {
 	"regex",
 	"vim",
 	"markdown_inline",
-	"nu",
 }
 -- lvim.builtin.lualine.style = "default" -- or "none"
 
@@ -406,6 +405,7 @@ lvim.plugins = {
 	{
 		"LhKipp/nvim-nu",
 		event = "BufRead",
+		build = ":TSInstall nu",
 		after = "null-ls",
 		opts = { use_lsp_features = true, all_cmd_names = [[nu -c 'help commands | get name | str join "\n"']] },
 		config = true,
