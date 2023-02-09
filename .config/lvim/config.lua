@@ -156,6 +156,7 @@ lvim.builtin.cmp.experimental.ghost_text = true
 
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.highlight.enable = true
+lvim.builtin.treesitter.autotag.enable = true
 lvim.builtin.treesitter.auto_install = true
 lvim.builtin.treesitter.highlight.additional_vim_regex_highlighting = true
 lvim.builtin.treesitter.ensure_installed = {
