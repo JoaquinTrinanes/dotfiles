@@ -7,12 +7,12 @@ layout_laravel() {
     local scripts=(
         composer
         artisan
-        php
         tinker
     )
     for script in ${scripts[@]}; do
         echo "sail $script \$@" > $bin_dir/$script
     done
+
     chmod -R u+x $bin_dir
     PATH_add "$bin_dir"
 }
