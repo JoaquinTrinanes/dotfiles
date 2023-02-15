@@ -1,4 +1,5 @@
 # spawn task to run in the background
+
 #
 # please note that the it spawned a fresh nushell to execute the given command
 # So it doesn't inherit current scope's variables, custom commands, alias definition, except env variables which value can convert to string.

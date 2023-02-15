@@ -26,3 +26,9 @@ rewrite = true
 template = "obsidian"
 file = "~/Documents/obsidian/.obsidian/themes/flavours.css"
 rewrite = true
+
+[[items]]
+template = "vivid"
+file = "~/.config/vivid/themes/flavours.yml"
+rewrite = true
+

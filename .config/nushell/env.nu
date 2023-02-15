@@ -32,7 +32,7 @@ let-env NU_PLUGIN_DIRS = [
     ($nu.config-path | path dirname | path join 'plugins')
 ]
 
-def home [path: string] {
+def home [path?: string= ""] {
     $env.HOME | path join $path
 }
 
@@ -71,7 +71,7 @@ if command exists "brew" {
 # pip-installed binaries
 path_add (python -m site --user-base | str trim | path join "bin")
 
-path_add "~/.asdf/shims"
+path_add (home ".asdf/shims")
 
 # pnpm
 let-env PNPM_HOME = (home ".local/share/pnpm")
@@ -82,21 +82,9 @@ let-env GOPATH = (home "go")
 let-env GOBIN = ($env.GOPATH | path join "bin")
 path_add $env.GOBIN
 
-def get_current_theme [] {
-    let path = ($env.XDG_CACHE_HOME | path join "wal/last_used_theme")
-    if not ($path | path exists) {
-        return null
-    }
-    open $path | str trim | split row '.' | get 0
-}
-
-let theme = get_current_theme
-if not ($theme | is-empty) {
-    let vivid_themes = (vivid themes | lines)
-    if ($theme in $vivid_themes) {
-        let-env LS_COLORS = $"(vivid generate $theme | str trim):su=30;41:ow=30;42:st=30;44:"
-    }
-    let-env THEME = $theme
+if 'flavours' in (vivid themes | lines) {
+  let-env LS_COLORS = (vivid generate flavours)
+# let-env LS_COLORS = $"(vivid generate flavours | str trim):su=30;41:ow=30;42:st=30;44:"
 }
 
 zoxide init nushell --cmd j | save -f ~/.config/nushell/scripts/plugins/zoxide.nu
