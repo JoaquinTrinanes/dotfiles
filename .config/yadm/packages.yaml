@@ -47,5 +47,4 @@ packages:
   - wezterm
   - yadm
   - zoxide
-pip:
-  - https://github.com/dylanaraps/pywal/archive/master.zip
+pip: []

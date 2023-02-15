@@ -55,7 +55,7 @@ export class PackageManager {
     const flags = [];
     if (skipInstalled) flags.push("--needed");
     if (yes) flags.push("--noconfirm");
-    await $`${command} -S ${flags} ${pkgs}`;
+    await $`${this.current} -S ${flags} ${pkgs}`;
   }
 
   async install(pkg, opts) {
@@ -68,7 +68,7 @@ export class PackageManager {
   async isPackageInstalled(pkg) {
     const name = pkg.name;
     try {
-      await $`${command} -Ql ${name}`.quiet();
+      await $`${this.current} -Ql ${name}`.quiet();
       return true;
     } catch (_e) {
       return false;
@@ -76,11 +76,11 @@ export class PackageManager {
   }
 
   async upgrade() {
-    await $`${command} -Syu --noconfirm`;
+    await $`${this.current} -Syu --noconfirm`;
   }
 
   async init() {
-    await $`${command} -Sy`;
+    await $`${this.current} -Sy`;
   }
 
   constructor(pkgManager) {

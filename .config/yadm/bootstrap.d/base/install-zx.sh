@@ -5,6 +5,18 @@ PNPM_HOME="$HOME/.local/share/pnpm"
 ORIGINAL_PNPM_HOME="$PNPM_HOME"
 ORIGINAL_PATH="$PATH"
 
+cleanup_temp_node_install() {
+    echo "Deleting temporal node..."
+    if pnpm env -g rm lts > /dev/null; then
+        PNPM_HOME="$ORIGINAL_PNPM_HOME"
+        PATH="$ORIGINAL_PATH"
+
+        echo "Installing global zx for final node version..."
+        pnpm add -g zx
+    fi
+}
+
+trap cleanup_temp_node_install EXIT
 
 # Install pnpm
 if ! [ -f "$PNPM_HOME/pnpm" ]; then
@@ -20,23 +32,7 @@ if ! command -v node > /dev/null; then
     pnpm env -g use lts
 fi
 
-if ! (pnpm -g ls zx | grep "" > /dev/null); then
+if [ -z "$(pnpm -g ls zx)" ]; then
     echo "Installing zx"
     pnpm add -g zx
 fi
-
-cleanup_temp_node_install() {
-    if (pnpm env -g list lts | grep ""); then
-        echo "Deleting temporal node..."
-        # pnpm -g rm zx # > /dev/null
-        pnpm env -g rm lts # > /dev/null
-
-        PNPM_HOME="$ORIGINAL_PNPM_HOME"
-        PATH="$ORIGINAL_PATH"
-
-        echo "Installing global zx for final node version..."
-        pnpm add -g zx # > /dev/null
-    fi
-}
-
-export -f cleanup_temp_node_install
