@@ -4,8 +4,12 @@ process.env.FORCE_COLOR = "1";
 
 await within(async () => {
   cd(__dirname);
-  const files = await glob(["[0-9]*.mjs"]);
-  for (const f of files) {
+  const dependencyFiles = await glob("dependencies/*.mjs");
+  for (const f of dependencyFiles) {
+    await $`${f}`;
+  }
+  const configFiles = await glob(["config/*.mjs"]);
+  for (const f of configFiles) {
     await $`./${f}`;
   }
 });

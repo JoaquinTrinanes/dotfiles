@@ -1,13 +1,13 @@
 #!/usr/bin/env -S zx --experimental
 
-import { createMacConfigSymlink } from "./utils/os.mjs";
-import * as log from "./utils/log.mjs";
+import { createMacConfigSymlink } from "../utils/os.mjs";
+import * as log from "../utils/log.mjs";
 
 const DEFAULT_THEME = "nord";
 
 createMacConfigSymlink("flavours");
 
-await $`flavours update all`;
+// await $`flavours update all`;
 
 try {
   await $`flavours current`.quiet();

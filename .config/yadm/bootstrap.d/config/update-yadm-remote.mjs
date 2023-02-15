@@ -1,6 +1,6 @@
 #!/usr/bin/env -S zx --experimental
 
-import * as log from "./utils/log.mjs";
+import * as log from "../utils/log.mjs";
 
 const REMOTE_URL = "git@github.com:JoaquinTrinanes/dotfiles.git";
 const currentUrl = (await $`yadm remote get-url origin`.quiet()).stdout.trim();

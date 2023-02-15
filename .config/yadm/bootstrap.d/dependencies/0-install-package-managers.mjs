@@ -1,9 +1,9 @@
 #!/usr/bin/env -S zx --experimental
 
-import * as log from "./utils/log.mjs";
-import { IS_MAC } from "./utils/os.mjs";
-import { commandExists } from "./utils/commands.mjs";
-import { packages } from "./utils/packages.mjs";
+import * as log from "../utils/log.mjs";
+import { IS_MAC } from "../utils/os.mjs";
+import { commandExists } from "../utils/commands.mjs";
+import { packages } from "../utils/packages.mjs";
 
 const brewInstalled = await commandExists("brew");
 
