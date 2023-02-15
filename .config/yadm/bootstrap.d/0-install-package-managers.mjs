@@ -7,13 +7,7 @@ import { packages } from "./utils/packages.mjs";
 
 const brewInstalled = await commandExists("brew");
 
-const installPacaptr = async () => {
-  if (brewInstalled) {
-    return await $`brew install pacaptr`;
-  }
-
-  log.error(`No compatible package manager for ${chalk.yellow("pacaptr")}`);
-};
+const installPacaptr = async () => $`brew install pacaptr`;
 
 const installBrew = async () => {
   await $`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`;
@@ -47,7 +41,6 @@ if (isManagerInstalled) {
 
 if (brewInstalled) {
   for (const tap of packages?.brew?.taps || []) {
-    echo`${tap}`;
     await spinner(`brew tap ${tap}`, () => $`brew tap ${tap}`.quiet());
   }
 }

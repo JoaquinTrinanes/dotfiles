@@ -2,4 +2,6 @@
 
 import { packages } from "./utils/packages.mjs";
 
-await $`pip install --user ${packages.pip}`;
+if (packages.length > 0) {
+  await $`pip install --user ${packages.pip}`;
+}
