@@ -200,12 +200,14 @@ require("lvim.lsp.manager").setup("eslint", {
 	},
 })
 
--- -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
+-- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
 	{ name = "eslint_d" },
 	{ name = "prettierd" },
 	{ name = "stylua" },
+	{ name = "beautysh" },
+	{ name = "pint" },
 })
 
 -- formatters.setup {
