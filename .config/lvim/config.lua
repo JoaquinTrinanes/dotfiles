@@ -268,7 +268,7 @@ lvim.plugins = {
 	},
 	{
 		"windwp/nvim-ts-autotag",
-		filetypes = {
+		ft = {
 			"typescriptreact",
 		},
 		config = true,
@@ -369,7 +369,6 @@ lvim.plugins = {
 	},
 	{
 		"zbirenbaum/copilot-cmp",
-		after = "nvim-cmp",
 		dependencies = {
 			"zbirenbaum/copilot.lua",
 			opts = { suggestion = { enabled = false }, panel = { enabled = false } },
@@ -410,7 +409,6 @@ lvim.plugins = {
 		"LhKipp/nvim-nu",
 		event = "BufRead",
 		build = ":TSInstall nu",
-		after = "null-ls",
 		opts = { use_lsp_features = true, all_cmd_names = [[nu -c 'help commands | get name | str join "\n"']] },
 		config = true,
 	},
