@@ -200,6 +200,14 @@ require("lvim.lsp.manager").setup("eslint", {
 	},
 })
 
+require("lvim.lsp.manager").setup("intelephense", {
+	settings = {
+		files = {
+			max_size = 100000,
+		},
+	},
+})
+
 -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
