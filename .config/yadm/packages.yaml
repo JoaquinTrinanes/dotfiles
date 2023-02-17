@@ -37,6 +37,8 @@ packages:
   - rustup:
       brew: null
   - starship
+  - sway:
+      brew: null
   - ttf-dejavu:
       brew: font-dejavu
   - ttf-fira-code:
