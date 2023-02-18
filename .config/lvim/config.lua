@@ -50,6 +50,20 @@ map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 -- lvim.colorscheme = "lunar"
 lvim.colorscheme = "flavours"
 
+-- Show previewer when searching git files with default <leader>f
+lvim.builtin.which_key.mappings["f"] = {
+	require("lvim.core.telescope.custom-finders").find_project_files,
+	"Find File",
+}
+
+-- Show previewer when searching buffers with <leader>bf
+lvim.builtin.which_key.mappings.b.f = {
+	"<cmd>Telescope buffers<cr>",
+	"Find",
+}
+lvim.builtin.telescope.pickers.find_files = nil
+lvim.builtin.telescope.pickers.git_files = nil
+
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.alpha.dashboard.opts.theme = "doom"
