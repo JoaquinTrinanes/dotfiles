@@ -24,9 +24,6 @@ lvim.format_on_save.enabled = true
 lvim.format_on_save.timeout = 10000
 lvim.format_on_save.pattern = nil
 
--- to disable icons and use a minimalist setup, uncomment the following
--- lvim.use_icons = false
-
 -- keymappings <https://www.lunarvim.org/docs/configuration/keybindings>
 lvim.leader = "space"
 -- add your own keymapping
@@ -49,6 +46,28 @@ map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 -- -- Change theme settings
 -- lvim.colorscheme = "lunar"
 lvim.colorscheme = "flavours"
+
+-- Show previewer when searching git files with default <leader>f
+lvim.builtin.which_key.mappings["f"] = {
+	require("lvim.core.telescope.custom-finders").find_project_files,
+	"Find File",
+}
+
+-- Show previewer when searching buffers with <leader>bf
+lvim.builtin.which_key.mappings.b.f = {
+	"<cmd>Telescope buffers<cr>",
+	"Find",
+}
+
+lvim.builtin.telescope.defaults.layout_config.horizontal = {
+	prompt_position = "top",
+}
+lvim.builtin.telescope.defaults.layout_config.vertical = {
+	prompt_position = "top",
+	mirror = false,
+}
+lvim.builtin.telescope.defaults.layout_config.preview_cutoff = 120
+lvim.builtin.telescope.defaults.layout_strategy = "horizontal"
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
