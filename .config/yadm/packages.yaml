@@ -48,3 +48,7 @@ packages:
   - yadm
   - zoxide
 pip: []
+services:
+  system: []
+  user:
+    - pueued
