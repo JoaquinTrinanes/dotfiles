@@ -18,6 +18,7 @@ packages:
   - fontconfig
   - fzf
   - git
+  - glow
   - go
   - httpie
   - imagemagick

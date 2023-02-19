@@ -442,6 +442,7 @@ lvim.plugins = {
 		opts = { use_lsp_features = true, all_cmd_names = [[nu -c 'help commands | get name | str join "\n"']] },
 		config = true,
 	},
+	{ "ellisonleao/glow.nvim", opts = { border = "rounded" }, config = true, cmd = "Glow" },
 }
 
 vim.api.nvim_create_user_command("WhatHl", function()
