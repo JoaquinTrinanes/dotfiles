@@ -46,8 +46,8 @@ let-env XDG_CACHE_HOME = home ".cache"
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
-def-env path_add [path: string] {
-    let-env PATH = ($env.PATH | split row (char esep) | prepend $path)
+def-env path_add [path: string, --varname (-v): string = "PATH"] {
+    let-env $varname = ($env | get $varname | split row (char esep) | prepend $path)
 }
 
 path_add /usr/local/bin
