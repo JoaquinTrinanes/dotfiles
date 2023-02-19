@@ -88,6 +88,9 @@ lvim.builtin.terminal.shell = "nu"
 
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
+lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = true
+lvim.builtin.nvimtree.setup.renderer.group_empty = true
+lvim.builtin.nvimtree.setup.select_prompts = true
 
 lvim.builtin.breadcrumbs.active = true
 
