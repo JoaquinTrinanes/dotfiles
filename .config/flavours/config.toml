@@ -32,3 +32,8 @@ template = "vivid"
 file = "~/.config/vivid/themes/flavours.yml"
 rewrite = true
 
+[[items]]
+template = "sway"
+subtemplate = "colors"
+file = "~/.config/sway/colorscheme"
+rewrite = true
