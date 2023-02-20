@@ -110,7 +110,5 @@
     email = quin.trinanes@gmail.com
 [include]
     path = .gitconfig.local
-[includeIf "gitdir:~/Documents/vizzuality/"]
-    path = ~/.gitconfig-work
 [includeIf "gitdir:~/Documents/veganhacktivists/"]
     path = ~/.gitconfig-vh
