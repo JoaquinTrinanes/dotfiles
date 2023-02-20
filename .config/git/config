@@ -1,6 +1,5 @@
 [core]
     filemode = false
-    excludesFile = ~/.gitignore
     whitespace = trailing-space,space-before-tab
     editor = lvim
 [alias]
@@ -111,4 +110,4 @@
 [include]
     path = .gitconfig.local
 [includeIf "gitdir:~/Documents/veganhacktivists/"]
-    path = ~/.gitconfig-vh
+    path = config-vh
