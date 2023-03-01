@@ -7,7 +7,7 @@ const DEFAULT_THEME = "nord";
 
 createMacConfigSymlink("flavours");
 
-// await $`flavours update all`;
+await $`flavours update all`.nothrow();
 
 try {
   await $`flavours current`.quiet();

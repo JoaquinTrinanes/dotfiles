@@ -1,7 +1,8 @@
 #!/usr/bin/env -S zx --experimental
+
 import { commandExists } from "../utils/commands.mjs";
 
-if (commandExists("lvim")) {
+if (await commandExists("lvim")) {
   process.exit();
 }
 

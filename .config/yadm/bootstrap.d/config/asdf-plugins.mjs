@@ -1,6 +1,14 @@
 #!/usr/bin/env -S zx --experimental
 
+import { commandExists } from "../utils/commands.mjs";
 import * as log from "../utils/log.mjs";
+
+process.env.PATH = `/opt/asdf-vm/bin:${process.env.PATH}`;
+
+if (!(await commandExists("asdf"))) {
+  log.error("asdf not found");
+  process.exit(0);
+}
 
 const installAsdfPlugin = async (plugin, version) => {
   await $`asdf plugin add ${plugin}`;
