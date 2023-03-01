@@ -12,6 +12,10 @@ packages:
   - asdf:
       yay: asdf-vm
   - bat
+  - bluez:
+      brew: null
+  - bluez-utils:
+      brew: null
   - carapace:
       brew: rsteube/tap/carapace
       yay: carapace-bin
@@ -49,6 +53,7 @@ packages:
   - zoxide
 pip: []
 services:
-  system: []
+  system:
+    - bluetooth
   user:
     - pueued
