@@ -55,7 +55,8 @@ export class PackageManager {
     const flags = [];
     if (skipInstalled) flags.push("--needed");
     if (yes) flags.push("--noconfirm");
-    await $`${this.current} -S ${flags} ${pkgs}`;
+
+    return $`${this.current} -S ${flags} ${pkgs}`;
   }
 
   async install(pkg, opts) {
@@ -96,4 +97,6 @@ const getCommand = async () => {
 };
 
 const command = await getCommand();
-export const packageManager = new PackageManager(command);
+export const packageManager = new PackageManager(
+  command === "pacman" ? ["sudo", "pacman"] : command
+);

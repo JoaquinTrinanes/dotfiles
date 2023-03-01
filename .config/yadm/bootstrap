@@ -9,6 +9,10 @@ if [[ ! -d "$BOOTSTRAP_D" ]]; then
     exit 1
 fi
 
+: ${PNPM_HOME:=$HOME/.local/share/pnpm}
+PATH="$PNPM_HOME:$PATH"
 source $BOOTSTRAP_D/base/install-zx.sh
+
+PATH="$HOME/.cargo/bin:$PATH"
 
 $BOOTSTRAP_D/index.mjs

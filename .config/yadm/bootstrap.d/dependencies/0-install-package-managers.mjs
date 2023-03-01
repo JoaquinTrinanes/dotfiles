@@ -19,13 +19,19 @@ const installYay = async () => {
   await within(async () => {
     cd(tmpDir);
     await $`git clone https://aur.archlinux.org/yay.git ${tmpDir}`;
-    await $`makepkg -si`;
+    await $`makepkg -si --noconfirm`;
   });
 };
 
 const PACKAGE_MANAGERS = ["yay", "brew"];
 
-const isManagerInstalled = commandExists(PACKAGE_MANAGERS);
+let isManagerInstalled = false;
+for await (const mgr of PACKAGE_MANAGERS) {
+  if (await commandExists(mgr)) {
+    isManagerInstalled = true;
+    break;
+  }
+}
 
 if (isManagerInstalled) {
   log.info("Package manager is already installed. Skipping.");
@@ -34,7 +40,8 @@ if (isManagerInstalled) {
     await spinner("Installing brew...", () => installBrew());
     log.ok(`Installed ${chalk.yellow("brew")}!`);
   } else {
-    await spinner("Installing yay...", () => installYay());
+    log.info("Installing yay...");
+    await installYay();
     log.ok(`Installed ${chalk.yellow("yay")}!`);
   }
 }

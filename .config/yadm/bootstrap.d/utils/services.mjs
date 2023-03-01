@@ -1,6 +1,6 @@
 #!/usr/bin/env -S zx --experimental
 
-const buildCommand = ({ user = false, now = true } = {}) => {
+const buildCommandArgs = ({ user = false, now = true } = {}) => {
   const command = ["systemctl"];
   if (user) {
     command.push("--user");
@@ -13,12 +13,15 @@ const buildCommand = ({ user = false, now = true } = {}) => {
   return command;
 };
 
+const buildCommand = (command, service, opts) => {
+  const args = buildCommandArgs(opts);
+  return [...args, command, service];
+};
+
 export const enableService = (serviceName, opts) => {
-  const command = buildCommand(opts);
-  return $`${command} enable ${serviceName}`;
+  return $`${buildCommand("enable", serviceName, opts)}`;
 };
 
 export const disableService = (serviceName, opts) => {
-  const command = buildCommand(opts);
-  return $`${command} disable ${serviceName}`;
+  return $`${buildCommand("disable", serviceName, opts)}`;
 };

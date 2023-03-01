@@ -1,5 +1,5 @@
 export const commandExists = (cmd) =>
   $`command -v ${cmd}`
-    .quiet()
+//    .quiet()
     .then(() => true)
     .catch(() => false);
