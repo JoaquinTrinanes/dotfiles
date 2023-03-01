@@ -19,6 +19,9 @@ packages:
   - carapace:
       brew: rsteube/tap/carapace
       yay: carapace-bin
+  - direnv
+  - docker:
+      brew: null
   - fontconfig
   - fzf
   - git
@@ -55,5 +58,10 @@ pip: []
 services:
   system:
     - bluetooth
+    - docker
   user:
     - pueued
+groups:
+  - wheel
+  - docker
+  - lp
