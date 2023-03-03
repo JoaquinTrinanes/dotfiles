@@ -22,8 +22,13 @@ const packagesWithFeatures = packages.cargo.filter(
   (p) => typeof p !== "string"
 );
 
-await $`cargo install ${packagesWithoutFeatures}`;
-for (const p of packagesWithFeatures) {
-  const [name, { features }] = Object.entries(p)[0];
-  await $`cargo install ${name} --features ${features}`;
+if (packagesWithoutFeatures.length > 0) {
+  await $`cargo install ${packagesWithoutFeatures}`;
+}
+
+if (packagesWithFeatures.length > 0) {
+  for (const p of packagesWithFeatures) {
+    const [name, { features }] = Object.entries(p)[0];
+    await $`cargo install ${name} --features ${features}`;
+  }
 }
