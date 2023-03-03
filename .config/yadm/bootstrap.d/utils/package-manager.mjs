@@ -1,10 +1,10 @@
 import { commandExists } from "./commands.mjs";
 
-const overrideName = (await commandExists("brew"))
+const overrideName = commandExists("brew")
   ? "brew"
-  : (await commandExists("apt-get"))
+  : commandExists("apt-get")
   ? "apt-get"
-  : (await commandExists("yay"))
+  : commandExists("yay")
   ? "yay"
   : "pacman";
 
@@ -92,7 +92,7 @@ export class PackageManager {
 const getCommand = async () => {
   const possibleManagers = ["yay", "pacman", "pacaptr"];
   for (const mgr of possibleManagers) {
-    if (await commandExists(mgr)) return mgr;
+    if (commandExists(mgr)) return mgr;
   }
 };
 

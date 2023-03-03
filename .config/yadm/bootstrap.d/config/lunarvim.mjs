@@ -2,7 +2,7 @@
 
 import { commandExists } from "../utils/commands.mjs";
 
-if (await commandExists("lvim")) {
+if (commandExists("lvim")) {
   process.exit();
 }
 

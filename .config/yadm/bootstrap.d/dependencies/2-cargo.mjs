@@ -4,9 +4,13 @@ import { commandExists } from "../utils/commands.mjs";
 import * as log from "../utils/log.mjs";
 import { packages } from "../utils/packages.mjs";
 
-if (!(await commandExists("rustup"))) {
+process.env.PATH = `${path.join(os.homedir(), ".cargo/bin")}:${
+  process.env.PATH
+}`;
+
+if (!commandExists("rustup")) {
   await $`curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path`;
-await $`rustup default stable`;
+  await $`rustup default stable`;
 } else {
   log.info("rustup already exists. Skipping");
 }

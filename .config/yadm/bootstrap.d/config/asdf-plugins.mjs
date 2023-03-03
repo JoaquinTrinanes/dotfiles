@@ -5,7 +5,7 @@ import * as log from "../utils/log.mjs";
 
 process.env.PATH = `/opt/asdf-vm/bin:${process.env.PATH}`;
 
-if (!(await commandExists("asdf"))) {
+if (!commandExists("asdf")) {
   log.error("asdf not found");
   process.exit(0);
 }

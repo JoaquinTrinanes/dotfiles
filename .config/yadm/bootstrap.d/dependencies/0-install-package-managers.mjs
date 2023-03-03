@@ -5,7 +5,7 @@ import { IS_MAC } from "../utils/os.mjs";
 import { commandExists } from "../utils/commands.mjs";
 import { packages } from "../utils/packages.mjs";
 
-const brewInstalled = await commandExists("brew");
+const brewInstalled = commandExists("brew");
 
 const installPacaptr = async () => $`brew install pacaptr`;
 
@@ -27,7 +27,7 @@ const PACKAGE_MANAGERS = ["yay", "brew"];
 
 let isManagerInstalled = false;
 for await (const mgr of PACKAGE_MANAGERS) {
-  if (await commandExists(mgr)) {
+  if (commandExists(mgr)) {
     isManagerInstalled = true;
     break;
   }
@@ -52,6 +52,6 @@ if (brewInstalled) {
   }
 }
 
-if (!(await commandExists("pacman")) && !(await commandExists("pacaptr"))) {
+if (!commandExists("pacman") && !commandExists("pacaptr")) {
   await installPacaptr();
 }

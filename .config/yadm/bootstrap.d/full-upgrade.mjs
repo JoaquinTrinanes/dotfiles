@@ -42,8 +42,7 @@ await spinner(
 );
 updateOk("Lunarvim plugins");
 
-
-if (await commandExists("rustup")) {
+if (commandExists("rustup")) {
   await spinner("Updating rust via rustup", () => $`rustup update`);
   updateOk("rust");
 } else {
