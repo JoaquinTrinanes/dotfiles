@@ -31,9 +31,8 @@ return {
 	},
 	color_scheme = "flavours",
 	font = wez.font_with_fallback({
-		"Fira Code",
+		"FiraCode Nerd Font",
 		{ family = "JoyPixels", assume_emoji_presentation = true },
-		{ family = "Symbols Nerd Font", assume_emoji_presentation = true },
 		"DejaVu Sans Mono",
 	}),
 	font_size = 16,

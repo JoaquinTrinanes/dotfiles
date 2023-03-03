@@ -50,10 +50,8 @@ packages:
   - starship
   - ttf-dejavu:
       brew: font-dejavu
-  - ttf-fira-code:
-      brew: font-fira-code
-  - ttf-nerd-fonts-symbols-common:
-      brew: font-symbols-only-nerd-font
+  - ttf-firacode-nerd:
+      brew: font-fira-code-nerd-font
   - vivid
   - wezterm
   - wl-copy
