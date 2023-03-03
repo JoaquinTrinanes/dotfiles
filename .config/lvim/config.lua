@@ -286,6 +286,9 @@ lvim.plugins = {
 					show_integration_count = false,
 				},
 			})
+			vim.api.nvim_create_user_command("MinimapToggle", function()
+				MiniMap.toggle()
+			end, {})
 			MiniMap.open()
 		end,
 	},
