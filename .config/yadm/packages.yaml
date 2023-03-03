@@ -54,7 +54,7 @@ packages:
       brew: font-fira-code-nerd-font
   - vivid
   - wezterm
-  - wl-copy
+  - wl-clipboard
   - xclip
   - yadm
   - zoxide
