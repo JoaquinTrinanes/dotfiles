@@ -34,4 +34,4 @@ if ! command -v node > /dev/null; then
 fi
 
 echo "Installing zx"
-pnpm add -g zx
+pnpm add -g zx --prefer-offline
