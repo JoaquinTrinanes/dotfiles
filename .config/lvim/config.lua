@@ -323,18 +323,16 @@ lvim.plugins = {
 	},
 	{
 		"ray-x/lsp_signature.nvim",
-		event = "LspAttach",
-		config = function()
-			require("lsp_signature").on_attach({
-				bind = true,
-				handler_opts = {
-					border = "rounded", -- double, single, shadow, none
-				},
-				hint_prefix = "",
-				floating_window_above_cur_line = true,
-				hi_parameter = "Search",
-			})
-		end,
+		opts = {
+			bind = true,
+			handler_opts = {
+				border = "rounded", -- double, single, shadow, none
+			},
+			hint_prefix = "",
+			floating_window_above_cur_line = true,
+			hi_parameter = "Search",
+		},
+		config = true,
 	},
 	{
 		"folke/trouble.nvim",
