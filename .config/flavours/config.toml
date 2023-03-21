@@ -23,3 +23,7 @@ template = "vivid"
 file = "~/.config/vivid/themes/flavours.yml"
 rewrite = true
 
+[[items]]
+template = "btop"
+file = "~/.config/btop/themes/flavours.theme"
+rewrite = true
