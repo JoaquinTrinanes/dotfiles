@@ -1,4 +1,4 @@
-local wez = require("wezterm")
+local wezterm = require("wezterm")
 
 local function file_exists(name)
 	local f = io.open(name, "r")
@@ -10,7 +10,7 @@ local function file_exists(name)
 	end
 end
 
-local home = wez.home_dir
+local home = wezterm.home_dir
 
 local nu_paths = { home .. "/.cargo/bin/nu", "/usr/local/bin/nu" }
 local nu_path = "nu"
@@ -22,60 +22,31 @@ for _, file in ipairs(nu_paths) do
 	end
 end
 
-wez.add_to_config_reload_watch_list(home .. "/.config/wezterm/colors/flavours.toml")
+wezterm.add_to_config_reload_watch_list(home .. "/.config/wezterm/colors/flavours.toml")
 
-return {
-	default_prog = {
-		nu_path,
-		"-i",
-	},
-	color_scheme = "flavours",
-	font = wez.font_with_fallback({
-		"FiraCode Nerd Font",
-		{ family = "JoyPixels", assume_emoji_presentation = true },
-		"DejaVu Sans Mono",
-	}),
-	font_size = 16,
-	use_fancy_tab_bar = false,
-	default_cursor_style = "SteadyBar",
-	cursor_blink_rate = 0,
-	enable_scroll_bar = true,
-	audible_bell = "Disabled",
-	unicode_version = 15,
-	hyperlink_rules = {
-		-- Linkify things that look like URLs and the host has a TLD name.
-		-- Compiled-in default. Used if you don't specify any hyperlink_rules.
-		{
-			regex = "\\b\\w+://[\\w.-]+\\.[a-z]{2,15}\\S*\\b",
-			format = "$0",
-		},
+local config = {}
+if wezterm.config_builder then
+	config = wezterm.config_builder()
+end
 
-		-- linkify email addresses
-		-- Compiled-in default. Used if you don't specify any hyperlink_rules.
-		{
-			regex = [[\b\w+@[\w-]+(\.[\w-]+)+\b]],
-			format = "mailto:$0",
-		},
-
-		-- file:// URI
-		-- Compiled-in default. Used if you don't specify any hyperlink_rules.
-		{
-			regex = [[\bfile://\S*\b]],
-			format = "$0",
-		},
-
-		-- Linkify things that look like URLs with numeric addresses as hosts.
-		-- E.g. http://127.0.0.1:8000 for a local development server,
-		-- or http://192.168.1.1 for the web interface of many routers.
-		{
-			regex = [[\b\w+://(?:[\d]{1,3}\.){3}[\d]{1,3}\S?*\b]],
-			format = "$0",
-		},
-
-		-- localhost links
-		{
-			regex = [[\b\w+://localhost(:\d+)?\b]],
-			format = "$0",
-		},
-	},
+config.default_prog = {
+	nu_path,
+	"-i",
 }
+
+config.color_scheme = "flavours"
+config.font = wezterm.font_with_fallback({
+	"FiraCode Nerd Font",
+	{ family = "JoyPixels", assume_emoji_presentation = true },
+	"DejaVu Sans Mono",
+})
+config.font_size = 16
+config.use_fancy_tab_bar = false
+config.default_cursor_style = "SteadyBar"
+config.cursor_blink_rate = 0
+config.enable_scroll_bar = true
+config.audible_bell = "Disabled"
+config.unicode_version = 15
+config.hide_mouse_cursor_when_typing = false
+
+return config
