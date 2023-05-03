@@ -246,21 +246,16 @@ require("lvim.lsp.manager").setup("intelephense", {
 -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
-	{ name = "eslint_d" },
-	{ name = "prettierd" },
+	{
+		name = "prettierd",
+		-- extra_args = { "--print-width", "100" },
+		-- filetypes = { "typescript", "typescriptreact" },
+	},
 	{ name = "stylua" },
 	{ name = "beautysh" },
 	{ name = "pint" },
 })
 
--- formatters.setup {
---   { command = "stylua" },
---   {
---     command = "prettier",
---     extra_args = { "--print-width", "100" },
---     filetypes = { "typescript", "typescriptreact" },
---   },
--- }
 -- local linters = require "lvim.lsp.null-ls.linters"
 -- linters.setup {
 --   { command = "flake8", filetypes = { "python" } },
