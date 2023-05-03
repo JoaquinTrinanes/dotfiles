@@ -366,12 +366,14 @@ lvim.plugins = {
 	},
 	{
 		"ray-x/lsp_signature.nvim",
+		event = "LspAttach",
 		opts = {
 			bind = true,
 			handler_opts = {
 				border = "rounded", -- double, single, shadow, none
 			},
 			hint_prefix = "",
+			noice = true,
 			floating_window_above_cur_line = true,
 			hi_parameter = "Search",
 		},
@@ -426,7 +428,7 @@ lvim.plugins = {
 				signature = {
 					enabled = false,
 				},
-				hover = { enabled = false },
+				hover = { enabled = true, silent = true },
 				override = {
 					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
 					["vim.lsp.util.stylize_markdown"] = true,
