@@ -268,6 +268,41 @@ formatters.setup({
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
 	{
+		"akinsho/git-conflict.nvim",
+		event = "BufRead",
+		version = "*",
+		name = "git-conflict",
+		opts = {
+			default_mappings = false,
+			highlights = { -- They must have background color, otherwise the default color will be used
+				incoming = "DiffText",
+				current = "DiffAdd",
+			},
+		},
+		init = function()
+			lvim.builtin.which_key.mappings["gf"] = {
+				name = "Conflicts",
+				o = {
+					"<Plug>(git-conflict-ours)",
+					"Choose ours",
+				},
+				t = {
+					"<Plug>(git-conflict-theirs)",
+					"Choose theirs",
+				},
+				b = {
+					"<Plug>(git-conflict-both)",
+					"Choose both",
+				},
+				n = {
+					"<Plug>(git-conflict-none)",
+					"Choose none",
+				},
+			}
+		end,
+		config = true,
+	},
+	{
 		"echasnovski/mini.map",
 		event = "LspAttach",
 		config = function()
