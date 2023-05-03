@@ -222,6 +222,19 @@ require("lvim.lsp.manager").setup("eslint", {
 	},
 })
 
+require("lvim.lsp.manager").setup("tailwindcss", {
+	settings = {
+		tailwindCSS = {
+			experimental = {
+				classRegex = {
+					"(?:enter|leave)(?:From|To)?=\\s*(?:\"|'|{`)([^(?:\"|'|`})]*)",
+					{ "classNames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
+				},
+			},
+		},
+	},
+})
+
 require("lvim.lsp.manager").setup("intelephense", {
 	settings = {
 		files = {
