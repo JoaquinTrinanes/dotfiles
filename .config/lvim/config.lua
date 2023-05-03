@@ -357,6 +357,7 @@ lvim.plugins = {
 		"nvim-treesitter/playground",
 		cmd = "TSPlaygroundToggle",
 	},
+	{ "nvim-treesitter/nvim-treesitter-context", opts = { separator = "-" } },
 	{
 		"rktjmp/lush.nvim",
 	},
