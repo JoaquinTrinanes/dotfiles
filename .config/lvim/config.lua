@@ -184,6 +184,7 @@ lvim.builtin.treesitter.ensure_installed = {
 	"regex",
 	"vim",
 	"markdown_inline",
+	"css",
 }
 -- lvim.builtin.lualine.style = "default" -- or "none"
 
@@ -202,8 +203,21 @@ lvim.builtin.treesitter.ensure_installed = {
 
 -- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. IMPORTANT: Requires `:LvimCacheReset` to take effect
 -- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
+
+-- local servers_to_install = {
+--   "beautysh",
+--   "black",
+--   "eslint-lsp",
+--   "eslint_d",
+--   "intelephense",
+--   "lua-language-server",
+--   "prettierd",
+--   "stylua",
+--   "tailwindcss-language-server",
+--   "typescript-language-server",
+-- }
 -- lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
---   return server ~= "emmet_ls"
+--   return not vim.tbl_contains(servers_to_install, server)
 -- end, lvim.lsp.automatic_configuration.skipped_servers)
 
 -- -- you can set a custom on_attach function that will be used for all the language servers
@@ -217,6 +231,19 @@ lvim.builtin.treesitter.ensure_installed = {
 -- end
 
 require("lvim.lsp.manager").setup("eslint", {
+	on_attach = function(client, bufnr)
+		client.server_capabilities.document_formatting = true
+		if client.server_capabilities.document_formatting then
+			local au_lsp = vim.api.nvim_create_augroup("eslint_lsp", { clear = true })
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				desc = "Autoformat with eslint",
+				callback = function()
+					vim.cmd.EslintFixAll()
+				end,
+				group = au_lsp,
+			})
+		end
+	end,
 	settings = {
 		rulesCustomizations = { { rule = "prettier/prettier", severity = "off" } },
 	},
