@@ -256,6 +256,7 @@ require("lvim.lsp.manager").setup("tailwindcss", {
 				classRegex = {
 					"(?:enter|leave)(?:From|To)?=\\s*(?:\"|'|{`)([^(?:\"|'|`})]*)",
 					{ "classNames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
+					"[cC]lassNames?\\s*:\\s*[\"'`]([^\"'`]*)[\"'`]",
 				},
 			},
 		},
