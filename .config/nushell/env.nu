@@ -26,7 +26,7 @@ let-env ENV_CONVERSIONS = {
 #
 # By default, <nushell-config-dir>/scripts is added
 let-env NU_LIB_DIRS = [
-    ($nu.config-path | path dirname | path join 'scripts')
+    ($nu.default-config-dir | path join 'scripts')
 ]
 
 # Directories to search for plugin binaries when calling register
@@ -40,12 +40,12 @@ def home [path?: string= ""] {
     $env.HOME | path join $path
 }
 
-let-env XDG_CONFIG_HOME = home ".config"
+let-env XDG_CONFIG_HOME = (home ".config")
 let-env EDITOR = "lvim"
 let-env VISUAL = "code"
 
-let-env XDG_DATA_HOME = home ".local/share"
-let-env XDG_CACHE_HOME = home ".cache"
+let-env XDG_DATA_HOME = (home ".local/share")
+let-env XDG_CACHE_HOME = (home ".cache")
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
@@ -59,7 +59,7 @@ path_add /usr/local/bin
 # rust
 path_add "~/.cargo/bin"
 
-if command exists "brew" {
+if (command exists "brew") {
     let paths = (brew --prefix asdf python | str trim | lines)
     let asdf_path = $paths.0
     let python_path = $paths.1
