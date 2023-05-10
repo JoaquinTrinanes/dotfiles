@@ -11,11 +11,36 @@ use job.nu
 use to.nu
 use from.nu
 
-# External completer example
 let carapace_completer = {|spans|
-    # carapace $spans.0 nushell $spans | from json
-    carapace --bridge $"($spans.0)/fish" nushell $spans | from json
+  carapace $spans.0 nushell $spans | from json
 }
+
+let fish_completer = {|spans|
+    fish --command $'complete "--do-complete=($spans | str join " ")"' | str trim | split row "\n" | each { |line| $line | split column "\t" value description } | flatten
+}
+
+let zoxide_completer = {|spans|
+  $spans | drop nth 0 | zoxide query -l $in | lines | where {|x| $x != $env.PWD}
+}
+
+let default_completer = $carapace_completer
+
+let external_completer = {|spans|
+    let has_alias = ($nu.scope.aliases | where name == $spans.0)
+    let spans = (if not ($has_alias | is-empty) {
+      # put the first word of the expanded alias first in the span
+      $spans | skip 1 | prepend ($has_alias | get expansion | split row ' ' | get 0)
+    } else { $spans })
+
+    {
+      __zoxide_z: $zoxide_completer
+    } | get -i $spans.0 | default $default_completer | do $in $spans
+
+   # {
+   #   $spans.0: { do $default_completer $spans } # default
+   #   pn: {  } # { $spans | drop nth 0 | zoxide query -l $in | lines }
+   # } | get $spans.0 | each {|it| do $it}
+ }
 
 # The default config record. This is where much of your global configuration is setup.
 let-env config = {
@@ -109,7 +134,7 @@ let-env config = {
     external: {
       enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up my be very slow
       max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
-      completer: $carapace_completer # check 'carapace_completer' above as an example
+      completer: $external_completer
     }
   }
   filesize: {
