@@ -1,10 +1,5 @@
 # Nushell Config File
 
-# Get just the extern definitions without the custom completion commands
-# use completions/yadm.nu
-# use completions/asdf.nu
-use completions/flavours.nu
-
 use plugins/theme.nu
 use job.nu
 
@@ -34,6 +29,7 @@ let external_completer = {|spans|
 
     {
       __zoxide_z: $zoxide_completer
+      git: $fish_completer
     } | get -i $spans.0 | default $default_completer | do $in $spans
 
    # {
@@ -141,17 +137,21 @@ let-env config = {
     metric: true # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
     format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, zb, zib, auto
   }
+  cursor_shape: {
+    emacs: line # block, underscore, line, blink_block, blink_underscore, blink_line (line is the default)
+    vi_insert: line # block, underscore, line , blink_block, blink_underscore, blink_line (block is the default)
+    vi_normal: block # block, underscore, line, blink_block, blink_underscore, blink_line (underscore is the default)
+  }
   color_config: (theme)
   use_grid_icons: true
   footer_mode: "25" # always, never, number_of_rows, auto
   float_precision: 2
   # buffer_editor: "emacs" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
   use_ansi_coloring: true
-  edit_mode: vi # emacs, vi
+  # edit_mode: emacs # emacs, vi
   shell_integration: true # enables terminal markers and a workaround to arrow keys stop working issue
-  show_banner: false # true or false to enable or disable the banner
   render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
-
+  show_banner: false # true or false to enable or disable the banner
   hooks: {
    pre_prompt: [{
       code: "
@@ -161,22 +161,23 @@ let-env config = {
       "
     }]
     pre_execution: [{
-      $nothing  # replace with source code to run before the repl input is run
+      null  # replace with source code to run before the repl input is run
     }]
     env_change: {
       PWD: [{|before, after|
-        $nothing  # replace with source code to run if the PWD environment is different since the last repl input
+        null  # replace with source code to run if the PWD environment is different since the last repl input
       }]
     }
     display_output: {
-      # temp fix, hopefully
-      # table
       if (term size).columns >= 100 { table -e } else { table }
     }
+    command_not_found: {||
+      null  # replace with source code to return an error message when a command is not found
+    }
   }
-  menus: [
+  menus: ([
       # Configuration for default nushell menus
-      # Note the lack of souce parameter
+      # Note the lack of source parameter
       {
         name: completion_menu
         only_buffer_difference: false
@@ -187,11 +188,6 @@ let-env config = {
             col_width: 20   # Optional value. If missing all the screen width is used to calculate column width
             col_padding: 2
         }
-        style: {
-            text: blue
-            # selected_text: green_reverse
-            # description_text: yellow
-        }
       }
       {
         name: history_menu
@@ -200,11 +196,6 @@ let-env config = {
         type: {
             layout: list
             page_size: 10
-        }
-        style: {
-            # text: green
-            # selected_text: green_reverse
-            # description_text: yellow
         }
       }
       {
@@ -218,11 +209,6 @@ let-env config = {
             col_padding: 2
             selection_rows: 4
             description_rows: 10
-        }
-        style: {
-            # text: green
-            # selected_text: green_reverse
-            # description_text: yellow
         }
       }
       # Example of extra menus created using a nushell source
@@ -238,11 +224,6 @@ let-env config = {
             col_width: 20
             col_padding: 2
         }
-        style: {
-            # text: green
-            # selected_text: green_reverse
-            # description_text: yellow
-        }
         source: { |buffer, position|
             $nu.scope.commands
             | where name =~ $buffer
@@ -256,11 +237,6 @@ let-env config = {
         type: {
             layout: list
             page_size: 10
-        }
-        style: {
-            # text: green
-            # selected_text: green_reverse
-            # description_text: yellow
         }
         source: { |buffer, position|
             $nu.scope.vars
@@ -281,18 +257,19 @@ let-env config = {
             selection_rows: 4
             description_rows: 10
         }
-        style: {
-            # text: green
-            # selected_text: green_reverse
-            # description_text: yellow
-        }
         source: { |buffer, position|
             $nu.scope.commands
             | where name =~ $buffer
             | each { |it| {value: $it.name description: $it.usage} }
         }
       }
-  ]
+    ] | each {|menu|
+      try {
+        $menu | insert style (theme menu)
+      } catch {
+        $menu
+      }
+  })
   keybindings: [
     {
       name: completion_menu
@@ -401,3 +378,9 @@ source aliases.nu
 source plugins/starship.nu
 source plugins/zoxide.nu
 let-env PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: "
+
+# Completions
+use completions/pnpm.nu
+use completions/flavours.nu
+# use completions/yadm.nu
+# use completions/asdf.nu
