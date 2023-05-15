@@ -16,5 +16,8 @@ alias grbc = git rebase --continue
 alias grbi = git rebase -i
 
 alias la = ls -la
+alias pn = pnpm
+
+alias kubectl = minikube kubectl --
 
 alias trash = rm --trash
