@@ -30,12 +30,8 @@ let external_completer = {|spans|
     {
       __zoxide_z: $zoxide_completer
       git: $fish_completer
+      sed: $fish_completer
     } | get -i $spans.0 | default $default_completer | do $in $spans
-
-   # {
-   #   $spans.0: { do $default_completer $spans } # default
-   #   pn: {  } # { $spans | drop nth 0 | zoxide query -l $in | lines }
-   # } | get $spans.0 | each {|it| do $it}
  }
 
 # The default config record. This is where much of your global configuration is setup.
