@@ -21,6 +21,27 @@ export def colors [] {
   }
 }
 
+def relative_luminance_helper [x: float] {
+  if $x <= 0.03928 {
+    $x / 12.92
+  } else {
+    ((($x + 0.055) / 1.055) ** 2.4)
+  }
+}
+
+export def relative_luminance [color] {
+  let parts = ($color | str substring 1.. | split chars | window 2 --stride 2 | each {str join} | into int -r 16 | par-each {|x| ($x | into decimal) / 255 | relative_luminance_helper $in })
+
+  let l = ((0.2126 * $parts.0) + (0.7152 * $parts.1) + (0.0722 * $parts.2))
+  $l
+}
+
+export def contrast [color1, color2] {
+  let l1 = ((relative_luminance $color1))
+  let l2 = ((relative_luminance $color2))
+  ($l1 + 0.05) / ($l2 + 0.05)
+}
+
 export def menu [] {
   let colors = (colors)
   {
@@ -31,24 +52,57 @@ export def menu [] {
 }
 
 export def main [] {
-    let $colors = (colors)
+    let colors = (colors)
+
+    let bool = {|| if $in { $colors.base0d } else { $colors.base08 } }
+    let theme_show_color = {|str|
+      if $str =~ '^#[a-fA-F\d]{6}' {
+        { bg: $str fg: (if (contrast $str $colors.base00) > 0.5 { $colors.base05 } else { $colors.base00 }) }
+      } else {
+        $colors.base04
+      }
+    }
     let base16_theme = {
         separator: $colors.base03
         leading_trailing_space_bg: $colors.base04
         header: $colors.base0b
-        date: $colors.base0e
-        filesize: $colors.base0d
+        date: {|| (date now) - $in |
+          if $in < 1hr {
+            $colors.base0e
+          } else if $in < 6hr {
+            $colors.base01
+          } else if $in < 1day {
+            $colors.base0a
+          } else if $in < 3day {
+            $colors.base0b
+          } else if $in < 1wk {
+            $colors.base0b
+          } else if $in < 6wk {
+            $colors.base0c
+          } else if $in < 52wk {
+            $colors.base0d
+          } else { $colors.base08 }
+        }
+        filesize: {||
+          if $in == 0b {
+            $colors.base02
+          } else if $in < 1mb {
+            $colors.base0c
+          } else if $in > 0.5gb {
+            { fg:$colors.base08 attr: b }
+          } else { $colors.base0d }
+        }
         row_index: $colors.base0c
-        bool: $colors.base08
+        bool: $bool
         int: $colors.base0b
         duration: $colors.base08
         range: $colors.base08
         float: $colors.base08
-        string: $colors.base04
+        string: $theme_show_color
         nothing: $colors.base08
         binary: $colors.base08
         cellpath: $colors.base08
-        hints: dark_gray
+        hints: $colors.base02
 
         shape_garbage: { fg: $colors.base07 bg: $colors.base08 attr: b} # base16 white on red
         shape_bool: $colors.base0d
@@ -70,3 +124,5 @@ export def main [] {
     }
     $base16_theme
 }
+
+
