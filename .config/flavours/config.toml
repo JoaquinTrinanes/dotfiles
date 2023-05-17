@@ -15,7 +15,7 @@ rewrite = true
 
 [[items]]
 template = "nushell"
-file = "~/.config/nushell/scripts/plugins/theme.nu"
+file = "~/.config/nushell/scripts/generated/theme.nu"
 rewrite = true
 
 [[items]]

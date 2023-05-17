@@ -1,4 +1,5 @@
 history.txt
 
+scripts/generated/*
 scripts/plugins/*
 !.gitkeep

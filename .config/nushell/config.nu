@@ -1,7 +1,6 @@
 # Nushell Config File
 
-use plugins/theme.nu
-use job.nu
+use generated/theme.nu
 
 use to.nu
 use from.nu
@@ -18,6 +17,15 @@ let zoxide_completer = {|spans|
   $spans | drop nth 0 | zoxide query -l $in | lines | where {|x| $x != $env.PWD}
 }
 
+let yadm_completer = {|spans|
+  let add_aliases = (git config --get-regexp ^alias | lines | split column  ' ' name command | where command == "add" | get name | split column . _ alias | get alias)
+  if $spans.1 in $add_aliases {
+    do $fish_completer ([git --git-dir (yadm introspect repo | str trim) --work-tree (pwd)] | append ($spans | drop nth 0))
+  } else {
+    do $fish_completer $spans
+  }
+}
+
 let default_completer = $carapace_completer
 
 let external_completer = {|spans|
@@ -29,8 +37,10 @@ let external_completer = {|spans|
 
     {
       __zoxide_z: $zoxide_completer
+      asdf: $fish_completer
       git: $fish_completer
       sed: $fish_completer
+      yadm: $yadm_completer
     } | get -i $spans.0 | default $default_completer | do $in $spans
  }
 
@@ -371,12 +381,8 @@ let-env config = {
 }
 
 source aliases.nu
-source plugins/starship.nu
-source plugins/zoxide.nu
+source generated/starship.nu
+source generated/zoxide.nu
 let-env PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: "
 
-# Completions
-use completions/pnpm.nu
-use completions/flavours.nu
-# use completions/yadm.nu
-# use completions/asdf.nu
+use completions *

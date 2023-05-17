@@ -2,7 +2,6 @@
 
 use ~/.config/nushell/scripts/command.nu
 
-
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
 # - converted from a value back to a string when running external commands (to_string)
@@ -36,16 +35,16 @@ let-env NU_PLUGIN_DIRS = [
     ($nu.config-path | path dirname | path join 'plugins')
 ]
 
-def home [path?: string= ""] {
+def 'path home' [path?: string= ""] {
     $env.HOME | path join $path
 }
 
-let-env XDG_CONFIG_HOME = (home ".config")
+let-env XDG_CONFIG_HOME = (path home ".config")
 let-env EDITOR = "lvim"
 let-env VISUAL = "code"
 
-let-env XDG_DATA_HOME = (home ".local/share")
-let-env XDG_CACHE_HOME = (home ".cache")
+let-env XDG_DATA_HOME = (path home ".local/share")
+let-env XDG_CACHE_HOME = (path home ".cache")
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
@@ -75,14 +74,14 @@ if (command exists "brew") {
 # pip-installed binaries
 path_add (python -m site --user-base | str trim | path join "bin")
 
-path_add (home ".asdf/shims")
+path_add (path home ".asdf/shims")
 
 # pnpm
-let-env PNPM_HOME = (home ".local/share/pnpm")
+let-env PNPM_HOME = (path home ".local/share/pnpm")
 path_add $env.PNPM_HOME
 
 # golang
-let-env GOPATH = (home "go")
+let-env GOPATH = (path home "go")
 let-env GOBIN = ($env.GOPATH | path join "bin")
 path_add $env.GOBIN
 
@@ -91,10 +90,10 @@ if 'flavours' in (vivid themes | lines) {
 # let-env LS_COLORS = $"(vivid generate flavours | str trim):su=30;41:ow=30;42:st=30;44:"
 }
 
-zoxide init nushell --cmd j | save -f ~/.config/nushell/scripts/plugins/zoxide.nu
 
 let-env PROMPT_INDICATOR_VI_NORMAL = ""
 let-env PROMPT_INDICATOR_VI_INSERT = ""
-starship init nu | save -f ~/.config/nushell/scripts/plugins/starship.nu
+starship init nu | save -f ~/.config/nushell/scripts/generated/starship.nu
+zoxide init nushell --cmd j | save -f ~/.config/nushell/scripts/generated/zoxide.nu
 
 let-env LESS = "-i -R -F"
