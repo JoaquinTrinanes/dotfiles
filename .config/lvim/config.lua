@@ -395,7 +395,6 @@ lvim.plugins = {
 	},
 	{
 		"ray-x/lsp_signature.nvim",
-		event = "LspAttach",
 		opts = {
 			bind = true,
 			handler_opts = {
