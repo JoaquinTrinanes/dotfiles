@@ -106,8 +106,8 @@
     defaultBranch = main
 [user]
     name = Joaquín Triñanes
-    email = quin.trinanes@gmail.com
+    email = hi@joaquint.io
 [include]
-    path = .gitconfig.local
+    path = config-local
 [includeIf "gitdir:~/Documents/veganhacktivists/"]
     path = config-vh
