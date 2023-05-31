@@ -249,14 +249,18 @@ require("lvim.lsp.manager").setup("eslint", {
 	},
 })
 
+local classNamePropNameRegex = "(?:[cC]lass[nN]ames?|(?:(?:enter|leave)(?:From|To)?))"
 require("lvim.lsp.manager").setup("tailwindcss", {
 	settings = {
 		tailwindCSS = {
 			experimental = {
 				classRegex = {
-					"(?:enter|leave)(?:From|To)?=\\s*(?:\"|'|{`)([^(?:\"|'|`})]*)",
-					{ "classNames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
-					"[cC]lassNames?\\s*:\\s*[\"'`]([^\"'`]*)[\"'`]",
+					-- classNames="...", enterFrom={`...`}...
+					classNamePropNameRegex .. "\\s*=\\s*(?:[\"']|{`)(.*)(?:['\"]|`})",
+					-- Any quoted string inside classNames(...)
+					{ "class[nN]ames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
+					-- classNames: "..."
+					"[cC]lass[nN]ames?\\s*:\\s*[\"'`]([^\"'`]*)[\"'`]",
 				},
 			},
 		},
