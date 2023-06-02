@@ -159,27 +159,23 @@ let-env config = {
   render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
   show_banner: false # true or false to enable or disable the banner
   hooks: {
-   pre_prompt: [{
-      code: "
+     pre_prompt: [{||
         let direnv = (direnv export json | from json)
         let direnv = if ($direnv | length) == 1 { $direnv } else { {} }
         $direnv | load-env
-      "
     }]
-    pre_execution: [{
-      null  # replace with source code to run before the repl input is run
-    }]
+    pre_execution: []
     env_change: {
-      PWD: [{|before, after|
-        null  # replace with source code to run if the PWD environment is different since the last repl input
-      }]
+      PWD: [
+        # {|before, after|
+        #   null  # replace with source code to run if the PWD environment is different since the last repl input
+        # }
+      ]
     }
     display_output: {
       if (term size).columns >= 100 { table -e } else { table }
     }
-    command_not_found: {||
-      null  # replace with source code to return an error message when a command is not found
-    }
+    command_not_found: []
   }
   menus: ([
       # Configuration for default nushell menus
