@@ -29,6 +29,6 @@ if (packagesWithoutFeatures.length > 0) {
 if (packagesWithFeatures.length > 0) {
   for (const p of packagesWithFeatures) {
     const [name, { features }] = Object.entries(p)[0];
-    await $`cargo install ${name} --features ${features}`;
+    await $`cargo install ${name} --features ${features.join(",")}`;
   }
 }
