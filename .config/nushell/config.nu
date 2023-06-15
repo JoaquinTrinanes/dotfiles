@@ -17,16 +17,21 @@ let zoxide_completer = {|spans|
   $spans | drop nth 0 | zoxide query -l $in | lines | where {|x| $x != $env.PWD}
 }
 
+let git_completer = {|spans|
+  do $fish_completer $spans
+}
+
 let yadm_completer = {|spans|
   let add_aliases = (git config --get-regexp ^alias | lines | split column  ' ' name command | where command == "add" | get name | split column . _ alias | get alias)
   if $spans.1 in $add_aliases {
-    do $fish_completer ([git --git-dir (yadm introspect repo | str trim) --work-tree (pwd)] | append ($spans | drop nth 0))
+    do $git_completer ([git --git-dir (yadm introspect repo | str trim) --work-tree (pwd)] | append ($spans | drop nth 0))
   } else {
-    do $fish_completer $spans
+    do $git_completer $spans
   }
 }
 
 let default_completer = $carapace_completer
+let fallback_completer = $fish_completer
 
 let external_completer = {|spans|
     let has_alias = ($nu.scope.aliases | where name == $spans.0)
@@ -38,10 +43,12 @@ let external_completer = {|spans|
     {
       __zoxide_z: $zoxide_completer
       asdf: $fish_completer
-      git: $fish_completer
+      git: $git_completer
+      gpg: $fish_completer
       sed: $fish_completer
       yadm: $yadm_completer
-    } | get -i $spans.0 | default $default_completer | do $in $spans
+      yay: $fish_completer
+    } | get -i $spans.0 | default $default_completer | do $in $spans | if (($in | is-empty) and (not ($fallback_completer | is-empty))) { do $fallback_completer $spans } else { $in }
  }
 
 # The default config record. This is where much of your global configuration is setup.
