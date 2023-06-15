@@ -41,7 +41,7 @@ def 'path home' [path?: string= ""] {
 
 let-env XDG_CONFIG_HOME = (path home ".config")
 let-env EDITOR = "lvim"
-let-env VISUAL = "code"
+let-env VISUAL = $env.EDITOR
 
 let-env XDG_DATA_HOME = (path home ".local/share")
 let-env XDG_CACHE_HOME = (path home ".cache")
@@ -93,7 +93,30 @@ if 'flavours' in (vivid themes | lines) {
 
 let-env PROMPT_INDICATOR_VI_NORMAL = ""
 let-env PROMPT_INDICATOR_VI_INSERT = ""
-starship init nu | save -f ~/.config/nushell/scripts/generated/starship.nu
-zoxide init nushell --cmd j | save -f ~/.config/nushell/scripts/generated/zoxide.nu
+
+do {
+  def get_cache [name: string] {
+    let cache = ($env.XDG_CACHE_HOME | path join $name)
+    mkdir $cache
+    $cache
+  }
+  # starship
+  let starship_cache = (get_cache "starship")
+  mkdir $starship_cache
+  starship init nu | save -f ($starship_cache | path join "starship.nu")
+
+  # zoxide
+  let zoxide_cache = (get_cache "zoxide")
+  zoxide init nushell --cmd j | save -f ($zoxide_cache | path join 'zoxide.nu')
+
+  { NU_LIB_DIRS: ($env.NU_LIB_DIRS? | default [] | append [$starship_cache $zoxide_cache (get_cache 'nu')]) }
+} | load-env
+
+# load .env file
+if (path home .env.secret | path exists) {
+  try {
+    open (path home .env.secret) | str trim | lines | split column '=' index value | str trim | reduce -f {} {|x, acc| $acc | merge {$x.index: $x.value}}
+  } catch { {} } | load-env
+}
 
 let-env LESS = "-i -R -F"

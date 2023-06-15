@@ -1,6 +1,6 @@
 # Nushell Config File
 
-use generated/theme.nu
+use theme.nu
 
 use to.nu
 use from.nu
@@ -377,8 +377,8 @@ let-env config = {
 }
 
 source aliases.nu
-source generated/starship.nu
-source generated/zoxide.nu
+source starship.nu
+source zoxide.nu
 let-env PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: "
 
 use completions *
