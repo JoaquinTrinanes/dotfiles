@@ -23,6 +23,7 @@ lvim.log.level = "info"
 lvim.format_on_save.enabled = true
 lvim.format_on_save.timeout = 10000
 lvim.format_on_save.pattern = nil
+lvim.lsp.document_highlight = true
 
 -- keymappings <https://www.lunarvim.org/docs/configuration/keybindings>
 lvim.leader = "space"
@@ -44,7 +45,6 @@ map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 
 -- -- Change theme settings
--- lvim.colorscheme = "lunar"
 lvim.colorscheme = "flavours"
 
 -- Show previewer when searching git files with default <leader>f
@@ -177,14 +177,16 @@ lvim.builtin.cmp.experimental.ghost_text = true
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.highlight.enable = true
 lvim.builtin.treesitter.autotag.enable = true
+lvim.builtin.treesitter.matchup.enable = true
 lvim.builtin.treesitter.auto_install = true
 lvim.builtin.treesitter.highlight.additional_vim_regex_highlighting = true
 lvim.builtin.treesitter.ensure_installed = {
+	"css",
 	"markdown",
+	"markdown_inline",
 	"regex",
 	"vim",
-	"markdown_inline",
-	"css",
+	"html",
 }
 -- lvim.builtin.lualine.style = "default" -- or "none"
 
@@ -342,24 +344,25 @@ lvim.plugins = {
 		config = true,
 	},
 	{
-		"echasnovski/mini.map",
-		event = "LspAttach",
+		"echasnovski/mini.nvim",
+		event = "VeryLazy",
+		version = false,
 		config = function()
 			require("mini.map").setup()
-			local map = require("mini.map")
-			map.setup({
+			local minimap = require("mini.map")
+			minimap.setup({
 				integrations = {
-					map.gen_integration.builtin_search(),
-					map.gen_integration.diagnostic({
+					minimap.gen_integration.builtin_search(),
+					minimap.gen_integration.diagnostic({
 						error = "DiagnosticFloatingError",
 						warn = "DiagnosticFloatingWarn",
 						info = "DiagnosticFloatingInfo",
 						hint = "DiagnosticFloatingHint",
 					}),
-					map.gen_integration.gitsigns(),
+					minimap.gen_integration.gitsigns(),
 				},
 				symbols = {
-					encode = map.gen_encode_symbols.dot("4x2"),
+					encode = minimap.gen_encode_symbols.dot("4x2"),
 				},
 				window = {
 					focusable = true,
@@ -369,9 +372,8 @@ lvim.plugins = {
 				},
 			})
 			vim.api.nvim_create_user_command("MinimapToggle", function()
-				MiniMap.toggle()
+				minimap.toggle()
 			end, {})
-			MiniMap.open()
 		end,
 	},
 	{
@@ -383,9 +385,7 @@ lvim.plugins = {
 	},
 	{
 		"windwp/nvim-ts-autotag",
-		ft = {
-			"typescriptreact",
-		},
+		event = "LspAttach",
 		config = true,
 	},
 	{
@@ -439,7 +439,7 @@ lvim.plugins = {
 	},
 	{
 		"stevearc/dressing.nvim",
-		event = "VimEnter",
+		event = "VeryLazy",
 		config = function()
 			local telescope_themes = require("telescope.themes")
 			require("dressing").setup({
@@ -458,7 +458,7 @@ lvim.plugins = {
 	},
 	{
 		"folke/noice.nvim",
-		event = "VimEnter",
+		event = "VeryLazy",
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 		},
@@ -527,6 +527,13 @@ lvim.plugins = {
 		opts = { use_lsp_features = true, all_cmd_names = [[nu -c 'help commands | get name | str join "\n"']] },
 		config = true,
 	},
+	{
+		"zioroboco/nu-ls.nvim",
+		ft = { "nu" },
+		config = function()
+			require("null-ls").register(require("nu-ls"))
+		end,
+	},
 }
 
 vim.api.nvim_create_user_command("WhatHl", function()
@@ -542,16 +549,6 @@ lvim.autocommands = {
 				watch_file(colorscheme_path, function()
 					vim.cmd("colorscheme flavours")
 				end)
-			end,
-		},
-	},
-	{
-		"BufEnter",
-		{
-			callback = function()
-				if vim.bo.buftype ~= "" then
-					vim.opt_local.list = false
-				end
 			end,
 		},
 	},
