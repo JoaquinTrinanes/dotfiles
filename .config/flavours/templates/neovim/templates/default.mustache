@@ -56,10 +56,9 @@ vim.g.terminal_color_13 = gui0E
 vim.g.terminal_color_14 = gui0C
 vim.g.terminal_color_15 = gui07
 
-vim.cmd([[
-  highlight clear
-  syntax reset
-]])
+vim.cmd.highlight("clear")
+vim.cmd.syntax("reset")
+
 vim.g.colors_name = "{{scheme-slug}}"
 
 -- Vim editor colors                    fg bg ctermfg ctermbg attr guisp
@@ -113,7 +112,7 @@ vim.api.nvim_set_hl(0, "TabLineSel", { fg = gui0B, bg = gui01, ctermfg = cterm0B
 -- Standard syntax highlighting
 vim.api.nvim_set_hl(0, "Boolean", { fg = gui09, ctermfg = cterm09 })
 vim.api.nvim_set_hl(0, "Character", { fg = gui08, ctermfg = cterm08 })
-vim.api.nvim_set_hl(0, "Comment", { fg = gui03, ctermfg = cterm03 })
+vim.api.nvim_set_hl(0, "Comment", { fg = gui03, ctermfg = cterm03, italic = true })
 vim.api.nvim_set_hl(0, "Conditional", { fg = gui0E, ctermfg = cterm0E })
 vim.api.nvim_set_hl(0, "Constant", { fg = gui09, ctermfg = cterm09 })
 vim.api.nvim_set_hl(0, "Define", { fg = gui0E, ctermfg = cterm0E })
@@ -237,6 +236,8 @@ vim.api.nvim_set_hl(0, "mailEmail", { fg = gui0D, ctermfg = cterm0D })
 
 -- Markdown highlighting
 vim.api.nvim_set_hl(0, "markdownCode", { fg = gui0B, ctermfg = cterm0B })
+vim.api.nvim_set_hl(0, "markdownItalic", { italic = true })
+vim.api.nvim_set_hl(0, "markdownBold", { bold = true })
 vim.api.nvim_set_hl(0, "markdownError", { fg = gui05, bg = gui00, ctermfg = cterm05, ctermbg = cterm00 })
 vim.api.nvim_set_hl(0, "markdownCodeBlock", { fg = gui0B, ctermfg = cterm0B })
 vim.api.nvim_set_hl(0, "markdownHeadingDelimiter", { fg = gui0D, ctermfg = cterm0D })
