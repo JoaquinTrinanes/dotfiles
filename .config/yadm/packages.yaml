@@ -7,6 +7,7 @@ cargo:
   - nu:
       features:
         - dataframe
+        - extra
   - flavours
 packages:
   - asdf:
@@ -28,6 +29,7 @@ packages:
   - fzf
   - git
   - go
+  - gum
   - httpie
   - imagemagick
   - jq
@@ -58,6 +60,8 @@ packages:
   - wl-clipboard
   - xclip
   - yadm
+  - yarn
+  - zellij
   - zoxide
 pip: []
 services:
