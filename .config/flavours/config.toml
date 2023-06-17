@@ -33,3 +33,8 @@ template = "btop"
 file = "~/.config/btop/themes/flavours.theme"
 rewrite = true
 
+[[items]]
+template = "zellij"
+file = "~/.config/zellij/themes/flavours.kdl"
+rewrite = true
+
