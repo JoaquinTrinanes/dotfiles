@@ -396,9 +396,12 @@ let-env config = {
   ]
 }
 
-source aliases.nu
-source starship.nu
-source zoxide.nu
-let-env PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: "
 
-use completions *
+source starship.nu
+let-env PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: (ansi reset)"
+
+source zoxide.nu
+
+overlay use aliases
+overlay use completions
+

@@ -1,9 +1,5 @@
 # Nushell Environment Config File
 
-use ~/.config/nushell/scripts/command.nu
-
-let-env SHELL = "nu"
-
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
 # - converted from a value back to a string when running external commands (to_string)
@@ -38,7 +34,7 @@ let-env NU_PLUGIN_DIRS = [
 ]
 
 def 'path home' [path?: string= ""] {
-    $env.HOME | path join $path
+    $nu.home-path | path join $path
 }
 
 let-env XDG_CONFIG_HOME = (path home ".config")
@@ -48,9 +44,6 @@ let-env VISUAL = $env.EDITOR
 let-env XDG_DATA_HOME = (path home ".local/share")
 let-env XDG_CACHE_HOME = (path home ".cache")
 
-# To add entries to PATH (on Windows you might use Path), you can use the following pattern:
-# let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
-
 def-env path_add [path: string, --varname (-v): string = "PATH"] {
     let-env $varname = ($env | get $varname | split row (char esep) | prepend $path)
 }
@@ -58,9 +51,9 @@ def-env path_add [path: string, --varname (-v): string = "PATH"] {
 path_add /usr/local/bin
 
 # rust
-path_add "~/.cargo/bin"
+path_add (path home ".cargo/bin")
 
-if (command exists "brew") {
+if not (which brew | is-empty) {
     let paths = (brew --prefix asdf python | str trim | lines)
     let asdf_path = $paths.0
     let python_path = $paths.1
@@ -89,12 +82,15 @@ path_add $env.GOBIN
 
 if 'flavours' in (vivid themes | lines) {
   let-env LS_COLORS = (vivid generate flavours)
-# let-env LS_COLORS = $"(vivid generate flavours | str trim):su=30;41:ow=30;42:st=30;44:"
 }
 
 
-let-env PROMPT_INDICATOR_VI_NORMAL = ""
-let-env PROMPT_INDICATOR_VI_INSERT = ""
+export-env {
+  load-env {
+    PROMPT_INDICATOR_VI_NORMAL: ""
+    PROMPT_INDICATOR_VI_INSERT: ""
+  }
+}
 
 do {
   def get_cache [name: string] {

@@ -1,23 +1,25 @@
-alias vim = lvim
-alias c = yadm
-alias g = git
+export alias vim = lvim
+export alias c = yadm
+export alias g = git
 
-alias gco = git checkout
-alias gp = git push
-alias gpf = git push --force-with-lease
-alias gl = git pull
-alias gb = git branch
-alias ga = git add
-alias gcp = git cherry-pick
-alias gd = git diff
-alias grb = git rebase
-alias grba = git rebase --abort
-alias grbc = git rebase --continue
-alias grbi = git rebase -i
+export alias gco = git checkout
+export alias gp = git push
+export alias gpf = git push --force-with-lease
+export alias gl = git pull
+export alias gb = git branch
+export alias ga = git add
+export alias gcp = git cherry-pick
+export alias gd = git diff
+export alias grb = git rebase
+export alias grba = git rebase --abort
+export alias grbc = git rebase --continue
+export alias grbi = git rebase -i
 
-alias la = ls -la
-alias pn = pnpm
+export alias la = ls -la
+export alias ll = ls -l
 
-alias kubectl = minikube kubectl --
+export alias pn = pnpm
 
-alias trash = rm --trash
+export alias kubectl = minikube kubectl --
+
+export alias trash = rm --trash
