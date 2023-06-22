@@ -10,7 +10,7 @@ let carapace_completer = {|spans|
 }
 
 let fish_completer = {|spans|
-    fish --command $'complete "--do-complete=($spans | str join " ")"' | str trim | split row "\n" | each { |line| $line | split column "\t" value description } | flatten
+    fish --command $'complete "--do-complete=($spans | str join " ")"' | str trim | from tsv --noheaders --no-infer | rename value description
 }
 
 let zoxide_completer = {|spans|
