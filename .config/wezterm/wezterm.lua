@@ -22,16 +22,15 @@ for _, file in ipairs(nu_paths) do
 	end
 end
 
-wezterm.add_to_config_reload_watch_list(home .. "/.config/wezterm/colors/flavours.toml")
+wezterm.add_to_config_reload_watch_list(wezterm.config_dir .. "/colors/flavours.toml")
 
 local config = {}
 if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
-config.default_prog = {
-	nu_path,
-	"-i",
+config.set_environment_variables = {
+	SHELL = nu_path,
 }
 
 config.color_scheme = "flavours"
