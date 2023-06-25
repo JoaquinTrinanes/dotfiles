@@ -2,23 +2,27 @@
 
 use theme.nu
 
-use to.nu
-use from.nu
-
-let carapace_completer = {|spans|
+let carapace_completer = {|spans: list<string>|
   carapace $spans.0 nushell $spans | from json
 }
 
-let fish_completer = {|spans|
-    fish --command $'complete "--do-complete=($spans | str join " ")"' | str trim | from tsv --noheaders --no-infer | rename value description
+let fish_completer = {|spans: list<string>|
+    fish --command $'complete "--do-complete=($spans | str join " ")"' | from tsv --noheaders --no-infer | rename value description
 }
 
-let zoxide_completer = {|spans|
+let zoxide_completer = {|spans: list<string>|
   $spans | drop nth 0 | zoxide query -l $in | lines | where {|x| $x != $env.PWD}
 }
 
-let git_completer = {|spans|
-  do $fish_completer $spans
+let git_completer = {|spans: list<string>|
+  let aliases = (git config --get-regexp ^alias | lines | split column  ' ' name command | update name {|x| $x.name | split row '.' | last })
+  let spans_after_alias = ($spans | update 1 ($aliases | where name == $spans.1 | if ($in | is-empty) { $spans.1 } else { $in.0.command | split words }) | flatten)
+
+  if ($spans_after_alias.1 in [checkout branch]) {
+    do $fish_completer $spans_after_alias
+  } else {
+    do $carapace_completer $spans_after_alias
+  }
 }
 
 let yadm_completer = {|spans|
@@ -45,6 +49,7 @@ let external_completer = {|spans|
       asdf: $fish_completer
       git: $git_completer
       gpg: $fish_completer
+      nu: $fish_completer
       sed: $fish_completer
       yadm: $yadm_completer
       yay: $fish_completer
@@ -129,11 +134,10 @@ let-env config = {
       # list_color: green
     }
   }
-
   history: {
-    max_size: 10000 # Session has to be reloaded for this to take effect
+    max_size: 100_000 # Session has to be reloaded for this to take effect
     sync_on_enter: false # Enable to share history between multiple sessions, else you have to close the session to write history to file
-    file_format: "plaintext" # "sqlite" or "plaintext"
+    file_format: "sqlite" # "sqlite" or "plaintext"
   }
   completions: {
     case_sensitive: false # set to true to enable case-sensitive completions
@@ -167,8 +171,7 @@ let-env config = {
   show_banner: false # true or false to enable or disable the banner
   hooks: {
      pre_prompt: [{||
-        let direnv = (direnv export json | from json)
-        let direnv = if ($direnv | length) == 1 { $direnv } else { {} }
+        let direnv = (direnv export json | from json | default {})
         let env_to_convert = ($direnv | transpose key value | where key in ($env.ENV_CONVERSIONS | columns))
         # $direnv | transpose index value | join -l ($env.ENV_CONVERSIONS | transpose index transform | update transform {|x| $x.transform.from_string}) index | update value {|it|
         #   if ($it.transform | is-empty) {
@@ -398,6 +401,7 @@ let-env config = {
 
 
 source starship.nu
+# this var is overriden in the script above
 let-env PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: (ansi reset)"
 
 source zoxide.nu
