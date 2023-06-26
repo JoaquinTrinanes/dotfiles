@@ -4,6 +4,7 @@ use theme.nu
 
 let carapace_completer = {|spans: list<string>|
   carapace $spans.0 nushell $spans | from json
+  | if ($in | default [] | where value ends-with 'ERR' | is-empty) { $in } else { null }
 }
 
 let fish_completer = {|spans: list<string>|
@@ -172,7 +173,7 @@ let-env config = {
   hooks: {
      pre_prompt: [{||
         let direnv = (direnv export json | from json | default {})
-        let env_to_convert = ($direnv | transpose key value | where key in ($env.ENV_CONVERSIONS | columns))
+        let env_to_convert = ($direnv | transpose key value | where key in $env.ENV_CONVERSIONS)
         # $direnv | transpose index value | join -l ($env.ENV_CONVERSIONS | transpose index transform | update transform {|x| $x.transform.from_string}) index | update value {|it|
         #   if ($it.transform | is-empty) {
         #       $it.value
