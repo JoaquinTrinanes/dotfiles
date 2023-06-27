@@ -59,6 +59,8 @@ lvim.builtin.which_key.mappings.b.f = {
 	"Find",
 }
 
+lvim.builtin.which_key.mappings.l.g = { vim.lsp.buf.definition, "Go to definition" }
+
 lvim.builtin.telescope.defaults.layout_config.horizontal = {
 	prompt_position = "top",
 }
@@ -81,7 +83,35 @@ lvim.builtin.alpha.dashboard.opts.theme = "doom"
 -- 	-- "    Your day is going to be a real hoot!  ",
 -- }
 
+local function get_mason_package(package_name)
+	local mason_registry = require("mason-registry")
+	return mason_registry.get_package(package_name)
+end
+
 lvim.builtin.dap.active = true
+lvim.builtin.dap.on_config_done = function(dap)
+	local php_debug_adapter = get_mason_package("php-debug-adapter")
+
+	dap.adapters.php = {
+		type = "executable",
+		command = "sh",
+		args = { php_debug_adapter:get_install_path() .. "/php-debug-adapter" },
+	}
+	dap.configurations.php = {
+		{
+			type = "php",
+			request = "launch",
+			name = "Listen for Xdebug",
+			port = 9003,
+			proxy = {
+				key = "vsc",
+			},
+			pathMappings = {
+				["/var/www/html"] = vim.fn.getcwd(),
+			},
+		},
+	}
+end
 
 lvim.builtin.terminal.active = true
 lvim.builtin.terminal.shell = "nu"
@@ -107,15 +137,8 @@ local function currentHl()
 end
 
 lvim.builtin.lualine.sections.lualine_x = {
-	-- function()
-	-- 	return vim.inspect(currentHl())
-	-- end,
 	components.diagnostics,
 	components.lsp,
-	-- components.spaces,
-	-- function()
-	-- 	return vim.bo.buftype
-	-- end,
 	components.filetype,
 }
 lvim.builtin.lualine.sections.lualine_y = {
@@ -132,65 +155,13 @@ lvim.builtin.gitsigns.opts.yadm.enable = true
 lvim.builtin.gitsigns.opts.current_line_blame = true
 
 lvim.builtin.cmp.experimental.ghost_text = true
--- lvim.builtin.cmp.formatting.format = function(entry, vim_item)
--- 	local max_width = lvim.builtin.cmp.formatting.max_width
--- 	if max_width ~= 0 and #vim_item.abbr > max_width then
--- 		vim_item.abbr = string.sub(vim_item.abbr, 1, max_width - 1) .. lvim.icons.ui.Ellipsis
--- 	end
--- 	if lvim.use_icons then
--- 		vim_item.kind = lvim.builtin.cmp.formatting.kind_icons[vim_item.kind]
 
--- 		if entry.source.name == "copilot" then
--- 			vim_item.kind = lvim.icons.git.Octoface
--- 			vim_item.kind_hl_group = "CmpItemKindCopilot"
--- 		end
-
--- 		if entry.source.name == "cmp_tabnine" then
--- 			vim_item.kind = lvim.icons.misc.Robot
--- 			vim_item.kind_hl_group = "CmpItemKindTabnine"
--- 		end
-
--- 		if entry.source.name == "crates" then
--- 			vim_item.kind = lvim.icons.misc.Package
--- 			vim_item.kind_hl_group = "CmpItemKindCrate"
--- 		end
-
--- 		if entry.source.name == "lab.quick_data" then
--- 			vim_item.kind = lvim.icons.misc.CircuitBoard
--- 		vim_item.kind_hl_group = "CmpItemKindConstant"
--- 	end
-
--- 	if entry.source.name == "emoji" then
--- 		vim_item.kind = lvim.icons.misc.Smiley
--- 		vim_item.kind_hl_group = "CmpItemKindEmoji"
--- 	end
--- end
--- vim_item.menu = lvim.builtin.cmp.formatting.source_names[entry.source.name]
--- vim_item.dup = lvim.builtin.cmp.formatting.duplicates[entry.source.name]
--- 	or lvim.builtin.cmp.formatting.duplicates_default
--- if entry.completion_item.detail ~= nil and entry.completion_item.detail ~= "" then
--- 	vim_item.menu = entry.completion_item.detail
--- end
--- return vim_item
--- end
-
--- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.highlight.enable = true
 lvim.builtin.treesitter.autotag.enable = true
 lvim.builtin.treesitter.matchup.enable = true
 lvim.builtin.treesitter.auto_install = true
 lvim.builtin.treesitter.highlight.additional_vim_regex_highlighting = true
-lvim.builtin.treesitter.ensure_installed = {
-	"css",
-	"markdown",
-	"markdown_inline",
-	"regex",
-	"vim",
-	"html",
-}
--- lvim.builtin.lualine.style = "default" -- or "none"
-
--- lvim.builtin.treesitter.ignore_install = { "haskell" }
+lvim.builtin.treesitter.ensure_installed = "all"
 
 -- -- generic LSP settings <https://www.lunarvim.org/docs/languages#lsp-support>
 
@@ -206,20 +177,20 @@ lvim.builtin.treesitter.ensure_installed = {
 -- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. IMPORTANT: Requires `:LvimCacheReset` to take effect
 -- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
 
--- local servers_to_install = {
---   "beautysh",
---   "black",
---   "eslint-lsp",
---   "eslint_d",
---   "intelephense",
---   "lua-language-server",
---   "prettierd",
---   "stylua",
---   "tailwindcss-language-server",
---   "typescript-language-server",
--- }
+-- vim.list_extend(vim.lsp.automatic_configuration.skipped_servers, {})
 -- lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
---   return not vim.tbl_contains(servers_to_install, server)
+-- 	return not vim.list_contains({
+-- 		"beautysh",
+-- 		"black",
+-- 		"eslint-lsp",
+-- 		"eslint_d",
+-- 		"intelephense",
+-- 		"lua-language-server",
+-- 		"prettierd",
+-- 		"stylua",
+-- 		"tailwindcss-language-server",
+-- 		"typescript-language-server",
+-- 	}, server)
 -- end, lvim.lsp.automatic_configuration.skipped_servers)
 
 -- -- you can set a custom on_attach function that will be used for all the language servers
@@ -315,7 +286,7 @@ lvim.plugins = {
 		name = "git-conflict",
 		opts = {
 			default_mappings = false,
-			highlights = { -- They must have background color, otherwise the default color will be used
+			highlights = {
 				incoming = "DiffText",
 				current = "DiffAdd",
 			},
@@ -396,7 +367,6 @@ lvim.plugins = {
 		"nvim-treesitter/playground",
 		cmd = "TSPlaygroundToggle",
 	},
-	{ "nvim-treesitter/nvim-treesitter-context", opts = { separator = "-" } },
 	{
 		"rktjmp/lush.nvim",
 	},
@@ -491,27 +461,6 @@ lvim.plugins = {
 		},
 		config = true,
 	},
-	{
-		"folke/todo-comments.nvim",
-		event = "BufRead",
-		config = true,
-	},
-	{
-		"folke/persistence.nvim",
-		event = "BufReadPre", -- this will only start session saving when an actual file was opened
-		config = function()
-			require("persistence").setup({
-				dir = vim.fn.expand(vim.fn.stdpath("config") .. "/session/"),
-				options = { "buffers", "curdir", "tabpages", "winsize" },
-			})
-			lvim.builtin.which_key.mappings["S"] = {
-				name = "Session",
-				c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
-				l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
-				Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
-			}
-		end,
-	},
 	{ "tpope/vim-repeat" },
 	{
 		"norcalli/nvim-colorizer.lua",
@@ -534,10 +483,40 @@ lvim.plugins = {
 			require("null-ls").register(require("nu-ls"))
 		end,
 	},
+	{ "imsnif/kdl.vim" },
+	{
+		"Lilja/zellij.nvim",
+		enabled = os.getenv("ZELLIJ") ~= nil,
+		dependencies = { { "christoomey/vim-tmux-navigator" } },
+		opts = {
+			vimTmuxNavigatorKeybinds = true,
+		},
+	},
+	{
+		"alexghergh/nvim-tmux-navigation",
+		enabled = os.getenv("TMUX") ~= nil,
+		opts = {
+			keybindings = {
+				left = "<C-h>",
+				down = "<C-j>",
+				up = "<C-k>",
+				right = "<C-l>",
+				next = "<C-Space>",
+			},
+		},
+	},
 	{
 		"mrjones2014/smart-splits.nvim",
+		dependencies = {
+			{ "kwkarlwang/bufresize.nvim", config = true },
+		},
 		version = "*",
 		config = function()
+			require("smart-splits").setup({
+				hooks = {
+					on_leave = require("bufresize").register,
+				},
+			})
 			vim.keymap.set("n", "<A-h>", require("smart-splits").resize_left)
 			vim.keymap.set("n", "<A-j>", require("smart-splits").resize_down)
 			vim.keymap.set("n", "<A-k>", require("smart-splits").resize_up)
@@ -554,6 +533,32 @@ lvim.plugins = {
 			vim.keymap.set("n", "<leader><leader>l", require("smart-splits").swap_buf_right)
 		end,
 	},
+	-- {
+	-- 	"nvim-pack/nvim-spectre",
+	-- 	event = "BufRead",
+	-- 	init = function()
+	-- 		lvim.builtin.which_key.mappings["i"] = {
+	-- 			name = "Spectre",
+	-- 			["a"] = {
+	-- 				"<cmd>lua require('spectre').open()<cr>",
+	-- 				"Spectre!",
+	-- 			},
+	-- 			["b"] = {
+	-- 				"<cmd>lua require('spectre').open_visual({select_word=true})<CR>",
+	-- 				"Search current word",
+	-- 			},
+	-- 			-- ["c"] = {
+	-- 			-- 	"<cmd>lua require('spectre').open_visual()<CR>",
+	-- 			-- 	"Search current word",
+	-- 			-- },
+	-- 			["d"] = {
+	-- 				"<cmd>lua require('spectre').open_file_search({select_word=true})<CR>",
+	-- 				"Search on current file",
+	-- 			},
+	-- 		}
+	-- 	end,
+	-- 	config = true,
+	-- },
 }
 
 vim.api.nvim_create_user_command("WhatHl", function()
