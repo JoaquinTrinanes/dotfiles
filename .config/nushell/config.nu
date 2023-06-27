@@ -8,7 +8,9 @@ let carapace_completer = {|spans: list<string>|
 }
 
 let fish_completer = {|spans: list<string>|
-    fish --command $'complete "--do-complete=($spans | str join " ")"' | from tsv --noheaders --no-infer | rename value description
+    fish --command $'complete "--do-complete=($spans | str join " ")"'
+    | $"value(char tab)description(char newline)" + $in
+    | from tsv --flexible --no-infer
 }
 
 let zoxide_completer = {|spans: list<string>|
