@@ -96,6 +96,26 @@ config.keys = {
 	split_nav("resize", "j"),
 	split_nav("resize", "k"),
 	split_nav("resize", "l"),
+	{
+		key = "\\",
+		mods = "CTRL|ALT",
+		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+	},
+	{
+		key = "|",
+		mods = "CTRL|ALT",
+		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+	},
+	{
+		key = "-",
+		mods = "CTRL|ALT",
+		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
+	},
+	{
+		key = "f",
+		mods = "ALT",
+		action = wezterm.action.TogglePaneZoomState,
+	},
 }
 
 return config
