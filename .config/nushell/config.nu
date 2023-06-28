@@ -41,7 +41,7 @@ let default_completer = $carapace_completer
 let fallback_completer = $fish_completer
 
 let external_completer = {|spans|
-    let has_alias = ($nu.scope.aliases | where name == $spans.0)
+    let has_alias = (scope aliases | where name == $spans.0)
     let spans = (if not ($has_alias | is-empty) {
       # put the first word of the expanded alias first in the span
       $spans | skip 1 | prepend ($has_alias | get expansion | split row ' ' | get 0)
@@ -81,6 +81,10 @@ let-env config = {
     }
   }
 
+  datetime_format: {
+    normal: '%a, %d %b %Y %H:%M:%S %z'  # shows up in displays of variables or other datetime's outside of tables
+    # table: '%m/%d/%y %I:%M:%S%p'        # generally shows up in tabular outputs such as ls. commenting this out will change it to the default human readable datetime format
+  },
   explore: {
     help_banner: true
     exit_esc: true
@@ -253,7 +257,7 @@ let-env config = {
             col_padding: 2
         }
         source: { |buffer, position|
-            $nu.scope.commands
+            scope commands
             | where name =~ $buffer
             | each { |it| {value: $it.name description: $it.usage} }
         }
@@ -267,7 +271,7 @@ let-env config = {
             page_size: 10
         }
         source: { |buffer, position|
-            $nu.scope.vars
+            scope variables
             | where name =~ $buffer
             | sort-by name
             | each { |it| {value: $it.name description: $it.type} }
@@ -286,7 +290,7 @@ let-env config = {
             description_rows: 10
         }
         source: { |buffer, position|
-            $nu.scope.commands
+            scope commands
             | where name =~ $buffer
             | each { |it| {value: $it.name description: $it.usage} }
         }
