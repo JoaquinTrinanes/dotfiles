@@ -55,7 +55,6 @@ let external_completer = {|spans|
       nu: $fish_completer
       sed: $fish_completer
       yadm: $yadm_completer
-      yay: $fish_completer
     } | get -i $spans.0 | default $default_completer | do $in $spans | if (($in | is-empty) and (not ($fallback_completer | is-empty))) { do $fallback_completer $spans } else { $in }
  }
 
