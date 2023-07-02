@@ -59,7 +59,7 @@ let external_completer = {|spans|
  }
 
 # The default config record. This is where much of your global configuration is setup.
-let-env config = {
+$env.config = {
   ls: {
     use_ls_colors: true # use the LS_COLORS environment variable to colorize output
     clickable_links: false # enable or disable clickable links. Your terminal has to support links.
@@ -408,7 +408,7 @@ let-env config = {
 
 source starship.nu
 # this var is overriden in the script above
-let-env PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: (ansi reset)"
+$env.PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: (ansi reset)"
 
 source zoxide.nu
 

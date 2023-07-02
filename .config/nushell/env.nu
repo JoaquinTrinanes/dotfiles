@@ -4,7 +4,7 @@
 # - converted from a string to a value on Nushell startup (from_string)
 # - converted from a value back to a string when running external commands (to_string)
 # Note: The conversions happen *after* config.nu is loaded
-let-env ENV_CONVERSIONS = {
+$env.ENV_CONVERSIONS = {
   "PATH": {
     from_string: { |s| $s | split row (char esep) | path expand -n }
     to_string: { |v| $v | path expand -n | str join (char esep) }
@@ -22,14 +22,14 @@ let-env ENV_CONVERSIONS = {
 # Directories to search for scripts when calling source or use
 #
 # By default, <nushell-config-dir>/scripts is added
-let-env NU_LIB_DIRS = [
+$env.NU_LIB_DIRS = [
     ($nu.default-config-dir | path join 'scripts')
 ]
 
 # Directories to search for plugin binaries when calling register
 #
 # By default, <nushell-config-dir>/plugins is added
-let-env NU_PLUGIN_DIRS = [
+$env.NU_PLUGIN_DIRS = [
     ($nu.config-path | path dirname | path join 'plugins')
 ]
 
@@ -37,15 +37,17 @@ def 'path home' [path?: string= ""] {
     $nu.home-path | path join $path
 }
 
-let-env XDG_CONFIG_HOME = (path home ".config")
-let-env EDITOR = "lvim"
-let-env VISUAL = $env.EDITOR
+$env.XDG_CONFIG_HOME = (path home ".config")
+$env.EDITOR = "lvim"
+$env.VISUAL = $env.EDITOR
 
-let-env XDG_DATA_HOME = (path home ".local/share")
-let-env XDG_CACHE_HOME = (path home ".cache")
+$env.XDG_DATA_HOME = (path home ".local/share")
+$env.XDG_CACHE_HOME = (path home ".cache")
 
 def-env path_add [path: string, --varname (-v): string = "PATH"] {
-    let-env $varname = ($env | get $varname | split row (char esep) | prepend $path)
+  load-env {
+    $varname: ($env | get $varname | split row (char esep) | prepend $path)
+  }
 }
 
 path_add /usr/local/bin
@@ -72,16 +74,16 @@ path_add (python -m site --user-base | str trim | path join "bin")
 path_add (path home ".asdf/shims")
 
 # pnpm
-let-env PNPM_HOME = (path home ".local/share/pnpm")
+$env.PNPM_HOME = (path home ".local/share/pnpm")
 path_add $env.PNPM_HOME
 
 # golang
-let-env GOPATH = (path home "go")
-let-env GOBIN = ($env.GOPATH | path join "bin")
+$env.GOPATH = (path home "go")
+$env.GOBIN = ($env.GOPATH | path join "bin")
 path_add $env.GOBIN
 
 if 'flavours' in (vivid themes | lines) {
-  let-env LS_COLORS = (vivid generate flavours)
+  $env.LS_COLORS = (vivid generate flavours)
 }
 
 
@@ -117,4 +119,4 @@ if (path home .env.secret | path exists) {
   } catch { {} } | load-env
 }
 
-let-env LESS = "-i -R -F"
+$env.LESS = "-i -R -F"
