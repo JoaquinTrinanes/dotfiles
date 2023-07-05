@@ -100,16 +100,15 @@ do {
     mkdir $cache
     $cache
   }
+  let cache_dir = (get_cache "nu")
+
   # starship
-  let starship_cache = (get_cache "starship")
-  mkdir $starship_cache
-  starship init nu | save -f ($starship_cache | path join "starship.nu")
+  starship init nu | save -f ($cache_dir | path join "starship.nu")
 
   # zoxide
-  let zoxide_cache = (get_cache "zoxide")
-  zoxide init nushell --cmd j | save -f ($zoxide_cache | path join 'zoxide.nu')
+  zoxide init nushell --cmd j | save -f ($cache_dir | path join "zoxide.nu")
 
-  { NU_LIB_DIRS: ($env.NU_LIB_DIRS? | default [] | append [$starship_cache $zoxide_cache (get_cache 'nu')]) }
+  { NU_LIB_DIRS: ($env.NU_LIB_DIRS? | default [] | append $cache_dir) }
 } | load-env
 
 # load .env file
