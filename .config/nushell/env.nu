@@ -4,18 +4,16 @@
 # - converted from a string to a value on Nushell startup (from_string)
 # - converted from a value back to a string when running external commands (to_string)
 # Note: The conversions happen *after* config.nu is loaded
-$env.ENV_CONVERSIONS = {
-  "PATH": {
-    from_string: { |s| $s | split row (char esep) | path expand -n }
-    to_string: { |v| $v | path expand -n | str join (char esep) }
+export-env {
+  let esep_list_converter = {
+      from_string: { |s| $s | split row (char esep) }
+      to_string: { |v| $v | path expand -n | str join (char esep) }
   }
-  "XDG_DATA_DIRS": {
-    from_string: { |s| $s | split row (char esep) | path expand -n }
-    to_string: { |v| $v | path expand -n | str join (char esep) }
-  }
-  "Path": {
-    from_string: { |s| $s | split row (char esep) | path expand -n }
-    to_string: { |v| $v | path expand -n | str join (char esep) }
+
+  $env.ENV_CONVERSIONS = {
+    "PATH": $esep_list_converter
+    "XDG_DATA_DIRS": $esep_list_converter
+    "Path": $esep_list_converter
   }
 }
 
@@ -94,7 +92,7 @@ export-env {
   }
 }
 
-do {
+export-env {
   def get_cache [name: string] {
     let cache = ($env.XDG_CACHE_HOME | path join $name)
     mkdir $cache
@@ -108,8 +106,10 @@ do {
   # zoxide
   zoxide init nushell --cmd j | save -f ($cache_dir | path join "zoxide.nu")
 
-  { NU_LIB_DIRS: ($env.NU_LIB_DIRS? | default [] | append $cache_dir) }
-} | load-env
+  load-env {
+    NU_LIB_DIRS: ($env.NU_LIB_DIRS? | default [] | append $cache_dir) 
+  }
+}
 
 # load .env file
 if (path home .env.secret | path exists) {
