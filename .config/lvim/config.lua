@@ -203,6 +203,11 @@ lvim.builtin.treesitter.ensure_installed = "all"
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
 
+local enabled_lsps = { "taplo" }
+for _, lsp in ipairs(enabled_lsps) do
+	require("lvim.lsp.manager").setup(lsp)
+end
+
 require("lvim.lsp.manager").setup("eslint", {
 	on_attach = function(client, bufnr)
 		client.server_capabilities.document_formatting = true
@@ -473,7 +478,10 @@ lvim.plugins = {
 		"LhKipp/nvim-nu",
 		event = "BufRead",
 		build = ":TSInstall nu",
-		opts = { use_lsp_features = true, all_cmd_names = [[nu -c 'help commands | get name | str join "\n"']] },
+		opts = {
+			use_lsp_features = true,
+			all_cmd_names = [[nu -c 'help commands | get name | str join (char newline)']],
+		},
 		config = true,
 	},
 	{
@@ -485,80 +493,34 @@ lvim.plugins = {
 	},
 	{ "imsnif/kdl.vim" },
 	{
-		"Lilja/zellij.nvim",
-		enabled = os.getenv("ZELLIJ") ~= nil,
-		dependencies = { { "christoomey/vim-tmux-navigator" } },
-		opts = {
-			vimTmuxNavigatorKeybinds = true,
-		},
-	},
-	{
-		"alexghergh/nvim-tmux-navigation",
-		enabled = os.getenv("TMUX") ~= nil,
-		opts = {
-			keybindings = {
-				left = "<C-h>",
-				down = "<C-j>",
-				up = "<C-k>",
-				right = "<C-l>",
-				next = "<C-Space>",
-			},
-		},
-	},
-	{
 		"mrjones2014/smart-splits.nvim",
 		dependencies = {
-			{ "kwkarlwang/bufresize.nvim", config = true },
+			{ "kwkarlwang/bufresize.nvim", config = true, lazy = true },
 		},
 		version = "*",
-		config = function()
-			require("smart-splits").setup({
-				hooks = {
-					on_leave = require("bufresize").register,
-				},
-			})
-			vim.keymap.set("n", "<A-h>", require("smart-splits").resize_left)
-			vim.keymap.set("n", "<A-j>", require("smart-splits").resize_down)
-			vim.keymap.set("n", "<A-k>", require("smart-splits").resize_up)
-			vim.keymap.set("n", "<A-l>", require("smart-splits").resize_right)
-			-- moving between splits
-			vim.keymap.set("n", "<C-h>", require("smart-splits").move_cursor_left)
-			vim.keymap.set("n", "<C-j>", require("smart-splits").move_cursor_down)
-			vim.keymap.set("n", "<C-k>", require("smart-splits").move_cursor_up)
-			vim.keymap.set("n", "<C-l>", require("smart-splits").move_cursor_right)
-			-- swapping buffers between windows
-			vim.keymap.set("n", "<leader><leader>h", require("smart-splits").swap_buf_left)
-			vim.keymap.set("n", "<leader><leader>j", require("smart-splits").swap_buf_down)
-			vim.keymap.set("n", "<leader><leader>k", require("smart-splits").swap_buf_up)
-			vim.keymap.set("n", "<leader><leader>l", require("smart-splits").swap_buf_right)
-		end,
+		keys = {
+			{ "<A-h>", require("smart-splits").resize_left },
+			{ "<A-j>", require("smart-splits").resize_down },
+			{ "<A-k>", require("smart-splits").resize_up },
+			{ "<A-l>", require("smart-splits").resize_right },
+			-- -- moving between splits
+			{ "<C-h>", require("smart-splits").move_cursor_left },
+			{ "<C-j>", require("smart-splits").move_cursor_down },
+			{ "<C-k>", require("smart-splits").move_cursor_up },
+			{ "<C-l>", require("smart-splits").move_cursor_right },
+			-- -- swapping buffers between windows
+			{ "<leader><leader>h", require("smart-splits").swap_buf_left },
+			{ "<leader><leader>h", require("smart-splits").swap_buf_down },
+			{ "<leader><leader>h", require("smart-splits").swap_buf_up },
+			{ "<leader><leader>h", require("smart-splits").swap_buf_right },
+		},
+		opts = {
+			hooks = {
+				on_leave = require("bufresize").register,
+			},
+		},
+		lazy = false,
 	},
-	-- {
-	-- 	"nvim-pack/nvim-spectre",
-	-- 	event = "BufRead",
-	-- 	init = function()
-	-- 		lvim.builtin.which_key.mappings["i"] = {
-	-- 			name = "Spectre",
-	-- 			["a"] = {
-	-- 				"<cmd>lua require('spectre').open()<cr>",
-	-- 				"Spectre!",
-	-- 			},
-	-- 			["b"] = {
-	-- 				"<cmd>lua require('spectre').open_visual({select_word=true})<CR>",
-	-- 				"Search current word",
-	-- 			},
-	-- 			-- ["c"] = {
-	-- 			-- 	"<cmd>lua require('spectre').open_visual()<CR>",
-	-- 			-- 	"Search current word",
-	-- 			-- },
-	-- 			["d"] = {
-	-- 				"<cmd>lua require('spectre').open_file_search({select_word=true})<CR>",
-	-- 				"Search on current file",
-	-- 			},
-	-- 		}
-	-- 	end,
-	-- 	config = true,
-	-- },
 }
 
 vim.api.nvim_create_user_command("WhatHl", function()
