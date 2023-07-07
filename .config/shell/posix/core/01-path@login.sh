@@ -14,7 +14,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # GO
 export GOPATH="$HOME/go"
-export PATH="$GOPATH/bin:$HOME/.local/bin:$PATH"
+export PATH="$GOPATH/bin:$PATH"
 
 if [ "$(uname -s)" = "Darwin" ]; then
     export IS_MAC=0
@@ -26,6 +26,8 @@ fi
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
+
+export PATH="$HOME/.local/bin"
 
 # asdf: why is it not in a normal path?
 if [ $IS_MAC ];then

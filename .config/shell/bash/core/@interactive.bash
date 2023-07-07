@@ -9,5 +9,3 @@ fi
 if command -v direnv &>/dev/null; then
     eval "$(direnv hook bash)"
 fi
-
-alias reload='exec "$XSHELL"' # reload the current shell configuration

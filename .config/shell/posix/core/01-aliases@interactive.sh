@@ -1,7 +1,7 @@
 alias dots="yadm"
 alias c="yadm"
 alias grep="grep -E"
-alias vim="nvim"
+
 
 # what do you mean, command not found?
 alias gerp="grep"
@@ -20,6 +20,13 @@ alias k9s="k9s --readonly"
 commandExists() {
     command -v $1 &>/dev/null
 }
+
+if commandExists lvim; then
+    alias vim="lvim"
+else
+    alias vim="nvim"
+fi
+
 
 if commandExists xdg-open; then
     alias open="xdg-open"
@@ -44,12 +51,12 @@ if commandExists helix; then
     alias hx="helix"
 fi
 
-function .() {
-    if [ $# -gt 0 ]; then
-        builtin . "$@"
-    else
-        cd ..
-    fi
-}
+# function .() {
+#     if [ $# -gt 0 ]; then
+#         builtin . "$@"
+#     else
+#         cd ..
+#     fi
+# }
 
 unset -f commandExists
