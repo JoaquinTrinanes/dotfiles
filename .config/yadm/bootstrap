@@ -2,6 +2,24 @@
 
 set -eu
 
+cleanup_node_install() {
+    if [ -e $N_PREFIX ]; then
+        echo "Cleaning up $N_PREFIX"
+        rm -rf $N_PREFIX
+        unset N_PREFIX
+    fi
+}
+
+trap cleanup_node_install INT
+
+if ! command -v node npm &> /dev/null; then
+    N_PREFIX=$(mktemp -d)
+    curl -L https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | N_PREFIX=$N_PREFIX bash -s -- -n -y
+    PATH="$N_PREFIX/bin:$PATH"
+    npm install -g zx
+fi
+
+
 BOOTSTRAP_D="$0.d"
 
 if [[ ! -d "$BOOTSTRAP_D" ]]; then
@@ -9,10 +27,12 @@ if [[ ! -d "$BOOTSTRAP_D" ]]; then
     exit 1
 fi
 
-: ${PNPM_HOME:=$HOME/.local/share/pnpm}
-PATH="$PNPM_HOME:$PATH"
-source $BOOTSTRAP_D/base/install-zx.sh
+NPX=npx
 
-PATH="$HOME/.cargo/bin:$PATH"
+if command -v pnpm &> /dev/null; then
+    NPM="pnpm dlx"
+fi
 
-$BOOTSTRAP_D/index.mjs
+$NPX zx $BOOTSTRAP_D/index.mjs
+
+cleanup_node_install
