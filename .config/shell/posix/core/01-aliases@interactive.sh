@@ -52,4 +52,4 @@ function .() {
     fi
 }
 
-unfunction commandExists
+unset -f commandExists
