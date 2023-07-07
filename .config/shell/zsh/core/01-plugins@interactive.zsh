@@ -9,10 +9,8 @@ zstyle ':antidote:bundle' file $bundlefile
 local staticfile=${XDG_CACHE_HOME:-~/.cache}/antidote/zsh_static.zsh
 zstyle ':antidote:static' file $staticfile
 
+zstyle ':antidote:bundle' use-friendly-names 'yes'
+
 . $ANTIDOTE_HOME/antidote.zsh
 
 antidote load
-
-if command -v starship &> /dev/null; then
-    eval "$(starship init zsh)"
-fi

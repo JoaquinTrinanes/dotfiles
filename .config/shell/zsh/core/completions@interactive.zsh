@@ -38,4 +38,4 @@ zstyle '*' single-ignored show
 
 # tabtab source for packages
 # uninstall by removing these lines
-[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
+[[ -f ${XDG_CONFIG_HOME:-~/.config}/tabtab/zsh/__tabtab.zsh ]] && . ${XDG_CONFIG_HOME:-~/.config}/tabtab/zsh/__tabtab.zsh || true
