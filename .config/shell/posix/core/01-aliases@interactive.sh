@@ -51,12 +51,4 @@ if commandExists helix; then
     alias hx="helix"
 fi
 
-# function .() {
-#     if [ $# -gt 0 ]; then
-#         builtin . "$@"
-#     else
-#         cd ..
-#     fi
-# }
-
 unset -f commandExists

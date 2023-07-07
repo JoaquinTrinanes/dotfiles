@@ -9,4 +9,4 @@ if (fs.existsSync(xshConfigPath)) {
 await $`git clone --depth=1 https://github.com/sgleizes/xsh ${xshConfigPath}`;
 
 $.prefix = "set +u;";
-await $`source ${xshConfigPath}/xsh.sh && xsh bootstrap --shells posix:bash`;
+await $`source ${xshConfigPath}/xsh.sh && xsh bootstrap --shells posix:bash:zsh`;
