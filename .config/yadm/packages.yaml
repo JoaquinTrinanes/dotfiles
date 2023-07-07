@@ -68,7 +68,6 @@ services:
   system:
     - bluetooth
     - docker
-    - iwd
     - NetworkManager
   user:
     - pueued
