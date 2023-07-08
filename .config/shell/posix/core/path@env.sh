@@ -25,6 +25,7 @@ export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 prepend_path "$GOPATH/bin"
 
+
 if [ "$(uname -s)" = "Darwin" ]; then
     export IS_MAC=0
 fi
@@ -49,11 +50,5 @@ prepend_path "$HOME/.asdf/shims"
 
 # pip-installed binaries
 prepend_path "$(python -m site --user-base)/bin"
-
-if (vivid themes | grep '^flavours$' > /dev/null); then
-    export LS_COLORS="$(vivid generate flavours)"
-else
-    echo 'no ls'
-fi
 
 unset -f prepend_path
