@@ -35,54 +35,6 @@ def 'path home' [path?: string= ""] {
     $nu.home-path | path join $path
 }
 
-$env.XDG_CONFIG_HOME = (path home ".config")
-
-$env.XDG_DATA_HOME = (path home ".local/share")
-$env.XDG_CACHE_HOME = (path home ".cache")
-
-def-env path_add [path: string, --varname (-v): string = "PATH"] {
-  load-env {
-    $varname: ($env | get $varname | split row (char esep) | prepend $path)
-  }
-}
-
-path_add /usr/local/bin
-
-# rust
-path_add (path home ".cargo/bin")
-
-if not (which brew | is-empty) {
-    let paths = (brew --prefix asdf python | str trim | lines)
-    let asdf_path = $paths.0
-    let python_path = $paths.1
-
-    path_add ($asdf_path | path join "bin")
-
-    # Access version-less python command
-    path_add ($python_path | path join "libexec/bin")
-} else {
-    path_add "/opt/asdf-vm/bin"
-}
-
-# pip-installed binaries
-path_add (python -m site --user-base | str trim | path join "bin")
-
-path_add (path home ".asdf/shims")
-
-# pnpm
-$env.PNPM_HOME = (path home ".local/share/pnpm")
-path_add $env.PNPM_HOME
-
-# golang
-$env.GOPATH = (path home "go")
-$env.GOBIN = ($env.GOPATH | path join "bin")
-path_add $env.GOBIN
-
-if 'flavours' in (vivid themes | lines) {
-  $env.LS_COLORS = (vivid generate flavours)
-}
-
-
 export-env {
   load-env {
     PROMPT_INDICATOR_VI_NORMAL: ""
@@ -92,7 +44,7 @@ export-env {
 
 export-env {
   def get_cache [name: string] {
-    let cache = ($env.XDG_CACHE_HOME | path join $name)
+    let cache = ($env.XDG_CACHE_HOME? | default ($nu.home-path | path join '.cache') | path join $name)
     mkdir $cache
     $cache
   }
