@@ -106,6 +106,9 @@ export-env {
   # zoxide
   zoxide init nushell --cmd j | save -f ($cache_dir | path join "zoxide.nu")
 
+  # atuin
+  atuin init nu --disable-up-arrow | save -f ($cache_dir | path join "atuin.nu")
+
   load-env {
     NU_LIB_DIRS: ($env.NU_LIB_DIRS? | default [] | append $cache_dir) 
   }

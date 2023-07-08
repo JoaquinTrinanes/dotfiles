@@ -411,6 +411,7 @@ source starship.nu
 $env.PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: (ansi reset)"
 
 source zoxide.nu
+source atuin.nu
 
 overlay use aliases
 overlay use completions
