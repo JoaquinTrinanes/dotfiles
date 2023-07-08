@@ -3,7 +3,7 @@ prepend_path () {
         *:"$1":*)
             ;;
         *)
-            PATH="$1${PATH:+:$PATH}"
+            export PATH="$1${PATH:+:$PATH}"
     esac
 }
 
@@ -22,6 +22,7 @@ prepend_path "$HOME/.cargo/bin"
 
 # GO
 export GOPATH="$HOME/go"
+export GOBIN="$GOPATH/bin"
 prepend_path "$GOPATH/bin"
 
 if [ "$(uname -s)" = "Darwin" ]; then
@@ -45,5 +46,14 @@ else
 fi
 # asdf: detect global versions outside projects without using the shims
 prepend_path "$HOME/.asdf/shims"
+
+# pip-installed binaries
+prepend_path "$(python -m site --user-base)/bin"
+
+if (vivid themes | grep '^flavours$' > /dev/null); then
+    export LS_COLORS="$(vivid generate flavours)"
+else
+    echo 'no ls'
+fi
 
 unset -f prepend_path

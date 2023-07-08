@@ -3,7 +3,7 @@
 #
 
 # smartcase when searching
-export LESS="$LESS -i -R"
+export LESS="-i -R -F"
 
 export EDITOR="nvim"
 export VISUAL="$EDITOR"
