@@ -10,18 +10,6 @@ local function file_exists(name)
 	end
 end
 
-local home = wezterm.home_dir
-
-local potential_nu_paths = { home .. "/.cargo/bin/nu", "/usr/local/bin/nu" }
-local nu_path = "nu"
-
-for _, file in ipairs(potential_nu_paths) do
-	if file_exists(file) then
-		nu_path = file
-		break
-	end
-end
-
 wezterm.add_to_config_reload_watch_list(wezterm.config_dir .. "/colors/flavours.toml")
 
 local config = {}
