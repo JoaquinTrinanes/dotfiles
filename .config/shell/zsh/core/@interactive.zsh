@@ -2,9 +2,6 @@
 # Core configuration module for zsh.
 #
 
-autoload -Uz compinit
-compinit
-
 setopt no_beep
 setopt extended_glob
 setopt interactive_comments
@@ -15,4 +12,8 @@ fi
 
 if command -v starship &> /dev/null; then
     eval "$(starship init zsh)"
+fi
+
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init zsh --cmd j)"
 fi

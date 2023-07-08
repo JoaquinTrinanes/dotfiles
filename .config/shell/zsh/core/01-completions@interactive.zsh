@@ -1,3 +1,6 @@
+autoload -Uz compinit
+compinit
+
 # autocomplete with same color as ls
 if [ ! -z $IS_MAC ]; then
     export CLICOLOR=1

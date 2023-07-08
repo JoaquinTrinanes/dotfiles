@@ -1,25 +1,22 @@
-alias dots="yadm"
-alias c="yadm"
-alias grep="grep -E"
-
-
-# what do you mean, command not found?
-alias gerp="grep"
-alias k0s="k9s"
-
-alias k9s="k9s --readonly"
-
-
-# Creates a wrapper around a command
-# Arguments:
-#   $1: Path to the program to wrap. Can be relative.
-#   $2: Name of the command
-# Example:
-#   createWrapper vendor/bin/sail composer
-
 commandExists() {
     command -v $1 &>/dev/null
 }
+
+alias reload='exec "$XSHELL"' # reload the current shell configuration
+
+alias k9s="k9s --readonly"
+alias dots="yadm"
+alias c="yadm"
+
+# if command -v sd &> /dev/null; then
+#     alias sed="sd"
+# fi
+
+if commandExists rg; then
+    alias grep="rg"
+else
+    alias grep="grep -E"
+fi
 
 if commandExists lvim; then
     alias vim="lvim"

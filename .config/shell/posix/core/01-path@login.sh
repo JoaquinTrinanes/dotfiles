@@ -1,20 +1,28 @@
+prepend_path () {
+    case ":$PATH:" in
+        *:"$1":*)
+            ;;
+        *)
+            PATH="$1${PATH:+:$PATH}"
+    esac
+}
 
 # Android
 export ANDROID_HOME="$HOME/Android/Sdk"
-export PATH="$ANDROID_HOME/emulator:$PATH"
-export PATH="$ANDROID_HOME/tools:$PATH"
-export PATH="$ANDROID_HOME/tools/bin:$PATH"
-export PATH="$ANDROID_HOME/platform-tools:$PATH"
 export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
+prepend_path "$ANDROID_HOME/emulator"
+prepend_path "$ANDROID_HOME/tools"
+prepend_path "$ANDROID_HOME/tools/bin"
+prepend_path "$ANDROID_HOME/platform-tools"
 # End Android
 
 # Rust
 [ -f $HOME/.cargo/env ] && . "$HOME/.cargo/env"
-export PATH="$HOME/.cargo/bin:$PATH"
+prepend_path "$HOME/.cargo/bin"
 
 # GO
 export GOPATH="$HOME/go"
-export PATH="$GOPATH/bin:$PATH"
+prepend_path "$GOPATH/bin"
 
 if [ "$(uname -s)" = "Darwin" ]; then
     export IS_MAC=0
@@ -25,15 +33,17 @@ fi
 
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+prepend_path "$PNPM_HOME"
 
-export PATH="$HOME/.local/bin"
+prepend_path "$HOME/.local/bin"
 
 # asdf: why is it not in a normal path?
 if [ $IS_MAC ];then
-    PATH="$(brew --prefix asdf)/bin:$PATH"
+    prepend_path "$(brew --prefix asdf)/bin"
 else
-    PATH="/opt/asdf-vm/bin:$PATH"
+    prepend_path "/opt/asdf-vm/bin"
 fi
 # asdf: detect global versions outside projects without using the shims
-export PATH="$HOME/.asdf/shims:$PATH"
+prepend_path "$HOME/.asdf/shims"
+
+unset -f prepend_path

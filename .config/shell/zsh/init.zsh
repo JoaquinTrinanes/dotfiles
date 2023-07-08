@@ -7,5 +7,5 @@
 # they will be loaded. Try `xsh help` for more information.
 #
 
+xsh module core -s posix
 xsh module core
-xsh load core -s posix
