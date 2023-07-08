@@ -36,8 +36,6 @@ def 'path home' [path?: string= ""] {
 }
 
 $env.XDG_CONFIG_HOME = (path home ".config")
-$env.EDITOR = "lvim"
-$env.VISUAL = $env.EDITOR
 
 $env.XDG_DATA_HOME = (path home ".local/share")
 $env.XDG_CACHE_HOME = (path home ".cache")
@@ -121,4 +119,3 @@ if (path home .env.secret | path exists) {
   } catch { {} } | load-env
 }
 
-$env.LESS = "-i -R -F"
