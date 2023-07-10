@@ -361,7 +361,6 @@ lvim.plugins = {
 	},
 	{
 		"windwp/nvim-ts-autotag",
-		event = "LspAttach",
 		config = true,
 	},
 	{
