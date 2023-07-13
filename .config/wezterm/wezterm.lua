@@ -17,9 +17,7 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
-config.set_environment_variables = {
-	SHELL = nu_path,
-}
+config.hide_tab_bar_if_only_one_tab = true
 
 config.color_scheme = "flavours"
 config.font = wezterm.font_with_fallback({
@@ -35,6 +33,15 @@ config.enable_scroll_bar = true
 config.audible_bell = "Disabled"
 config.unicode_version = 15
 config.hide_mouse_cursor_when_typing = false
+
+local function current_process_name(pane)
+	return string.gsub(pane:get_foreground_process_name(), "(.*[/\\])(.*)", "%2")
+end
+
+local function is_zellij(pane)
+	local process_name = current_process_name(pane)
+	return process_name == "zellij"
+end
 
 local function is_vim(pane)
 	-- this is set by the smart-splits.nvim plugin, and unset on ExitPre in Neovim
@@ -54,14 +61,15 @@ local direction_keys = {
 }
 
 local function split_nav(resize_or_move, key)
+	local mods = resize_or_move == "resize" and "ALT" or "CTRL"
 	return {
 		key = key,
-		mods = resize_or_move == "resize" and "ALT" or "CTRL",
+		mods = mods,
 		action = wezterm.action_callback(function(win, pane)
-			if is_vim(pane) then
+			if is_vim(pane) or is_zellij(pane) then
 				-- pass the keys through to vim/nvim
 				win:perform_action({
-					SendKey = { key = key, mods = resize_or_move == "resize" and "ALT" or "CTRL" },
+					SendKey = { key = key, mods = mods },
 				}, pane)
 			else
 				if resize_or_move == "resize" then
@@ -103,6 +111,16 @@ config.keys = {
 		key = "f",
 		mods = "ALT",
 		action = wezterm.action.TogglePaneZoomState,
+	},
+	{
+		key = "l",
+		mods = "CTRL|ALT",
+		action = wezterm.action.RotatePanes("Clockwise"),
+	},
+	{
+		key = "h",
+		mods = "CTRL|ALT",
+		action = wezterm.action.RotatePanes("CounterClockwise"),
 	},
 }
 
