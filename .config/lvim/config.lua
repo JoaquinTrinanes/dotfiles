@@ -121,6 +121,29 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 lvim.builtin.nvimtree.setup.renderer.indent_markers.enable = true
 lvim.builtin.nvimtree.setup.renderer.group_empty = true
 lvim.builtin.nvimtree.setup.select_prompts = true
+lvim.builtin.nvimtree.on_config_done = function()
+	local api = require("nvim-tree.api")
+	-- open file on creation
+	api.events.subscribe(api.events.Event.FileCreated, function(file)
+		vim.cmd("edit " .. file.fname)
+	end)
+
+	-- auto close vim if only nvimtree is open
+	vim.api.nvim_create_autocmd("BufEnter", {
+		group = vim.api.nvim_create_augroup("NvimTreeClose", { clear = true }),
+		pattern = "NvimTree_*",
+		callback = function()
+			local layout = vim.api.nvim_call_function("winlayout", {})
+			if
+				layout[1] == "leaf"
+				and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "NvimTree"
+				and layout[3] == nil
+			then
+				vim.cmd("confirm quit")
+			end
+		end,
+	})
+end
 
 lvim.builtin.breadcrumbs.active = true
 
@@ -271,6 +294,7 @@ formatters.setup({
 	{ name = "stylua" },
 	{ name = "beautysh" },
 	{ name = "pint" },
+	{ name = "nixfmt" },
 })
 
 -- local linters = require "lvim.lsp.null-ls.linters"
