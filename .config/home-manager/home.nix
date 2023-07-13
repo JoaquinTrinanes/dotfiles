@@ -1,4 +1,4 @@
-{ self, config, pkgs, ... }: {
+{ self, config, pkgs, lib, ... }: {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "joaquin";
@@ -13,28 +13,29 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs;
-    [
-      # # Adds the 'hello' command to your environment. It prints a friendly
-      # # "Hello, world!" when run.
-      # pkgs.hello
-      # nixfmt
-      # # It is sometimes useful to fine-tune packages, for example, by applying
-      # # overrides. You can do that directly here, just don't forget the
-      # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-      # # fonts?
-      # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+  home.packages = with pkgs; [
+    # # Adds the 'hello' command to your environment. It prints a friendly
+    # # "Hello, world!" when run.
+    # pkgs.hello
+    # nixfmt
+    # # It is sometimes useful to fine-tune packages, for example, by applying
+    # # overrides. You can do that directly here, just don't forget the
+    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
+    # # fonts?
+    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
-      nixfmt
+    nixfmt
+    cargo
 
-      # # You can also create simple shell scripts directly inside your
-      # # configuration. For example, this adds a command 'my-hello' to your
-      # # environment:
-      # (pkgs.writeShellScriptBin "my-hello" ''
-      #   echo "Hello, ${config.home.username}!"
-      # '')
-    ];
+    # # You can also create simple shell scripts directly inside your
+    # # configuration. For example, this adds a command 'my-hello' to your
+    # # environment:
+    # (pkgs.writeShellScriptBin "my-hello" ''
+    #   echo "Hello, ${config.home.username}!"
+    # '')
+  ];
 
+  xdg.configFile."nushell/scripts".source = ./nushell/scripts;
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
@@ -67,21 +68,73 @@
   home.shellAliases = {
     ll = "ls -l";
     hm = "home-manager";
+    vim = "lvim";
+    c = "yadm";
   };
 
   programs = {
-    # Let Home Manager install and manage itself.
-    # bash = {
-    #   enable = true;
+    zoxide = {
+      enable = true;
+      options = [ "--cmd" "j" ];
+    };
+    starship = {
+      enable = true;
 
-    # };
+      settings = {
+        add_newline = true;
+        character = {
+          success_symbol = "[➜](bold green)";
+          error_symbol = "[➜](bold blue)";
+        };
+        aws = { disabled = true; };
+        directory = { truncation_length = 5; };
+        php = { format = "via [$symbol]($style)"; };
+        python = {
+          format = "via [\${symbol}\${pyenv_prefix}(\${version})]($style) ";
+        };
+        status = {
+          disabled = false;
+          symbol = "✘";
+        };
+        shell = {
+          disabled = false;
+          nu_indicator = "";
+          format = "([$indicator]($style) )";
+        };
+      };
+    };
+    atuin = {
+      enable = true;
+      flags = [ "--disable-up-arrow" ];
+      settings = {
+        filter_mode_shell_up_key_binding = "session";
+        style = "compact";
+        history_filter = [ "^\\s" ];
+
+      };
+    };
+    # bash = { enable = true; };
+    zsh = {
+      enable = true;
+      dotDir = ".config/zsh";
+      enableAutosuggestions = true;
+      antidote = {
+        enable = true;
+        useFriendlyNames = true;
+      };
+    };
+
+    nushell = {
+      enable = true;
+      shellAliases = config.home.shellAliases;
+      configFile.source = ./nushell/config.nu;
+      envFile.source = ./nushell/env.nu;
+      extraConfig = ''
+        $env.PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: (ansi reset)"
+      '';
+    };
+
+    # Let Home Manager install and manage itself.
     home-manager.enable = true;
-    # nushell = {
-    #   enable = true;
-    #   # shellAliases = self.home.shellAliases;
-    #   # configFile.source = ~/.config/nushell/config.nu; # ./nushell/config.nu;
-    #   # envFile.source = ~/.config/nushell/env.nu; # ./nushell/config.nu;
-    #   # envFile.source = ./nushell/env.nu;
-    # };
   };
 }

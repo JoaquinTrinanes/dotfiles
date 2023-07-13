@@ -16,15 +16,31 @@ export def spawn [
     {"job_id": $job_id}
 }
 
+export def main [...args] {
+  pueue $args
+}
+
+export def current-job-ids [] {
+  pueue status --json
+  | from json
+  | get tasks
+  | columns
+}
+
 export def log [
-    id: int   # id to fetch log
+    id: int@current-job-ids   # id to fetch log
+    --follow(-f) # Output appended data as it grows
 ] {
-    pueue log $id -f --json
-    | from json
-    | transpose -i info
-    | flatten --all
-    | flatten --all
-    | flatten status
+    if $follow {
+      pueue follow $id
+    } else {
+      pueue log $id -f --json
+      | from json
+      | transpose -i info
+      | flatten --all
+      | flatten --all
+      | flatten status
+    }
 }
 
 # get job running status
@@ -38,7 +54,7 @@ export def status () {
 }
 
 # kill specific job
-export def kill (id: int) {
+export def kill (...id: int@current-job-ids) {
     pueue kill $id
 }
 
