@@ -5,6 +5,7 @@
 setopt no_beep
 setopt extended_glob
 setopt interactive_comments
+setopt noclobber
 
 if command -v direnv &>/dev/null; then
     eval "$(direnv hook zsh)"

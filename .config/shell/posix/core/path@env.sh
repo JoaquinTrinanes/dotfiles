@@ -30,9 +30,6 @@ if [ "$(uname -s)" = "Darwin" ]; then
     export IS_MAC=0
 fi
 
-[ -f /etc/profile.d/autojump.sh ] && . /etc/profile.d/autojump.sh
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 prepend_path "$PNPM_HOME"
@@ -49,6 +46,8 @@ fi
 prepend_path "$HOME/.asdf/shims"
 
 # pip-installed binaries
-prepend_path "$(python -m site --user-base)/bin"
+if command -v python &> /dev/null; then
+    prepend_path "$(python -m site --user-base)/bin"
+fi
 
 unset -f prepend_path
