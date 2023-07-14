@@ -1,4 +1,11 @@
-{ self, config, pkgs, lib, ... }: {
+{ self, config, pkgs, lib, ... }:
+let
+  inherit (builtins) fetchGit;
+  nix-colors = import <nix-colors> { };
+in {
+  imports = [ nix-colors.homeManagerModules.default ];
+  colorScheme = nix-colors.colorSchemes.nord;
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "joaquin";
@@ -13,29 +20,35 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs; [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-    # nixfmt
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+  home.packages = with pkgs;
+    [
+      # # Adds the 'hello' command to your environment. It prints a friendly
+      # # "Hello, world!" when run.
+      # pkgs.hello
+      # nixfmt
+      # # It is sometimes useful to fine-tune packages, for example, by applying
+      # # overrides. You can do that directly here, just don't forget the
+      # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
+      # # fonts?
+      # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
-    nixfmt
-    cargo
+      nixfmt
 
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-  ];
+      # # You can also create simple shell scripts directly inside your
+      # # configuration. For example, this adds a command 'my-hello' to your
+      # # environment:
+      # (pkgs.writeShellScriptBin "my-hello" ''
+      #   echo "Hello, ${config.home.username}!"
+      # '')
+    ];
 
   xdg.configFile."nushell/scripts".source = ./nushell/scripts;
+  xdg.configFile."nvim" = {
+    source = (fetchGit "https://github.com/NvChad/NvChad.git").outPath;
+    recursive = true;
+  };
+  xdg.configFile."nvim/lua/custom".source = ./nvim;
+
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
@@ -61,11 +74,10 @@
   #  /etc/profiles/per-user/joaquin/etc/profile.d/hm-session-vars.sh
   #
   # if you don't want to manage your shell through Home Manager.
-  home.sessionVariables = {
-    # EDITOR = "emacs";
-  };
+  home.sessionVariables = { EDITOR = "lvim"; };
 
   home.shellAliases = {
+    la = "ls -la";
     ll = "ls -l";
     hm = "home-manager";
     vim = "lvim";
@@ -92,7 +104,23 @@
 
       };
     };
-    # bash = { enable = true; };
+    bash = {
+      enable = true;
+      initExtra = ''
+        if (vivid themes | grep '^flavours$' > /dev/null); then
+          export LS_COLORS="$(vivid generate flavours)"
+        fi
+
+        if ! command -v nu &>/dev/null; then
+            return
+        fi
+
+        if [[ $(ps --no-header --pid=$PPID --format=comm) != "nu" && -z ''${BASH_EXECUTION_STRING} ]]; then
+            shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION='''
+            exec nu $LOGIN_OPTION
+        fi
+      '';
+    };
     zsh = {
       enable = true;
       dotDir = ".config/zsh";
@@ -112,6 +140,8 @@
         $env.PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: (ansi reset)"
       '';
     };
+    ripgrep = { enable = true; };
+    neovim = { enable = true; };
 
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
