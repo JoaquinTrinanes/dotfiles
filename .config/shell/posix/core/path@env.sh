@@ -7,15 +7,6 @@ prepend_path () {
     esac
 }
 
-# Android
-export ANDROID_HOME="$HOME/Android/Sdk"
-export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-prepend_path "$ANDROID_HOME/emulator"
-prepend_path "$ANDROID_HOME/tools"
-prepend_path "$ANDROID_HOME/tools/bin"
-prepend_path "$ANDROID_HOME/platform-tools"
-# End Android
-
 # Rust
 [ -f $HOME/.cargo/env ] && . "$HOME/.cargo/env"
 prepend_path "$HOME/.cargo/bin"
@@ -35,15 +26,6 @@ export PNPM_HOME="$HOME/.local/share/pnpm"
 prepend_path "$PNPM_HOME"
 
 prepend_path "$HOME/.local/bin"
-
-# asdf: why is it not in a normal path?
-if [ $IS_MAC ];then
-    prepend_path "$(brew --prefix asdf)/bin"
-else
-    prepend_path "/opt/asdf-vm/bin"
-fi
-# asdf: detect global versions outside projects without using the shims
-prepend_path "$HOME/.asdf/shims"
 
 # pip-installed binaries
 if command -v python &> /dev/null; then

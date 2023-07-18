@@ -1,0 +1,7 @@
+[tools]
+node = 'lts'
+
+[settings]
+legacy_version_file = true
+asdf_compat = true
+experimental = true

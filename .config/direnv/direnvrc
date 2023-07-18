@@ -1,5 +1,5 @@
 #!/bin/bash
 
 source_all_up
-use asdf
+use rtx
 dotenv_if_exists

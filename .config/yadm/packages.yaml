@@ -10,8 +10,6 @@ cargo:
         - extra
   - flavours
 packages:
-  - asdf:
-      yay: asdf-vm
   - bat
   - bluez:
       brew: null
@@ -48,6 +46,7 @@ packages:
   - python-pynvim:
       brew: null
   - ripgrep
+  - rtx
   - rustup:
       brew: null
   - starship
