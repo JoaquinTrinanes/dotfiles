@@ -29,8 +29,19 @@ def relative_luminance_helper [x: float] {
   }
 }
 
-export def relative_luminance [color] {
-  let parts = ($color | str substring 1.. | split chars | window 2 --stride 2 | each {str join} | into int -r 16 | par-each {|x| ($x | into decimal) / 255 | relative_luminance_helper $in })
+def relative_luminance [color] {
+  let parts = (
+    $color
+    | str trim -c '#' --left
+    | split chars
+    | window 2 --stride 2
+    | each {str join}
+    | into int -r 16
+    | each {|x|
+        ($x | into decimal) / 255
+        | relative_luminance_helper $in 
+      }
+    )
 
   let l = ((0.2126 * $parts.0) + (0.7152 * $parts.1) + (0.0722 * $parts.2))
   $l
@@ -56,8 +67,8 @@ export def main [] {
 
     let bool = {|| if $in { $colors.base0d } else { $colors.base08 } }
     let theme_show_color = {|str|
-      if $str =~ '^#[a-fA-F\d]{6}' {
-        { bg: $str fg: (if (contrast $str $colors.base00) > 0.5 { $colors.base05 } else { $colors.base00 }) }
+      if $str =~ '^#[a-fA-F\d]{6}$' {
+        { bg: $str fg: (if (contrast $str $colors.base00) < 0.5 { $colors.base05 } else { $colors.base00 }) }
       } else {
         $colors.base04
       }
