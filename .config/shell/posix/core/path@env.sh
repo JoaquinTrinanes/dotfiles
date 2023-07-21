@@ -16,11 +16,6 @@ export GOPATH="$HOME/go"
 export GOBIN="$GOPATH/bin"
 prepend_path "$GOPATH/bin"
 
-
-if [ "$(uname -s)" = "Darwin" ]; then
-    export IS_MAC=0
-fi
-
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 prepend_path "$PNPM_HOME"

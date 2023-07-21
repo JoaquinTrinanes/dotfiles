@@ -2,11 +2,11 @@ autoload -Uz compinit
 compinit
 
 # autocomplete with same color as ls
-if [ ! -z $IS_MAC ]; then
-    export CLICOLOR=1
-else
+if command -v dircolors &> /dev/null; then
     eval "$(dircolors)"
     zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+else
+    export CLICOLOR=1
 fi
 
 # tab select autocomplete
@@ -41,4 +41,4 @@ zstyle '*' single-ignored show
 
 # tabtab source for packages
 # uninstall by removing these lines
-[[ -f ${XDG_CONFIG_HOME:-~/.config}/tabtab/zsh/__tabtab.zsh ]] && . ${XDG_CONFIG_HOME:-~/.config}/tabtab/zsh/__tabtab.zsh || true
+[[ -f ${XDG_CONFIG_HOME}/tabtab/zsh/__tabtab.zsh ]] && . ${XDG_CONFIG_HOME}/tabtab/zsh/__tabtab.zsh || true
