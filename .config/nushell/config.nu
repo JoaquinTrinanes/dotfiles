@@ -4,7 +4,10 @@ use theme.nu
 
 let carapace_completer = {|spans: list<string>|
   carapace $spans.0 nushell $spans | from json
-  | if ($in | default [] | where value ends-with 'ERR' | is-empty) { $in } else { null }
+  | default []
+  | if ($in | filter {|x|
+      ($x.value | str ends-with 'ERR') and ($x.description =~ 'unknown (shorthand )?flag:')
+  } | is-empty) { $in } else { null }
 }
 
 let fish_completer = {|spans: list<string>|
@@ -14,11 +17,11 @@ let fish_completer = {|spans: list<string>|
 }
 
 let zoxide_completer = {|spans: list<string>|
-  $spans | drop nth 0 | zoxide query -l $in | lines | where {|x| $x != $env.PWD}
+  $spans | skip 1 | zoxide query -l $in | lines | where {|x| $x != $env.PWD}
 }
 
 let git_completer = {|spans: list<string>|
-  let aliases = (git config --get-regexp ^alias | lines | split column  ' ' name command | update name {|x| $x.name | split row '.' | last })
+  let aliases = (git config --get-regexp ^alias | lines | split column ' ' name command | update name {|x| $x.name | split row '.' | last })
   let spans_after_alias = ($spans | update 1 ($aliases | where name == $spans.1 | if ($in | is-empty) { $spans.1 } else { $in.0.command | split words }) | flatten)
 
   if ($spans_after_alias.1 in [checkout branch]) {
