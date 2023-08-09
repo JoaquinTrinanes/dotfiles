@@ -46,19 +46,20 @@ let fallback_completer = $fish_completer
 let external_completer = {|spans|
     let has_alias = (scope aliases | where name == $spans.0)
     let spans = (if not ($has_alias | is-empty) {
-      # put the first word of the expanded alias first in the span
-      $spans | skip 1 | prepend ($has_alias | get expansion | split row ' ' | get 0)
+      $spans | skip 1 | prepend ($has_alias | get expansion | split row ' ' | first)
     } else { $spans })
 
-    {
-      __zoxide_z: $zoxide_completer
-      asdf: $fish_completer
-      git: $git_completer
-      gpg: $fish_completer
-      nu: $fish_completer
-      sed: $fish_completer
-      yadm: $yadm_completer
-    } | get -i $spans.0 | default $default_completer | do $in $spans | if (($in | is-empty) and (not ($fallback_completer | is-empty))) { do $fallback_completer $spans } else { $in }
+    match $spans.0 {
+      __zoxide_z => $zoxide_completer
+      __zoxide_zi => $zoxide_completer
+      asdf => $fish_completer
+      git => $git_completer
+      gpg => $fish_completer
+      nu => $fish_completer
+      sd => $fish_completer
+      yadm => $yadm_completer
+      _ => $default_completer
+    } | do $in $spans | if (($in | is-empty) and ($fallback_completer != null))) { do $fallback_completer $spans } else { $in }
  }
 
 # The default config record. This is where much of your global configuration is setup.
