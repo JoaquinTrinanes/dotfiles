@@ -138,6 +138,13 @@ vim.api.nvim_set_hl(0, "Todo", { fg = gui0A, bg = gui01, ctermfg = cterm0A, cter
 vim.api.nvim_set_hl(0, "Type", { fg = gui0A, ctermfg = cterm0A })
 vim.api.nvim_set_hl(0, "Typedef", { fg = gui0A, ctermfg = cterm0A })
 
+-- LSP signature active parameter
+vim.api.nvim_set_hl(
+	0,
+	"LspSignatureActiveParameter",
+	{ fg = gui0A, ctermfg = cterm0A, bg = gui03, ctermbg = cterm03, bold = true }
+)
+
 -- C highlighting
 vim.api.nvim_set_hl(0, "cOperator", { fg = gui0C, ctermfg = cterm0C })
 vim.api.nvim_set_hl(0, "cPreCondit", { fg = gui0E, ctermfg = cterm0E })
