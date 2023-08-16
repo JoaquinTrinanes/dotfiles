@@ -29,15 +29,9 @@ if (!fs.existsSync(antidotePath)) {
 
 await spinner(
   "Updating NeoVim plugins...",
-  () => $`nvim --headless +PackerSync +qall!`
+  () => $`nvim --headless "+Lazy! sync" +qa`
 );
 updateOk("NeoVim plugins");
-
-await spinner(
-  "Updating Lunarvim...",
-  () => $`lvim --headless +LvimUpdate +LvimSyncCorePlugins +qall!`
-);
-updateOk("Lunarvim plugins");
 
 if (commandExists("rustup")) {
   await spinner("Updating rust via rustup", () => $`rustup update`);
