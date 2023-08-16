@@ -1,7 +1,7 @@
 export ANTIDOTE_HOME="$XDG_DATA_HOME/antidote"
 
 if [ ! -e "$ANTIDOTE_HOME" ]; then
-    git clone --depth=1 https://github.com/mattmc3/antidote.git "$ANTIDOTE_HOME"
+	git clone --depth=1 https://github.com/mattmc3/antidote.git "$ANTIDOTE_HOME"
 fi
 
 local bundlefile="${0:a:h}/plugins.txt"

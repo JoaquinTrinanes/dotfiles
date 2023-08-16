@@ -5,10 +5,10 @@
 # smartcase when searching
 export LESS="-i -R -F"
 
-if command -v lvim &> /dev/null; then
-    export EDITOR="lvim"
+if command -v nvim &>/dev/null; then
+	export EDITOR="nvim"
 else
-    export EDITOR="nvim"
+	export EDITOR="vim"
 fi
 
 export VISUAL="$EDITOR"

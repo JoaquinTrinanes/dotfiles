@@ -1,5 +1,5 @@
 commandExists() {
-    command -v $1 &>/dev/null
+	command -v $1 &>/dev/null
 }
 
 alias reload='exec "$XSHELL"' # reload the current shell configuration
@@ -16,40 +16,36 @@ alias diff='diff --color=auto'
 alias grep='grep --color=auto'
 alias df='df -h' du='du -h'
 
-# if command -v sd &> /dev/null; then
-#     alias sed="sd"
-# fi
 alias vim="nvim"
 
 if commandExists rg; then
-    alias grep="rg"
+	alias grep="rg"
 else
-    alias grep="grep -E"
+	alias grep="grep -E"
 fi
 
-
-
 if commandExists xdg-open; then
-    alias open="nohup xdg-open </dev/null >|$(mktemp --tmpdir nohup.XXXX) 2>&1"
-    alias o="open"
+	alias open='nohup xdg-open </dev/null >|$(mktemp --tmpdir nohup.XXXX) 2>&1'
+	alias o="open"
 fi
 
 if commandExists exa; then
-    local args=""
-    if fc-list | grep "Nerd Font" &> /dev/null; then
-        args="--icons"
-    fi
-    alias ls="exa ${args}"
-    alias la="ls -la"
+	args=""
+	if fc-list | grep "Nerd Font" &>/dev/null; then
+		args="--icons"
+	fi
+	alias ls="exa ${args}"
+	alias la="ls -la"
+	unset args
 fi
 
 if commandExists bat; then
-    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-    alias cat="bat -p"
+	export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+	alias cat="bat -p"
 fi
 
 if commandExists helix; then
-    alias hx="helix"
+	alias hx="helix"
 fi
 
 unset -f commandExists
