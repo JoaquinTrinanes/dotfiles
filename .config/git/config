@@ -1,7 +1,6 @@
 [core]
     filemode = false
     whitespace = trailing-space,space-before-tab
-    editor = lvim
 [alias]
     a = add
     aa = add --all

@@ -19,6 +19,7 @@ alias df='df -h' du='du -h'
 # if command -v sd &> /dev/null; then
 #     alias sed="sd"
 # fi
+alias vim="nvim"
 
 if commandExists rg; then
     alias grep="rg"
@@ -26,11 +27,6 @@ else
     alias grep="grep -E"
 fi
 
-if commandExists lvim; then
-    alias vim="lvim"
-else
-    alias vim="nvim"
-fi
 
 
 if commandExists xdg-open; then
