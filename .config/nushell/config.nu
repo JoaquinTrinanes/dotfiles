@@ -169,7 +169,6 @@ $env.config = {
     vi_insert: line # block, underscore, line , blink_block, blink_underscore, blink_line (block is the default)
     vi_normal: block # block, underscore, line, blink_block, blink_underscore, blink_line (underscore is the default)
   }
-  color_config: (theme)
   use_grid_icons: true
   footer_mode: "25" # always, never, number_of_rows, auto
   float_precision: 2
@@ -298,13 +297,8 @@ $env.config = {
             | each { |it| {value: $it.name description: $it.usage} }
         }
       }
-    ] | each {|menu|
-      try {
-        $menu | insert style (theme menu)
-      } catch {
-        $menu
-      }
-  })
+    ] | each {|menu| $menu | upsert style {}}
+  )
   keybindings: [
     {
       name: completion_menu
@@ -414,6 +408,7 @@ source starship.nu
 
 source zoxide.nu
 source atuin.nu
+use theme.nu
 
 overlay use aliases
 overlay use completions
