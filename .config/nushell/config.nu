@@ -411,8 +411,6 @@ $env.config = {
 
 
 source starship.nu
-# this var is overriden in the script above
-$env.PROMPT_MULTILINE_INDICATOR = $"(ansi grey)::: (ansi reset)"
 
 source zoxide.nu
 source atuin.nu
