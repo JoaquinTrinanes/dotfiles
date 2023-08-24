@@ -14,11 +14,6 @@ file = "~/.config/nvim/colors/flavours.lua"
 rewrite = true
 
 [[items]]
-template = "neovim"
-file = "~/.config/lvim/colors/flavours.lua"
-rewrite = true
-
-[[items]]
 template = "nushell"
 file = "$XDG_CACHE_HOME/nu/theme.nu"
 rewrite = true
