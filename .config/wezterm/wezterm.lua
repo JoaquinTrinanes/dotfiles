@@ -1,17 +1,10 @@
+---@type wezterm
 local wezterm = require("wezterm")
-
-local function file_exists(name)
-	local f = io.open(name, "r")
-	if f ~= nil then
-		io.close(f)
-		return true
-	else
-		return false
-	end
-end
+local mux = require("mux")
 
 wezterm.add_to_config_reload_watch_list(wezterm.config_dir .. "/colors/flavours.toml")
 
+---@type WeztermConfig
 local config = {}
 if wezterm.config_builder then
 	config = wezterm.config_builder()
@@ -19,11 +12,17 @@ end
 
 config.hide_tab_bar_if_only_one_tab = true
 
+config.enable_wayland = false
 config.color_scheme = "flavours"
 config.font = wezterm.font_with_fallback({
 	"FiraCode Nerd Font",
-	{ family = "JoyPixels", assume_emoji_presentation = true },
 	"DejaVu Sans Mono",
+	{ family = "JoyPixels", assume_emoji_presentation = true },
+	{ family = "Symbols Nerd Font Mono", assume_emoji_presentation = true },
+	"Noto Sans Mono CJK HK",
+	"Noto Sans Mono CJK JP",
+	"Noto Sans Mono CJK SC",
+	"Noto Sans Mono CJK TC",
 })
 config.font_size = 16
 config.use_fancy_tab_bar = false
@@ -34,64 +33,9 @@ config.audible_bell = "Disabled"
 config.unicode_version = 15
 config.hide_mouse_cursor_when_typing = false
 
-local function current_process_name(pane)
-	return string.gsub(pane:get_foreground_process_name(), "(.*[/\\])(.*)", "%2")
-end
-
-local function is_zellij(pane)
-	local process_name = current_process_name(pane)
-	return process_name == "zellij"
-end
-
-local function is_vim(pane)
-	-- this is set by the smart-splits.nvim plugin, and unset on ExitPre in Neovim
-	return pane:get_user_vars().IS_NVIM == "true"
-end
-
-local direction_keys = {
-	Left = "h",
-	Down = "j",
-	Up = "k",
-	Right = "l",
-	-- reverse lookup
-	h = "Left",
-	j = "Down",
-	k = "Up",
-	l = "Right",
-}
-
-local function split_nav(resize_or_move, key)
-	local mods = resize_or_move == "resize" and "ALT" or "CTRL"
-	return {
-		key = key,
-		mods = mods,
-		action = wezterm.action_callback(function(win, pane)
-			if is_vim(pane) or is_zellij(pane) then
-				-- pass the keys through to vim/nvim
-				win:perform_action({
-					SendKey = { key = key, mods = mods },
-				}, pane)
-			else
-				if resize_or_move == "resize" then
-					win:perform_action({ AdjustPaneSize = { direction_keys[key], 3 } }, pane)
-				else
-					win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
-				end
-			end
-		end),
-	}
-end
 config.keys = {
-	-- 	-- move between split panes
-	split_nav("move", "h"),
-	split_nav("move", "j"),
-	split_nav("move", "k"),
-	split_nav("move", "l"),
-	-- resize panes
-	split_nav("resize", "h"),
-	split_nav("resize", "j"),
-	split_nav("resize", "k"),
-	split_nav("resize", "l"),
+	mux.zellij_only_map("c", "CTRL|SHIFT", wezterm.action.SendKey({ key = "c", mods = "ALT" })),
+	-- mux.zellij_map("t", "ALT", wezterm.action.DisableDefaultAssignment),
 	{
 		key = "\\",
 		mods = "CTRL|ALT",
@@ -122,6 +66,9 @@ config.keys = {
 		mods = "CTRL|ALT",
 		action = wezterm.action.RotatePanes("CounterClockwise"),
 	},
+	{ key = "p", mods = "CTRL|SHIFT", action = wezterm.action.ActivateCommandPalette },
+	{ key = "s", mods = "ALT", action = wezterm.action.CharSelect({ copy_on_select = true }) },
+	table.unpack(mux.nav_bindings),
 }
 
 return config
