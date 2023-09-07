@@ -57,10 +57,12 @@ let default_completer = $carapace_completer
 let fallback_completer = $fish_completer
 
 let external_completer = {|spans: list<string>|
-    let has_alias = (scope aliases | where name == $spans.0)
-    let spans = (if not ($has_alias | is-empty) {
-      $spans | skip 1 | prepend ($has_alias | get expansion | split row ' ' | first)
-    } else { $spans })
+    let expanded_alias = scope aliases | where name == $spans.0 | get -i 0.expansion
+    let spans = if $expanded_alias != null {
+      $spans | skip 1 | prepend ($expanded_alias | split row ' ')
+    } else {
+        $spans
+    }
 
     match $spans.0 {
       __zoxide_z => $zoxide_completer
