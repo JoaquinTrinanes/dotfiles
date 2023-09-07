@@ -1,17 +1,26 @@
 # Nushell Config File
 
 let carapace_completer = {|spans: list<string>|
-  carapace $spans.0 nushell $spans | from json
-  | default []
-  | if (
-    $in
-    | filter {|x|
-    (
-        $x.value =~ '.*ERR'
-        and $x.description =~ 'unknown (shorthand )?flag:'
-        or $x.value == 'ERR'
-    )
-  } | is-empty) { $in } else { null }
+    def filter_carapace_error [] {
+        let input = $in
+        let length = $input | length
+
+        if ($input | length) != 2 {
+            return $input
+        }
+
+        if $input.0.value ends-with 'ERR' and $input.1.value ends-with '_' {
+            null
+        } else {
+            $input
+        }
+    }
+
+
+    carapace $spans.0 nushell $spans
+    | from json
+    | default []
+    | filter_carapace_error
 }
 
 let fish_completer = {|spans: list<string>|
