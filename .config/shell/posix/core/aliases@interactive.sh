@@ -29,12 +29,12 @@ if commandExists xdg-open; then
 	alias o="open"
 fi
 
-if commandExists exa; then
+if commandExists eza; then
 	args=""
 	if fc-list | grep "Nerd Font" &>/dev/null; then
 		args="--icons"
 	fi
-	alias ls="exa ${args}"
+	alias ls="eza ${args}"
 	alias la="ls -la"
 	unset args
 fi
