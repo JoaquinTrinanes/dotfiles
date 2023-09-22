@@ -77,7 +77,7 @@ export-env {
         if $str =~ '^#[a-fA-F\d]{6}$' {
             { bg: $str fg: (if (contrast $str $colors.base00) < 0.5 { $colors.base05 } else { $colors.base00 }) }
         } else {
-            $colors.base04
+            $colors.base06
         }
     }
 
@@ -86,21 +86,19 @@ export-env {
             leading_trailing_space_bg: $colors.base04
             header: $colors.base0b
             date: {|| (date now) - $in |
-            if $in < 1hr {
-                $colors.base0e
-            } else if $in < 6hr {
-                $colors.base01
-            } else if $in < 1day {
-                $colors.base0a
-            } else if $in < 3day {
-                $colors.base0b
-            } else if $in < 1wk {
-                $colors.base0b
-            } else if $in < 6wk {
-                $colors.base0c
-            } else if $in < 52wk {
-                $colors.base0d
-            } else { $colors.base08 }
+                if $in < 1hr {
+                    $colors.base0e
+                } else if $in < 6hr {
+                    $colors.base0a
+                } else if $in < 1day {
+                    $colors.base0b
+                } else if $in < 3day {
+                    $colors.base0c
+                } else if $in < 1wk {
+                    $colors.base0d
+                } else if $in < 6wk {
+                    $colors.base0e
+                } else { $colors.base0f }
             }
             filesize: {||
                 if $in == 0b {
@@ -108,7 +106,7 @@ export-env {
                 } else if $in < 1mb {
                     $colors.base0c
                 } else if $in > 0.5gb {
-                    { fg:$colors.base08 attr: b }
+                    { fg: $colors.base08 attr: b }
                 } else { $colors.base0d }
             }
             row_index: $colors.base0c
@@ -123,7 +121,7 @@ export-env {
             cellpath: $colors.base08
             hints: $colors.base02
 
-            shape_garbage: { fg: $colors.base07 bg: $colors.base08 attr: b} # base16 white on red
+            shape_garbage: { fg: $colors.base08 attr: u}
             shape_bool: $colors.base0d
             shape_int: { fg: $colors.base0e attr: b}
             shape_float: { fg: $colors.base0e attr: b}
