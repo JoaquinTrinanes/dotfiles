@@ -21,7 +21,7 @@ export GOBIN="$XDG_BIN_HOME/go/bin"
 prepend_path "$GOBIN"
 
 # pip-installed binaries
-if command -v python &>/dev/null; then
+if command -v python >/dev/null 2>&1; then
 	prepend_path "$(python -m site --user-base)/bin"
 fi
 

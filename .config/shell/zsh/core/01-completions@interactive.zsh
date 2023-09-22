@@ -4,7 +4,7 @@ compinit
 # autocomplete with same color as ls
 if command -v dircolors &> /dev/null; then
     eval "$(dircolors)"
-    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+    zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 else
     export CLICOLOR=1
 fi
@@ -23,7 +23,7 @@ zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-dir
 
 # Use caching so that commands like apt and dpkg complete are useable
 zstyle ':completion:*' use-cache yes
-zstyle ':completion:*' cache-path $ZSH_CACHE_DIR
+zstyle ':completion:*' cache-path "$ZSH_CACHE_DIR"
 
 # Don't complete uninteresting users
 zstyle ':completion:*:*:*:users' ignored-patterns \
@@ -41,4 +41,6 @@ zstyle '*' single-ignored show
 
 # tabtab source for packages
 # uninstall by removing these lines
-[[ -f ${XDG_CONFIG_HOME}/tabtab/zsh/__tabtab.zsh ]] && . ${XDG_CONFIG_HOME}/tabtab/zsh/__tabtab.zsh || true
+if [[ -f ${XDG_CONFIG_HOME}/tabtab/zsh/__tabtab.zsh ]]; then
+    . "${XDG_CONFIG_HOME}/tabtab/zsh/__tabtab.zsh" || true
+fi

@@ -6,4 +6,5 @@ if [[ ! -f "$PREEXEC_PATH" ]]; then
 	curl https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh -o "$PREEXEC_PATH"
 fi
 
+# shellcheck disable=1090
 source "$PREEXEC_PATH"

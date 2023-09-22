@@ -1,5 +1,5 @@
 commandExists() {
-	command -v $1 &>/dev/null
+	command -v "$1" >/dev/null 2>&1
 }
 
 alias reload='exec "$XSHELL"' # reload the current shell configuration
@@ -31,9 +31,10 @@ fi
 
 if commandExists eza; then
 	args=""
-	if fc-list | grep "Nerd Font" &>/dev/null; then
+	if fc-list | grep "Nerd Font" >/dev/null 2>&1; then
 		args="--icons"
 	fi
+	# shellcheck disable=2139
 	alias ls="eza ${args}"
 	alias la="ls -la"
 	unset args
