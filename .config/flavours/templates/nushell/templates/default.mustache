@@ -25,11 +25,11 @@ export const colors = {
 }
 
 def menu [] {
-  {
-    text: $colors.base05
-    description_text: $colors.base07
-    selected_text: { fg: $colors.base05 bg: $colors.base02 attr: b }
-  }
+    {
+        text: $colors.base05
+        description_text: $colors.base07
+        selected_text: { fg: $colors.base05 bg: $colors.base02 attr: b }
+    }
 }
 
 def relative_luminance_helper [x: float] {
@@ -49,7 +49,7 @@ def relative_luminance [color] {
         | each {str join}
         | into int -r 16
         | each {|x|
-            ($x | into decimal) / 255
+            ($x | into float) / 255
             | relative_luminance_helper $in
         }
     )
@@ -82,65 +82,65 @@ export-env {
     }
 
       let theme = {
-          separator: $colors.base03
-          leading_trailing_space_bg: $colors.base04
-          header: $colors.base0b
-          date: {|| (date now) - $in |
-          if $in < 1hr {
-              $colors.base0e
-          } else if $in < 6hr {
-              $colors.base01
-          } else if $in < 1day {
-              $colors.base0a
-          } else if $in < 3day {
-              $colors.base0b
-          } else if $in < 1wk {
-              $colors.base0b
-          } else if $in < 6wk {
-              $colors.base0c
-          } else if $in < 52wk {
-              $colors.base0d
-          } else { $colors.base08 }
-          }
-          filesize: {||
-              if $in == 0b {
-                  $colors.base02
-              } else if $in < 1mb {
-                  $colors.base0c
-              } else if $in > 0.5gb {
-                  { fg:$colors.base08 attr: b }
-              } else { $colors.base0d }
-          }
-          row_index: $colors.base0c
-          bool: $bool
-          int: $colors.base0b
-          duration: $colors.base08
-          range: $colors.base08
-          float: $colors.base08
-          string: $theme_show_color
-          nothing: $colors.base08
-          binary: $colors.base08
-          cellpath: $colors.base08
-          hints: $colors.base02
+            separator: $colors.base03
+            leading_trailing_space_bg: $colors.base04
+            header: $colors.base0b
+            date: {|| (date now) - $in |
+            if $in < 1hr {
+                $colors.base0e
+            } else if $in < 6hr {
+                $colors.base01
+            } else if $in < 1day {
+                $colors.base0a
+            } else if $in < 3day {
+                $colors.base0b
+            } else if $in < 1wk {
+                $colors.base0b
+            } else if $in < 6wk {
+                $colors.base0c
+            } else if $in < 52wk {
+                $colors.base0d
+            } else { $colors.base08 }
+            }
+            filesize: {||
+                if $in == 0b {
+                    $colors.base02
+                } else if $in < 1mb {
+                    $colors.base0c
+                } else if $in > 0.5gb {
+                    { fg:$colors.base08 attr: b }
+                } else { $colors.base0d }
+            }
+            row_index: $colors.base0c
+            bool: $bool
+            int: $colors.base0b
+            duration: $colors.base08
+            range: $colors.base08
+            float: $colors.base08
+            string: $theme_show_color
+            nothing: $colors.base08
+            binary: $colors.base08
+            cellpath: $colors.base08
+            hints: $colors.base02
 
-          shape_garbage: { fg: $colors.base07 bg: $colors.base08 attr: b} # base16 white on red
-          shape_bool: $colors.base0d
-          shape_int: { fg: $colors.base0e attr: b}
-          shape_float: { fg: $colors.base0e attr: b}
-          shape_range: { fg: $colors.base0a attr: b}
-          shape_internalcall: { fg: $colors.base0c attr: b}
-          shape_external: $colors.base0c
-          shape_externalarg: { fg: $colors.base0b attr: b}
-          shape_literal: $colors.base0d
-          shape_operator: $colors.base0a
-          shape_signature: { fg: $colors.base0b attr: b}
-          shape_string: $colors.base0b
-          shape_filepath: $colors.base0d
-          shape_globpattern: { fg: $colors.base0d attr: b}
-          shape_variable: $colors.base0e
-          shape_flag: { fg: $colors.base0d attr: b}
-          shape_custom: {attr: b}
-    }
+            shape_garbage: { fg: $colors.base07 bg: $colors.base08 attr: b} # base16 white on red
+            shape_bool: $colors.base0d
+            shape_int: { fg: $colors.base0e attr: b}
+            shape_float: { fg: $colors.base0e attr: b}
+            shape_range: { fg: $colors.base0a attr: b}
+            shape_internalcall: { fg: $colors.base0c attr: b}
+            shape_external: $colors.base0c
+            shape_externalarg: { fg: $colors.base0b attr: b}
+            shape_literal: $colors.base0d
+            shape_operator: $colors.base0a
+            shape_signature: { fg: $colors.base0b attr: b}
+            shape_string: $colors.base0b
+            shape_filepath: $colors.base0d
+            shape_globpattern: { fg: $colors.base0d attr: b}
+            shape_variable: $colors.base0e
+            shape_flag: { fg: $colors.base0d attr: b}
+            shape_custom: {attr: b}
+        }
 
     load-env {
         config: (
