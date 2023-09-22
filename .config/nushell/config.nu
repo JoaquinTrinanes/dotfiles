@@ -53,6 +53,10 @@ let yadm_completer = {|spans: list<string>|
   }
 }
 
+let sudo_completer = {|spans: list<string>|
+    do $env.config.completions.external.completer ($spans | skip 1)
+}
+
 let default_completer = $carapace_completer
 let fallback_completer = $fish_completer
 
@@ -65,13 +69,13 @@ let external_completer = {|spans: list<string>|
     }
 
     match $spans.0 {
-      __zoxide_z => $zoxide_completer
-      __zoxide_zi => $zoxide_completer
+      __zoxide_z | __zoxide_zi => $zoxide_completer
       asdf => $fish_completer
       git => $git_completer
       gpg => $fish_completer
       nu => $fish_completer
       sd => $fish_completer
+      sudo => $sudo_completer
       yadm => $yadm_completer
       _ => $default_completer
     } | do $in $spans | if (($in | is-empty) and ($fallback_completer != null))) { do $fallback_completer $spans } else { $in }
