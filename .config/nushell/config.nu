@@ -94,7 +94,7 @@ $env.config = {
         abbreviations: false # allows `cd s/o/f` to expand to `cd some/other/folder`
     }
     table: {
-        mode: rounded # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
+        mode: compact # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
         index_mode: always # "always" show indexes, "never" show indexes, "auto" = show indexes when a table has "index" column
         header_on_separator: true
         trim: {
@@ -165,7 +165,8 @@ $env.config = {
     history: {
         max_size: 100_000 # Session has to be reloaded for this to take effect
         sync_on_enter: false # Enable to share history between multiple sessions, else you have to close the session to write history to file
-        file_format: "plaintext" # "sqlite" or "plaintext"
+        file_format: "sqlite" # "sqlite" or "plaintext"
+        isolation: true
     }
     completions: {
         case_sensitive: false # set to true to enable case-sensitive completions
@@ -190,9 +191,9 @@ $env.config = {
     use_grid_icons: true
     footer_mode: "25" # always, never, number_of_rows, auto
     float_precision: 2
-# buffer_editor: "emacs" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
+    buffer_editor: "nvim --noplugin" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
     use_ansi_coloring: true
-# edit_mode: emacs # emacs, vi
+    edit_mode: vi # emacs, vi
     shell_integration: true # enables terminal markers and a workaround to arrow keys stop working issue
     render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
     show_banner: false # true or false to enable or disable the banner
