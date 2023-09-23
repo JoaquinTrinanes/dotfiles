@@ -10,6 +10,12 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
+-- start maximized
+wezterm.on("gui-startup", function()
+	local tab, pane, window = wezterm.mux.spawn_window({})
+	window:gui_window():maximize()
+end)
+
 config.hide_tab_bar_if_only_one_tab = true
 
 config.enable_wayland = false
@@ -24,6 +30,37 @@ config.font = wezterm.font_with_fallback({
 	"Noto Sans Mono CJK SC",
 	"Noto Sans Mono CJK TC",
 })
+
+-- test
+-- config.font_rules = {
+-- 	{
+-- 		intensity = "Bold",
+-- 		italic = true,
+-- 		font = wezterm.font({
+-- 			family = "VictorMono Nerd Font",
+-- 			weight = "Bold",
+-- 			style = "Italic",
+-- 		}),
+-- 	},
+-- 	{
+-- 		italic = true,
+-- 		intensity = "Half",
+-- 		font = wezterm.font({
+-- 			family = "VictorMono Nerd Font",
+-- 			weight = "DemiBold",
+-- 			style = "Italic",
+-- 		}),
+-- 	},
+-- 	{
+-- 		italic = true,
+-- 		intensity = "Normal",
+-- 		font = wezterm.font({
+-- 			family = "VictorMono Nerd Font",
+-- 			style = "Italic",
+-- 		}),
+-- 	},
+-- }
+
 config.font_size = 16
 config.use_fancy_tab_bar = false
 config.default_cursor_style = "SteadyBar"
