@@ -41,6 +41,7 @@ local M = {
       vim.keymap.set("n", "<leader><leader>k", smart_splits.swap_buf_up)
       vim.keymap.set("n", "<leader><leader>l", smart_splits.swap_buf_right)
     end,
+    priority = 1000,
     lazy = false,
   },
 }

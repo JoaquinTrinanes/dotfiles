@@ -1,7 +1,6 @@
 local M = {
   {
     "shaunsingh/nord.nvim",
-    -- "gbprod/nord.nvim",
     name = "nord",
     config = function()
       vim.g.nord_borders = true

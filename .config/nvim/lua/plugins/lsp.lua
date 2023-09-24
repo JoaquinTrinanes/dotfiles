@@ -1,7 +1,3 @@
-local classNameRegex = "[cC][lL][aA][sS][sS][nN][aA][mM][eE][sS]?"
-local classNamePropNameRegex = "(?:" .. classNameRegex .. "|(?:enter|leave)(?:From|To)?)"
-local quotedStringRegex = [[(?:["'`]([^"'`]*)["'`])]]
-
 local M = {
   {
     "neovim/nvim-lspconfig",
@@ -20,36 +16,25 @@ local M = {
           settings = {
             -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
             workingDirectory = { mode = "auto" },
-            rulesCustomizations = {
-              { rule = "prettier/prettier", severity = "off" },
-            },
           },
         },
-        tailwindcss = {
+        rust_analyzer = {
           settings = {
-            tailwindCSS = {
-              experimental = {
-                classRegex = {
-                  -- classNames="...", classNames: "..."
-                  classNamePropNameRegex
-                    .. "\\s*[:=]\\s*"
-                    .. quotedStringRegex,
-                  --classNames={...} prop
-                  classNamePropNameRegex
-                    .. "\\s*[:=]s*"
-                    .. quotedStringRegex
-                    .. "\\s*}",
-                  -- classNames(...)
-                  { "class[nN]ames\\(([^)]*)\\)", quotedStringRegex },
-                },
+            ["rust-analyzer"] = {
+              -- prevent locking cargo compilation
+              ---@diagnostic disable-next-line: assign-type-mismatch
+              checkOnSave = {
+                extraArgs = { "--target-dir", "/tmp/rust-analyzer-check" },
               },
             },
           },
-          intelephense = {
-            settings = {
-              files = {
-                max_size = 100000,
-              },
+          keys = {
+            {
+              "<leader>cE",
+              function()
+                require("rust-tools").expand_macro.expand_macro()
+              end,
+              desc = "Expand Macro (Rust)",
             },
           },
         },
@@ -89,9 +74,11 @@ local M = {
   },
   {
     "williamboman/mason.nvim",
-    opts = function(_, opts)
+    opts = function(_, _opts)
+      local opts = _opts
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "taplo", "eslint-lsp", "intelephense" })
+
+      vim.list_extend(opts.ensure_installed, { "taplo", "eslint-lsp", "intelephense", "pyright" })
     end,
   },
   {
@@ -115,8 +102,28 @@ local M = {
   },
   {
     "windwp/nvim-ts-autotag",
-    config = true,
+    ft = {
+      "html",
+      "javascriptreact",
+      "typescriptreact",
+      "svelte",
+      "vue",
+      "tsx",
+      "jsx",
+      "rescript",
+      "xml",
+      "php",
+      "markdown",
+      "astro",
+      "glimmer",
+      "handlebars",
+      "hbs",
+    },
+    opts = function(plugin, opts)
+      opts.filetypes = plugin.ft
+    end,
   },
+  { "imsnif/kdl.vim", ft = { "kdl" } },
 }
 
 return M
