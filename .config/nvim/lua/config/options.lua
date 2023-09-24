@@ -7,3 +7,6 @@ vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.signcolumn = "auto:2"
 vim.opt.smoothscroll = true
+
+-- Hide the '[No Name]' buffer
+vim.opt.hidden = false
