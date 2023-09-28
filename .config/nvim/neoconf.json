@@ -1,0 +1,9 @@
+{
+  "lspconfig": {
+    "eslint": {
+      "rulesCustomizations": [
+        { "rule": "prettier/prettier", "severity": "off" }
+      ]
+    }
+  }
+}
