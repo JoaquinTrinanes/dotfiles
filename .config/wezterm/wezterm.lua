@@ -71,7 +71,12 @@ config.unicode_version = 15
 config.hide_mouse_cursor_when_typing = false
 
 config.keys = {
-	mux.zellij_only_map("c", "CTRL|SHIFT", wezterm.action.SendKey({ key = "c", mods = "ALT" })),
+	mux.zellij_only_map(
+		"c",
+		"CTRL|SHIFT",
+		wezterm.action.SendKey({ key = "c", mods = "ALT" }),
+		wezterm.action.CopyTo("Clipboard")
+	),
 	-- mux.zellij_map("t", "ALT", wezterm.action.DisableDefaultAssignment),
 	{
 		key = "\\",

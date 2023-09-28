@@ -68,10 +68,10 @@ M.nav_bindings = {
 	split_nav("resize", "l"),
 }
 
-M.zellij_only_map = function(key, mods, action)
+M.zellij_only_map = function(key, mods, action, default)
 	return keys.conditional_map(key, mods, action, function(_, pane)
 		return H.has_foreground_process("zellij", pane)
-	end)
+	end, default)
 end
 
 return M
