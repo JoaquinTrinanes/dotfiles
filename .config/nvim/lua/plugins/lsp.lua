@@ -1,3 +1,7 @@
+local classNameRegex = "[cC][lL][aA][sS][sS][nN][aA][mM][eE][sS]?"
+local classNamePropNameRegex = "(?:" .. classNameRegex .. "|(?:enter|leave)(?:From|To)?)"
+local quotedStringRegex = [[(?:["'`]([^"'`]*)["'`])]]
+
 local M = {
   {
     "neovim/nvim-lspconfig",
@@ -10,7 +14,6 @@ local M = {
       inlay_hints = {
         enabled = true,
       },
-      ---@type lspconfig.options
       servers = {
         eslint = {
           settings = {
@@ -38,6 +41,27 @@ local M = {
             },
           },
         },
+        tailwindcss = {
+          settings = {
+            tailwindCSS = {
+              experimental = {
+                classRegex = {
+                  -- classNames="...", classNames: "..."
+                  classNamePropNameRegex
+                    .. [[\s*[:=]\s*]]
+                    .. quotedStringRegex,
+                  --classNames={...} prop
+                  classNamePropNameRegex
+                    .. [[\s*[:=]\s*]]
+                    .. quotedStringRegex
+                    .. [[\s*}]],
+                  -- classNames(...)
+                  { [[class[nN]ames\(([^)]*)\)]], quotedStringRegex },
+                },
+              },
+            },
+          },
+        },
       },
       setup = {
         eslint = function()
@@ -48,7 +72,7 @@ local M = {
                 return
               end
 
-              local client = vim.lsp.get_active_clients({ bufnr = event.buf, name = "eslint" })[1]
+              local client = vim.lsp.get_clients({ bufnr = event.buf, name = "eslint" })[1]
               if client then
                 -- local diag = vim.diagnostic.get(event.buf, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
                 -- if #diag > 0 then
@@ -63,16 +87,6 @@ local M = {
   },
   { "folke/noice.nvim", opts = { lsp = { hover = { silent = true } } } },
   {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      opts.ensure_installed = "all"
-      -- if type(opts.ensure_installed) == "table" then
-      --   opts.ensure_installed = "all"
-      --   -- vim.list_extend(opts.ensure_installed, { "typescript", "tsx" })
-      -- end
-    end,
-  },
-  {
     "williamboman/mason.nvim",
     opts = function(_, _opts)
       local opts = _opts
@@ -86,9 +100,14 @@ local M = {
     dependencies = {
       {
         "zioroboco/nu-ls.nvim",
+        dependencies = { { "nvimtools/none-ls.nvim" } },
         ft = { "nu" },
         config = function()
-          require("null-ls").register(require("nu-ls"))
+          local ok, null_ls = pcall(require, "null-ls")
+          if not ok then
+            return
+          end
+          null_ls.register(require("nu-ls"))
         end,
       },
     },
