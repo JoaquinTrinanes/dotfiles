@@ -4,10 +4,6 @@ brew:
     - homebrew/cask-fonts
 cargo:
   - cargo-update
-  - nu:
-      features:
-        - dataframe
-        - extra
   - flavours
 packages:
   - bat
@@ -38,10 +34,14 @@ packages:
   - nodejs
   - noto-fonts-cjk:
       brew: font-noto-sans-cjk
+  - npm
+  - nushell:
+      - yay: nushell-git
   - pipenv:
       yay: python-pipenv
   - pipewire-pulse:
       brew: null
+  - pnpm
   - pueue
   - python-pynvim:
       brew: null
@@ -56,11 +56,10 @@ packages:
       brew: font-fira-code-nerd-font
   - vivid
   - wezterm
+  - wireplumber
   - wl-clipboard
   - xclip
   - yadm
-  - yarn
-  - zellij
   - zoxide
 pip: []
 services:
