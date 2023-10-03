@@ -39,12 +39,12 @@ local M = {
   -- },
   {
     "stevearc/conform.nvim",
-    config = function()
-      -- require("conform.formatters.shellcheck").condition = function(ctx)
-      --   return vim.api.nvim_buf_get_name(ctx.buf):find("^.env") == nil
-      -- end
-      -- require("conform.formatters.shellcheck").cwd = require("conform.util").root_file({ ".shellcheckrc" })
-    end,
+    -- config = function()
+    -- require("conform.formatters.shellcheck").condition = function(ctx)
+    --   return vim.api.nvim_buf_get_name(ctx.buf):find("^.env") == nil
+    -- end
+    -- require("conform.formatters.shellcheck").cwd = require("conform.util").root_file({ ".shellcheckrc" })
+    -- end,
     opts = {
       ---@type table<string, conform.FormatterUnit[]>
       formatters_by_ft = {
