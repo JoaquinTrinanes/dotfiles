@@ -33,13 +33,3 @@ template = "zellij"
 file = "~/.config/zellij/themes/flavours.kdl"
 rewrite = true
 
-[[items]]
-template = "tmux"
-file = "~/.config/tmux/plugins/flavours.conf"
-rewrite = true
-
-[[items]]
-template = "textmate"
-file = "~/.config/bat/themes/flavours.tmTheme"
-rewrite = true
-hook = "bat cache --build"

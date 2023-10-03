@@ -4,17 +4,20 @@
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, nix-colors, ... }@inputs:
     let
       user = "joaquin";
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      overlays = [ inputs.neovim-nightly-overlay.overlay ];
     in {
       packages.${system}.default = home-manager.defaultPackage.${system};
 
@@ -27,7 +30,10 @@
 
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix
-        # extraSpecialArgs = { ... };
+        extraSpecialArgs = {
+          inherit overlays;
+          inherit nix-colors;
+        };
       };
     };
 }
