@@ -1,10 +1,6 @@
 export use git.nu *
 export use docker-compose.nu *
 
-# if $env.TERM_PROGRAM? == "WezTerm" {
-    export use wezterm.nu *
-# }
-
 # if not (which bat | is-empty) {
     export alias cat = bat -p
 # }
