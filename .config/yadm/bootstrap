@@ -12,7 +12,7 @@ cleanup_node_install() {
 
 trap cleanup_node_install INT
 
-if ! command -v node npm &> /dev/null; then
+if ! command -v npm &> /dev/null; then
     N_PREFIX=$(mktemp -d)
     curl -L https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | N_PREFIX=$N_PREFIX bash -s -- -n -y
     PATH="$N_PREFIX/bin:$PATH"
@@ -30,7 +30,7 @@ fi
 NPX=npx
 
 if command -v pnpm &> /dev/null; then
-    NPM="pnpm dlx"
+    NPX="pnpm dlx"
 fi
 
 $NPX zx $BOOTSTRAP_D/index.mjs
