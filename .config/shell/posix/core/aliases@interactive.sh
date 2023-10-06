@@ -18,11 +18,7 @@ alias df='df -h' du='du -h'
 
 alias vim="nvim"
 
-if commandExists rg; then
-	alias grep="rg"
-else
-	alias grep="grep -E"
-fi
+alias grep="grep -E"
 
 if commandExists xdg-open; then
 	alias open='nohup xdg-open </dev/null >|$(mktemp --tmpdir nohup.XXXX) 2>&1'

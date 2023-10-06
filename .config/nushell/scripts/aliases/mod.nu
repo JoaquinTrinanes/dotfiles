@@ -20,7 +20,5 @@ export alias trash = rm --trash
 
 export alias lazyyadm = lazygit --git-dir (yadm introspect repo | str trim) --work-tree $nu.home-path
 
-export alias grep = rg
-
 export alias hm = home-manager
 
