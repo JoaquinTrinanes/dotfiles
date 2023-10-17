@@ -99,7 +99,6 @@ local M = {
     dependencies = {
       {
         "zioroboco/nu-ls.nvim",
-        dependencies = { { "nvimtools/none-ls.nvim" } },
         ft = { "nu" },
         config = function()
           local ok, nls = pcall(require, "null-ls")
