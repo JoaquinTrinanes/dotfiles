@@ -62,6 +62,7 @@ local M = {
             },
           },
         },
+        nil_ls = { mason = false },
       },
       setup = {
         eslint = function()
@@ -94,6 +95,7 @@ local M = {
   },
   {
     "LhKipp/nvim-nu",
+    enabled = false,
     dependencies = {
       {
         "zioroboco/nu-ls.nvim",
