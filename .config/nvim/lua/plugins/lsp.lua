@@ -67,7 +67,7 @@ local M = {
         eslint = function()
           vim.api.nvim_create_autocmd("BufWritePre", {
             callback = function(event)
-              if not require("lazyvim.plugins.lsp.format").enabled() then
+              if not require("lazyvim.util").format.enabled() then
                 -- exit early if autoformat is not enabled
                 return
               end
@@ -100,11 +100,11 @@ local M = {
         dependencies = { { "nvimtools/none-ls.nvim" } },
         ft = { "nu" },
         config = function()
-          local ok, null_ls = pcall(require, "null-ls")
+          local ok, nls = pcall(require, "null-ls")
           if not ok then
             return
           end
-          null_ls.register(require("nu-ls"))
+          nls.register(require("nu-ls"))
         end,
       },
     },

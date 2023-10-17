@@ -50,29 +50,13 @@ local M = {
       formatters_by_ft = {
         python = { "black" },
         toml = { "taplo" },
-        php = { "custom_pint_formatter" },
+        php = { "pint" },
         ["_"] = {
           "trim_whitespace",
         },
       },
       ---@type table<string, conform.FormatterConfig|fun(bufnr: integer): nil|conform.FormatterConfig>
-      formatters = {
-        custom_pint_formatter = {
-          condition = function(ctx)
-            local root_dir = require("conform.util").root_file({ "composer.json", "composer.lock", "pint.json" })(ctx)
-            return root_dir ~= nil
-          end,
-          command = "pint",
-          args = {
-            "--no-interaction",
-            "--quiet",
-            "$FILENAME",
-          },
-          stdin = false,
-          cwd = require("conform.util").root_file({ "composer.json", "composer.lock", "pint.json" }),
-          require_cwd = true,
-        },
-      },
+      -- formatters = {},
     },
   },
   {
