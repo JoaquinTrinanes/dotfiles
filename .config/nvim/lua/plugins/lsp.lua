@@ -95,50 +95,26 @@ local M = {
   },
   {
     "LhKipp/nvim-nu",
-    enabled = false,
     dependencies = {
-      {
-        "zioroboco/nu-ls.nvim",
-        ft = { "nu" },
-        config = function()
-          local ok, nls = pcall(require, "null-ls")
-          if not ok then
-            return
-          end
-          nls.register(require("nu-ls"))
-        end,
-      },
+      -- {
+      --   "zioroboco/nu-ls.nvim",
+      --   ft = { "nu" },
+      --   config = function()
+      --     local ok, nls = pcall(require, "null-ls")
+      --     if not ok then
+      --       return
+      --     end
+      --     nls.register(require("nu-ls"))
+      --   end,
+      -- },
     },
     event = "BufRead",
     build = ":TSInstall nu",
     opts = {
-      use_lsp_features = true,
+      use_lsp_features = false,
       all_cmd_names = [[nu -c 'help commands | get name | str join (char newline)']],
     },
     config = true,
-  },
-  {
-    "windwp/nvim-ts-autotag",
-    ft = {
-      "html",
-      "javascriptreact",
-      "typescriptreact",
-      "svelte",
-      "vue",
-      "tsx",
-      "jsx",
-      "rescript",
-      "xml",
-      "php",
-      "markdown",
-      "astro",
-      "glimmer",
-      "handlebars",
-      "hbs",
-    },
-    opts = function(plugin, opts)
-      opts.filetypes = plugin.ft
-    end,
   },
   { "imsnif/kdl.vim", ft = { "kdl" } },
 }
