@@ -68,6 +68,7 @@ config.enable_scroll_bar = true
 config.audible_bell = "Disabled"
 config.unicode_version = 15
 config.hide_mouse_cursor_when_typing = false
+config.enable_kitty_keyboard = true
 
 config.keys = {
 	mux.zellij_only_map(

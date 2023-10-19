@@ -83,15 +83,13 @@ let external_completer = {|spans: list<string>|
 
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {
+    show_banner: false # true or false to enable or disable the banner
     ls: {
         use_ls_colors: true # use the LS_COLORS environment variable to colorize output
         clickable_links: false # enable or disable clickable links. Your terminal has to support links.
     }
     rm: {
         always_trash: false # always act as if -t was given. Can be overridden with -p
-    }
-    cd: {
-        abbreviations: false # allows `cd s/o/f` to expand to `cd some/other/folder`
     }
     table: {
         mode: compact # basic, compact, compact_double, light, thin, with_love, rounded, reinforced, heavy, none, other
@@ -103,6 +101,7 @@ $env.config = {
             truncating_suffix: "…" # "..." # A suffix used by the 'truncating' methodology
         }
     }
+    error_style: "fancy" # "fancy" or "plain" for screen reader-friendly error messages
     datetime_format: {
         normal: '%a, %d %b %Y %H:%M:%S %z'  # shows up in displays of variables or other datetime's outside of tables
         # table: '%m/%d/%y %I:%M:%S%p'        # generally shows up in tabular outputs such as ls. commenting this out will change it to the default human readable datetime format
@@ -120,24 +119,24 @@ $env.config = {
         highlight: {bg: 'yellow' fg: 'black' }
 
         status: {
-            # warn: {bg: 'yellow', fg: 'blue'} 
-            # error: {bg: 'yellow', fg: 'blue'} 
+            # warn: {bg: 'yellow', fg: 'blue'}
+            # error: {bg: 'yellow', fg: 'blue'}
             # info: {bg: 'yellow', fg: 'blue'}
         }
 
         try: {
-            # border_color: 'red' 
+            # border_color: 'red'
             # highlighted_color: 'blue'
 
             # reactive: false
         }
 
         table: {
-            # split_line: '#404040' 
+            # split_line: '#404040'
 
             cursor: true
 
-            line_index: true 
+            line_index: true
             line_shift: true
             line_head_top: true
             line_head_bottom: true
@@ -145,14 +144,14 @@ $env.config = {
             show_head: true
             show_index: true
 
-            # selected_cell: {fg: 'white', bg: '#777777'} 
-            # selected_row: {fg: 'yellow', bg: '#C1C2A3'} 
+            # selected_cell: {fg: 'white', bg: '#777777'}
+            # selected_row: {fg: 'yellow', bg: '#C1C2A3'}
             # selected_column: blue
 
-            # padding_column_right: 2 
+            # padding_column_right: 2
             # padding_column_left: 2
 
-            # padding_index_left: 2 
+            # padding_index_left: 2
             # padding_index_right: 1
         }
         config: {
@@ -164,9 +163,9 @@ $env.config = {
     }
     history: {
         max_size: 100_000 # Session has to be reloaded for this to take effect
-        sync_on_enter: false # Enable to share history between multiple sessions, else you have to close the session to write history to file
+        sync_on_enter: true # Enable to share history between multiple sessions, else you have to close the session to write history to file
         file_format: "sqlite" # "sqlite" or "plaintext"
-        isolation: true
+        isolation: true # only available with sqlite file_format. true enables history isolation, false disables it. true will allow the history to be isolated to the current session using up/down arrows. false will allow the history to be shared across all sessions.
     }
     completions: {
         case_sensitive: false # set to true to enable case-sensitive completions
@@ -193,10 +192,11 @@ $env.config = {
     float_precision: 2
     buffer_editor: "nvim --noplugin" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
     use_ansi_coloring: true
+    bracketed_paste: true # enable bracketed paste, currently useless on windows
     edit_mode: vi # emacs, vi
     shell_integration: true # enables terminal markers and a workaround to arrow keys stop working issue
     render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
-    show_banner: false # true or false to enable or disable the banner
+    use_kitty_protocol: true # enables keyboard enhancement protocol implemented by kitty console, only if your terminal support this
     hooks: {
         pre_prompt: [{||
             let direnv = (direnv export json | from json | default {})
@@ -226,7 +226,7 @@ $env.config = {
         display_output: {
             if (term size).columns >= 100 { table -e } else { table }
         }
-        command_not_found: []
+        command_not_found: { null } # return an error message when a command is not found
     }
     menus: ([
         # Configuration for default nushell menus
@@ -392,6 +392,8 @@ source zoxide.nu
 source atuin.nu
 
 use theme.nu
+
+use ($nu.default-config-dir | path join scripts) *
 
 overlay use aliases/
 overlay use completions/
