@@ -318,6 +318,14 @@ $env.config = {
         }
     ] | each {|menu| $menu | upsert style {}})
     keybindings: [
+       # fix shift+backspace not working with the kitty keyboard protocol
+       {
+          name: shift_back
+          modifier: Shift
+          keycode: Backspace
+          mode: [emacs, vi_normal, vi_insert]
+          event: { edit: Backspace }
+        }
         {
             name: completion_menu
             modifier: none
@@ -385,8 +393,13 @@ $env.config = {
     ]
 }
 
-# TODO: launching nu from a folder with a {aliases,zoxide.nu} etc file crashes it
+# const SCRIPTS_DIR = ($nu.default-config-dir | path join scripts)
 
+# export use ($SCRIPTS_DIR | path join aliases) *
+# export use ($SCRIPTS_DIR | path join completions) *
+# export use ($SCRIPTS_DIR | path join nix.nu) *
+
+# TODO: launching nu from a folder with a {atuin.nu,zoxide.nu} etc file crashes it. Add absolute path but it comes from $env
 use starship.nu
 source zoxide.nu
 source atuin.nu
@@ -395,6 +408,6 @@ use theme.nu
 
 use ($nu.default-config-dir | path join scripts) *
 
-overlay use aliases/
-overlay use completions/
+overlay use ($nu.default-config-dir | path join scripts aliases)
+overlay use ($nu.default-config-dir | path join scripts completions)
 
