@@ -63,6 +63,7 @@ local M = {
           },
         },
         nil_ls = { mason = false },
+        -- rnix = { mason = false },
       },
       setup = {
         eslint = function()

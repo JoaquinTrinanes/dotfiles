@@ -25,6 +25,15 @@ export extern "main" [
 ]
 
 # Applies scheme, according to user configuration
+# export def --env --wrapped "apply" [
+#     theme?: string@"nu-complete flavours themes"
+#     --light(-l) # Skip running heavier hooks (entries marked 'light=false')
+#     --stdin # Reads scheme from stdin instead of from flavours directory.
+#     ...rest
+# ] {
+#     ^flavours apply $theme --stdin $stdin $rest
+#     $env.LS_COLORS = (vivid generate $theme)
+# }
 export extern "apply" [
     theme?: string@"nu-complete flavours themes"
     --light(-l) # Skip running heavier hooks (entries marked 'light=false')

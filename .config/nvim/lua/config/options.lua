@@ -5,7 +5,7 @@
 vim.opt.completeopt = "menuone,longest"
 vim.opt.wrap = true
 vim.opt.linebreak = true
-vim.opt.signcolumn = "auto:2"
+-- vim.opt.signcolumn = "auto:2"
 vim.opt.smoothscroll = true
 
 -- Hide the '[No Name]' buffer

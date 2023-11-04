@@ -1,4 +1,3 @@
-
 export alias g = git
 export alias ga = git add
 export alias gaa = git add --all
@@ -105,7 +104,9 @@ export alias gprav = git pull --rebase --autostash --verbose
 export alias gprv = git pull --rebase --verbose
 export alias gra = git remote add
 export alias grb = git rebase
+# git rebase --abort
 export alias grba = git rebase --abort
+# git rebase --continue
 export alias grbc = git rebase --continue
 export alias grbd = git rebase develop
 export alias grbi = git rebase --interactive

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source "$HOME/.nix-profile/share/nix-direnv/direnvrc"
+
 source_all_up
 use rtx
 dotenv_if_exists

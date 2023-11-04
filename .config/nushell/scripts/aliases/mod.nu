@@ -11,6 +11,9 @@ export alias c = yadm
 
 export alias la = ls -la
 export alias ll = ls -l
+export def lsg [] {
+    ls | grid --color
+}
 
 export alias pn = pnpm
 
