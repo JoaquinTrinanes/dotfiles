@@ -1,5 +1,5 @@
-schemes = "https://github.com/Softsun2/base16-schemes-source"
-templates = "https://github.com/chriskempson/base16-templates-source"
+# schemes = "https://github.com/Softsun2/base16-schemes-source"
+# templates = "https://github.com/chriskempson/base16-templates-source"
 # schemes = "https://github.com/Base24/base24-schemes-source"
 # templates = "https://github.com/Base24/base24-templates-source"
 
@@ -27,19 +27,3 @@ rewrite = true
 template = "btop"
 file = "~/.config/btop/themes/flavours.theme"
 rewrite = true
-
-[[items]]
-template = "zellij"
-file = "~/.config/zellij/themes/flavours.kdl"
-rewrite = true
-
-[[items]]
-template = "tmux"
-file = "~/.config/tmux/plugins/flavours.conf"
-rewrite = true
-
-[[items]]
-template = "textmate"
-file = "~/.config/bat/themes/flavours.tmTheme"
-rewrite = true
-hook = "bat cache --build"
